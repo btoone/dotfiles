@@ -36,6 +36,16 @@ alias nscaffold='script/generate nifty_scaffold'
 alias rmig='rake db:migrate'
 alias rst='touch tmp/restart.txt'
 
+# Functions
+
+# Adds an entry to a work log
+function plog() {
+  LOG="/path/to/log.txt";
+  DATE=`date +"%A; %B %e, %Y"`;
+  ENTRY="\n$DATE\n$1";
+  echo -e $ENTRY >> $LOG;
+}
+
 # PeepCode - Advanced Command Line
 
 # Utility
@@ -49,7 +59,7 @@ alias ee="mate ~/bin/dotfiles/bash/env"
 alias cg='cd /Library/Ruby/Gems/1.8/gems/'
 
 function cr() {
- cd ~/repos/$*
+ cd ~/code/$*
 }
 
 # Common -- Some are from Damian Conway

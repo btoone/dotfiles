@@ -1,0 +1,10 @@
+# Environment Variables
+
+## macports
+export PATH=$PATH:/opt/local/bin:/opt/local/sbin
+export MANPATH=/opt/local/share/man:$MANPATH
+
+## custom
+export PATH="~/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+export RUBYOPT=rubygems
+export EDITOR=/usr/bin/mate

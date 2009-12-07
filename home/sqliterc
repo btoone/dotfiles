@@ -1,0 +1,9 @@
+-- defaults
+-- mode = LIST
+-- separator = "|"
+-- main prompt = "sqlite> "
+-- continue prompt = "   ...> "
+
+-- custom
+.mode column
+.headers ON

@@ -15,6 +15,8 @@ alias mamp-apachectl='/Applications/MAMP/Library/bin/apachectl'
 alias gl='git pull'
 alias gp='git push'
 alias gd='git diff'
+alias gdn='git diff --name-status -r'
+alias gds='git diff --stat -r'            # diffstat
 alias gc='git commit'
 alias gca='git commit -a'
 alias gco='git checkout'
@@ -38,13 +40,14 @@ alias rst='touch tmp/restart.txt'
 
 # Utility
 
-alias reload='source ~/bin/dotfiles/bash/aliases'
+alias reload='source ~/bin/dotfiles/bashrc'
 alias ea='mate -w ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
 alias ee="mate ~/bin/dotfiles/bash/env"
 
 # Quicker cd
 
 alias cg='cd /Library/Ruby/Gems/1.8/gems/'
+
 function cr() {
  cd ~/repos/$*
 }
@@ -56,9 +59,11 @@ alias la="ls -A -l -G"
 alias c='clear'
 alias cdd='cd -'  # goto last dir cd'ed from
 alias cl='clear; l'
+
 function cdc() { 
     cd $1; ls 
 }
+
 alias cls='clear; ls'
 alias h='history'
 alias l.='ls -d .[^.]*'
@@ -77,9 +82,11 @@ function take() {
 
 alias e='exit'
 alias k9="killall -9"
+
 function killnamed () { 
     ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill 
 }
+
 function zipr() {
   zip -r $1.zip $1
 }
@@ -88,6 +95,7 @@ function zipr() {
 
 alias o='open . &'
 alias ff='open -a Firefox'
+alias evernote='open -a Evernote'
 
 # General code
 
@@ -120,9 +128,6 @@ alias gdm='git diff master'
 alias gl='git pull'
 alias gnp="git-notpushed"
 alias gp='git push'
-alias gst='git status'
-alias gt='git status'
-alias g='git status'
 alias eg='mate .git/config'
 
 ## Git clone from GitHub

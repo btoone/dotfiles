@@ -1,9 +1,12 @@
-A personal collection of dotfiles.  See the PeepCode "Advanced Command Line PeepCode"
 
-# BASH Setup #
+# Overview #
 
-Clone the project and then link `~/.bashrc` to `/dotfiles/bashrc`
+My dotfiles to configure unix environments
 
-# Hidden Files #
+# Installation #
 
-Copy the files in `/dotfiles/home` to `~/`.  You don't need to copy the file `bashrc` if you already linked it above
+    cd ~/bin
+    git clone git://github.com/btoone/dotfiles
+    rake install
+
+This rake task will create symlinks for the dotfiles in your home directory, backing up any existing files with the same name.

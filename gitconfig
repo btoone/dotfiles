@@ -1,3 +1,9 @@
 [user]
 	name = Brandon Toone
 	email = brandon@toone.name
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[core]
+	excludesfile = /Users/Brandon/.gitignore

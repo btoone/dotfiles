@@ -36,6 +36,7 @@ alias tlog='tail -f log/development.log'
 alias scaffold='script/generate scaffold'
 alias nscaffold='script/generate nifty_scaffold'
 alias rmig='rake db:migrate'
+alias rpop='rake db:populate'
 alias rst='touch tmp/restart.txt'
 
 # Functions

@@ -1,6 +1,7 @@
 # Aliases
 
 alias ls='ls -pG'
+# alias ls='ls -p --color=auto'   # uncomment for dir colors on linux
 alias ll='ls -lpGh'
 alias grep='GREP_COLOR="1;33;47" LANG=C grep --color=auto'
 alias vi='/usr/bin/vim'

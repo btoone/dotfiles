@@ -44,7 +44,15 @@ bakpur='\e[45m'   # Purple
 bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 
-# Dark background command prompt <host>:<base directory>(git_branch) >
+## Command Prompts
+# <host>:<base directory>[git_branch] >
+
+# Light background
 PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\] \n→ "
-# Light background command prompt <host>:<base directory>(git_branch) >
-#PS1="\n\h:\[$bldwht\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\] \n→ "
+
+# Dark background
+# PS1="\n\h:\[$bldwht\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\] \n→ "
+
+# No vcprompt
+# PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\[$txtrst\] \n→ "
+# PS1="\n\h:\[$bldwht\]\W \[$txtrst\]\[$bldgrn\]\[$txtrst\] \n→ "

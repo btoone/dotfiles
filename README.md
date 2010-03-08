@@ -10,3 +10,7 @@ My dotfiles to configure unix environments
     rake install
 
 This rake task will create symlinks for the dotfiles in your home directory, backing up any existing files with the same name.
+
+TODO:
+
+* set dir_color based on the unix env you're installing to in aliases 

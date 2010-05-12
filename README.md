@@ -1,16 +1,17 @@
 
 # Overview #
 
-My dotfiles to configure unix environments
+My dotfiles to configure OS X
 
 # Installation #
 
-    cd ~/bin
-    git clone git://github.com/btoone/dotfiles
+    mkdir ~/code
+    cd !$
+    git clone git@github.com:btoone/dotfiles.git
     rake install
 
-This rake task will create symlinks for the dotfiles in your home directory, backing up any existing files with the same name.
+The rake task will create symlinks in your home directory (~) for the dotfiles, backing up any existing files with the same name.
 
-TODO:
+# TODO #
 
-* set dir_color based on the unix env you're installing to in aliases 
+* set dir_color based on the unix env you're installing to in aliases

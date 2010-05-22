@@ -5,6 +5,7 @@ alias ls='ls -pG'
 alias ll='ls -lpGh'
 alias grep='GREP_COLOR="1;33;47" LANG=C grep --color=auto'
 alias vi='/usr/bin/vim'
+alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
 ## mamp
 

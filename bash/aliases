@@ -102,6 +102,13 @@ function mkc() {
     cd "$1" 
 }
 
+# copy working directory
+# Use this command then open a new terminal window or tab and paste into `cd`
+function cwd () {
+  pwd | pbcopy
+}
+
+
 alias e='exit'
 alias k9="killall -9"
 

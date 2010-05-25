@@ -61,9 +61,9 @@ function railsapp {
 
 # Utility
 
-alias reload='source ~/bin/dotfiles/bashrc'
-alias ea='mate -w ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
-alias ee="mate ~/bin/dotfiles/bash/env"
+alias reload='source ~/code/dotfiles/bashrc'
+alias ea='mate -w ~/code/dotfiles/bash/aliases && reload' # Edit aliases
+alias ee="mate ~/code/dotfiles/bash/env"
 
 # Quicker cd
 

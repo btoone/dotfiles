@@ -97,7 +97,7 @@ alias lt='ls -lt' # sort with recently modified first
 alias md='mkdir -p'
 alias s='cd ..'   # up one dir
 
-function take() { 
+function mkc() { 
     mkdir -p "$1"
     cd "$1" 
 }

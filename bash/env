@@ -2,5 +2,5 @@
 
 export PATH=~/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export RUBYOPT=rubygems
-export EDITOR=/usr/bin/mate
+export EDITOR='mate -w'
 export PYTHONPATH=/usr/local/lib/python2.6/site-packages

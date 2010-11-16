@@ -1,6 +1,6 @@
 # Environment Variables
 
-export PATH="~/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+export PATH=~/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export RUBYOPT=rubygems
 export EDITOR=/usr/bin/mate
 export PYTHONPATH=/usr/local/lib/python2.6/site-packages

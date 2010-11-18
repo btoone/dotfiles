@@ -4,3 +4,5 @@ export PATH=~/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export RUBYOPT=rubygems
 export EDITOR='mate -w'
 export PYTHONPATH=/usr/local/lib/python2.6/site-packages
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.

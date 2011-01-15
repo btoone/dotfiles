@@ -94,7 +94,6 @@ alias ll.='ls -ld .[^.]*'
 alias l='ls -lhGt'  # -l long listing, most recent first
                     # -G color
 alias lh="ls -lh"
-alias ll='ls -lhG'  # -l long listing, human readable, no group info
 alias lt='ls -lt' # sort with recently modified first
 alias md='mkdir -p'
 alias s='cd ..'   # up one dir

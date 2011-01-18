@@ -48,7 +48,8 @@ bakwht='\e[47m'   # White
 # <host>:<base directory>[git_branch] >
 
 # Light background
-PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\] \n→ "
+PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\]\[$txtrst\]\[$bldred\]\$(~/.rvm/bin/rvm-prompt i v g)\[$txtrst\] \n→ "
+# PS1="\$(~/.rvm/bin/rvm-prompt) $PS1"
 
 # Dark background
 # PS1="\n\h:\[$bldwht\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\] \n→ "

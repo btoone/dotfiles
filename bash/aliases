@@ -159,6 +159,8 @@ alias gl='git pull'
 alias gnp="git-notpushed"
 alias gp='git push'
 alias eg='mate .git/config'
+alias gr='git remote'
+alias grv='git remote -v'
 
 ## Git clone from GitHub
 function gch() {

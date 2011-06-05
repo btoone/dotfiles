@@ -6,4 +6,4 @@
 	status = auto
 	branch = auto
 [core]
-	excludesfile = /Users/Brandon/.gitignore
+	excludesfile = /Users/btoone/.gitignore

@@ -1,6 +1,6 @@
-[user]
-	name = Brandon Toone
-	email = btoone@gmail.com
+# [user]
+# 	name = Brandon Toone
+# 	email = btoone@gmail.com
 [color]
 	diff = auto
 	status = auto

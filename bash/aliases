@@ -41,6 +41,7 @@ alias nscaffold='script/generate nifty_scaffold'
 alias rmig='rake db:migrate'
 alias rpop='rake db:populate'
 alias rst='touch tmp/restart.txt'
+alias rr='rake routes | mate'
 
 # Functions
 

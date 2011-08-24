@@ -1,3 +1,4 @@
+alias ht='history | tail -25'
 alias ls='ls -pG'
 # alias ls='ls -p --color=auto'   # uncomment for dir colors on linux
 alias ll='ls -lph'

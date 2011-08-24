@@ -44,25 +44,11 @@ bakpur='\e[45m'   # Purple
 bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 
-## Command Prompts
-# <host>:<base directory>[git_branch] >
-
-# Light background
-# PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\]\[$txtrst\]\[$bldred\]\$(~/.rvm/bin/rvm-prompt i v g)\[$txtrst\] \n→ "
-
 function padding {
   printf "%${padding}s" "\$(~/.rvm/bin/rvm-prompt v g)"     # this string of 25 chars taking away more padding
 }
 
-# PS1="\$(~/.rvm/bin/rvm-prompt) $PS1"
-
-# Dark background
-# PS1="\n\h:\[$bldwht\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\] \n→ "
-
-# No vcprompt
-# PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\[$txtrst\] \n→ "
-# PS1="\n\h:\[$bldwht\]\W \[$txtrst\]\[$bldgrn\]\[$txtrst\] \n→ "
-bash_prompt_cmd() {
+function bash_prompt_cmd() {
   PWD="${PWD/#$HOME/~}"                                     # force home dir to return the same lenght
   basedir=`basename $PWD`
   basedir_length=${#basedir}

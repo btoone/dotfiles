@@ -7,4 +7,9 @@ export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups
 
+# directory listing colors
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
+# export LSCOLORS=ExFxCxDxBxegedabagacad    # light backgrounds
+
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.

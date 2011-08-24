@@ -48,7 +48,12 @@ bakwht='\e[47m'   # White
 # <host>:<base directory>[git_branch] >
 
 # Light background
-PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\]\[$txtrst\]\[$bldred\]\$(~/.rvm/bin/rvm-prompt i v g)\[$txtrst\] \n→ "
+# PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\]\[$txtrst\]\[$bldred\]\$(~/.rvm/bin/rvm-prompt i v g)\[$txtrst\] \n→ "
+
+function padding {
+  printf "%${padding}s" "\$(~/.rvm/bin/rvm-prompt v g)"     # this string of 25 chars taking away more padding
+}
+
 # PS1="\$(~/.rvm/bin/rvm-prompt) $PS1"
 
 # Dark background
@@ -57,3 +62,20 @@ PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\$(vcprompt)\[$txtrst\]\[$txtrst\]
 # No vcprompt
 # PS1="\n\h:\[$bldblk\]\W \[$txtrst\]\[$bldgrn\]\[$txtrst\] \n→ "
 # PS1="\n\h:\[$bldwht\]\W \[$txtrst\]\[$bldgrn\]\[$txtrst\] \n→ "
+bash_prompt_cmd() {
+  PWD="${PWD/#$HOME/~}"                                     # force home dir to return the same lenght
+  basedir=`basename $PWD`
+  basedir_length=${#basedir}
+  
+  vcprompt=`vcprompt`
+  vcprompt_length=${#vcprompt}
+  
+  rvmprompt_path=`which rvm-prompt`
+  rvmprompt=`$rvmprompt_path v g`
+  rvmprompt_length=${#rvmprompt}
+  
+  padding=$(( COLUMNS - basedir_length - vcprompt_length - rvmprompt_length + 25))
+  PS1="\n\W \$(vcprompt) `padding`\n→ "
+
+}
+PROMPT_COMMAND=bash_prompt_cmd

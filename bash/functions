@@ -1,0 +1,127 @@
+# Adds an entry to a work log
+function plog() {
+  LOG="/path/to/log.txt";
+  DATE=`date +"%A; %B %e, %Y"`;
+  ENTRY="\n$DATE\n$1";
+  echo -e $ENTRY >> $LOG;
+}
+
+# creates a rails app from template
+function railsapp {
+  template=$1
+  appname=$2
+  shift 2
+  rails $appname -m http://github.com/btoone/rails-templates/raw/master/$template.rb $@
+}
+
+# quicker cd
+function cr() {
+  cd ~/code/$*
+}
+
+function cdc() { 
+  cd $1; ls 
+}
+
+function mkc() { 
+  mkdir -p "$1"
+  cd "$1" 
+}
+
+# copy working directory
+# Use this command then open a new terminal window or tab and paste into `cd`
+function cwd () {
+  pwd | pbcopy
+}
+
+function killnamed () { 
+  ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill 
+}
+
+function zipr() {
+  zip -r $1.zip $1
+}
+
+## From Chris Wanstrath
+function pless() { 
+  pygmentize $1 | less -r 
+}
+
+## Commit pending changes and quote all args as message
+function gg() { 
+  git commit -v -a -m "$*"
+}
+
+## Git clone from GitHub
+function gch() {
+  git clone git://github.com/$USER/$1.git
+}
+
+## Setup a tracking branch from [remote] [branch_name]
+function gbt() { 
+  git branch --track $2 $1/$2 && git checkout $2 
+}
+
+## Quickly clobber a file and checkout
+function grf() { 
+  rm $1
+  git checkout $1 
+}
+
+## Call from inside an initialized Git repo, with the name of the repo.
+function new-git() {
+  ssh git@example.com "mkdir $1.git && cd $1.git && git --bare init"
+  git remote add origin git@example.com:$1.git
+  git push origin master
+  git config branch.master.remote origin
+  git config branch.master.merge refs/heads/master
+  git config push.default current
+}
+
+function markdown() { 
+  /Applications/TextMate.app/Contents/SharedSupport/Support/bin/Markdown.pl $1 > $1.html 
+}
+
+# Syntax check Javascript
+
+function jsc() { 
+  jsl -conf /etc/jsl/jsl.conf -process $1 
+}
+
+# From http://github.com/suztomo/dotfiles
+
+function rmf(){
+  for file in $*
+  do
+      __rm_single_file $file
+  done
+}
+
+function __rm_single_file(){
+  if ! [ -d ~/.Trash/ ]
+  then
+      command /bin/mkdir ~/.Trash
+  fi
+  
+  if ! [ $# -eq 1 ]
+  then
+      echo "__rm_single_file: 1 argument required but $# passed."
+      exit
+  fi
+  
+  if [ -e $1 ]
+  then
+      BASENAME=`basename $1`
+      NAME=$BASENAME
+      COUNT=0
+      while [ -e ~/.Trash/$NAME ]
+      do
+          COUNT=$(($COUNT+1))
+          NAME="$BASENAME.$COUNT"
+      done
+      
+      command /bin/mv $1 ~/.Trash/$NAME
+  else
+      echo "No such file or directory: $file"
+  fi
+}

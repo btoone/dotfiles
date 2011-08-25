@@ -1,6 +1,7 @@
 # Login configuration
 
 # Colors from http://wiki.archlinux.org/index.php/Color_Bash_Prompt
+# Usage: "\[$bldwht\]\W\[$txtrst\]$ "
 
 txtrst='\e[0m'    # Text Reset
 

@@ -1,3 +1,9 @@
+# opens desktop folder in time machine backups
+function ob() {
+  tm_root=$1
+  open "${tm_root}/Macintosh HD/Users/btoone/Desktop/"
+}
+
 # Adds an entry to a work log
 function plog() {
   LOG="/path/to/log.txt";

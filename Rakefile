@@ -1,8 +1,5 @@
 require 'rake'
 
-# TODO Add more intelligent functionality that creates symlinks for
-#      the vim dotfiles (keep it DRY)
-
 desc "Backup and link dotfiles to user's home directory"
 task :install do
   Dir['*'].each do |file|
@@ -34,6 +31,7 @@ task :install do
   end  # file
   
   # Symlink vim files
+
   puts "Creating symlinks for vim dotfiles\n\n"
   
   puts "... linking .vim directory\n\n"
@@ -44,4 +42,5 @@ task :install do
   
   puts "... linking .gvimrc\n\n"
   system %Q{ln -s "$PWD/gvimrc" "$HOME/.gvimrc"}
-end  # task
+end
+

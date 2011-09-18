@@ -28,6 +28,8 @@ alias gs='git status'
 alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
 alias glo="git log --stat"
 alias glop="git log --pretty=oneline"
+alias glog='git log --oneline --graph --decorate'
+alias gitx='open -a gitx'                 # workaround to broken cli
  
 ## rails
 

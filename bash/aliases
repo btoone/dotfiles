@@ -19,7 +19,7 @@ alias gp='git push'
 alias gd='git diff'
 alias gdn='git diff --name-status -r'
 alias gds='git diff --stat -r'            # diffstat
-alias gdt='git difftool -y'
+alias gdt='git difftool -t opendiff -y'
 alias gc='git commit'
 alias gca='git commit -a'
 alias gco='git checkout'
@@ -43,7 +43,7 @@ alias nscaffold='script/generate nifty_scaffold'
 alias rmig='rake db:migrate'
 alias rpop='rake db:populate'
 alias rst='touch tmp/restart.txt'
-alias rr='rake routes | mate'
+alias rr='bundle exec rake routes | mate'
 
 # Utility
 

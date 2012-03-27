@@ -5,8 +5,15 @@
 	diff = auto
 	status = auto
 	branch = auto
+	interactive = auto
 [core]
 	excludesfile = /Users/btoone/.gitignore
-[difftool "Kaleidoscope"]
-[difftool]
-[diff]
+[user]
+	name = Brandon Toone
+	email = caspyin@rdlk.co
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

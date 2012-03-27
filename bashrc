@@ -5,4 +5,4 @@
 
 # RVM
 
-if [[ -s /Users/Brandon/.rvm/scripts/rvm ]] ; then source /Users/Brandon/.rvm/scripts/rvm ; fi
+[[ -s "/Users/btoone/.rvm/scripts/rvm" ]] && source "/Users/btoone/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

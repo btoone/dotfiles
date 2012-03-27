@@ -1,3 +1,53 @@
+function alias-help() {
+  echo "Alias Usage"
+  echo
+  echo " Rails"
+  echo "  dbm        = rake db:migrate"
+  echo "  rails      = bundle exec rails"
+  echo "  rake       = bundle exec rake"
+  echo "  rc         = rails c"
+  echo "  rd         = rails dbconsole"
+  echo "  rg         = rails g"
+  echo "  rs         = rails s"
+  echo "  tdl        = tail -f log/development.log"
+  echo "  ttl        = tail -f log/test.log"
+  echo
+  echo " Git"
+  echo "   eg       = mate .git/config"
+  echo "   ga       = git add"
+  echo "   gb       = git branch"
+  echo "   gba      = git branch -a"
+  echo "   gbl      = function gbl() {}"
+  echo "   gc       = git commit"
+  echo "   gca      = git commit -a"
+  echo "   gco      = git checkout"
+  echo "   gd       = git diff"
+  echo "   gdm      = git diff master"
+  echo "   gdn      = git diff --name-status -r"
+  echo "   gds      = git diff --stat -r"
+  echo "   gdt      = git difftool -t opendiff -y"
+  echo "   gdv      = git diff -w "$@" | vim -R -"
+  echo "   gexport  = git archive --format zip --output"
+  echo "   gll      = git log --graph --pretty=oneline --abbrev-commit"
+  echo "   glo      = git log --stat"
+  echo "   glog     = git log --oneline --graph --decorate"
+  echo "   glop     = git log --pretty         = oneline"
+  echo "   gnp      = git-notpushed"
+  echo "   gp       = git push"
+  echo "   gpl      = git pull"
+  echo "   gr       = git remote"
+  echo "   grm      = git status | grep deleted | awk {print \$3} | xargs git rm"
+  echo "   grv      = git remote -v"
+  echo "   gs       = git status"
+  echo "   gui      = open -a sourcetree ."
+  echo "   ungit    = find . -name .git -exec rm -rf {} \;"
+}
+
+# Lists the latest commit for each branch in the repo
+function gbl() {
+  for k in `/usr/local/bin/git branch|sed s/^..//`;do echo -e `git log -1 --pretty=format:"%Cgreen%ci %Cblue%cr%Creset" "$k"`\\t"$k";done|sort -r
+}
+
 # opens desktop folder in time machine backups
 function ob() {
   tm_root=$1

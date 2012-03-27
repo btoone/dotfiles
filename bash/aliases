@@ -7,43 +7,57 @@ alias vi='vim -N'
 alias vim='vim -N'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
-## mamp
-
-alias mamp-mysql='/Applications/MAMP/Library/bin/mysql -u root -p'
-alias mamp-apachectl='/Applications/MAMP/Library/bin/apachectl'
-
 ## git
 
-alias gl='git pull'
-alias gp='git push'
-alias gd='git diff'
-alias gdn='git diff --name-status -r'
-alias gds='git diff --stat -r'            # diffstat
-alias gdt='git difftool -t opendiff -y'
+alias eg='mate .git/config'
+alias ga='git add'
+alias gb='git branch'
+alias gba='git branch -a'
 alias gc='git commit'
 alias gca='git commit -a'
 alias gco='git checkout'
-alias gb='git branch'
-alias gs='git status'
-alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
+alias gd='git diff'
+alias gdm='git diff master'
+alias gdn='git diff --name-status -r'
+alias gds='git diff --stat -r'            # diffstat
+alias gdt='git difftool -t opendiff -y'
+alias gdv='git diff -w "$@" | vim -R -'
+alias gexport='git archive --format zip --output'
+alias gll='git log --graph --pretty=oneline --abbrev-commit'
 alias glo="git log --stat"
-alias glop="git log --pretty=oneline"
 alias glog='git log --oneline --graph --decorate'
-alias gitx='open -a gitx'                 # workaround to broken cli
- 
+alias glop="git log --pretty=oneline"
+alias gnp="git-notpushed"
+alias gp='git push'
+alias gpl='git pull'
+alias gr='git remote'
+alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
+alias grv='git remote -v'
+alias gs='git status'
+alias gui='open -a sourcetree .'
+alias ungit="find . -name '.git' -exec rm -rf {} \;"
+
 ## rails
 
+alias be='bundle execute'
 alias sc='script/console'
 alias sd='script/dbconsole'
 alias ss='script/server'
 alias sg='script/generate'
-alias tlog='tail -f log/development.log'
+alias tdl='tail -f log/development.log'
+alias ttl='tail -f log/test.log'
 alias scaffold='script/generate scaffold'
 alias nscaffold='script/generate nifty_scaffold'
-alias rmig='rake db:migrate'
-alias rpop='rake db:populate'
 alias rst='touch tmp/restart.txt'
 alias rr='bundle exec rake routes | mate'
+alias rake='bundle exec rake'
+alias rc='be rails c'
+alias rd='be rails dbconsole'
+alias rg='be rails g'
+alias rs='be rails s'
+alias rmig='rake db:migrate'
+alias dbm='rake db:migrate'
+alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rails/console/helpers'
 
 # Utility
 
@@ -51,9 +65,6 @@ alias reload='source ~/code/dotfiles/bashrc'
 alias ea='mate -w ~/code/dotfiles/bash/aliases && reload' # Edit aliases
 alias ee="mate ~/code/dotfiles/bash/env"
 
-# Quicker cd
-
-alias cg='cd /Library/Ruby/Gems/1.8/gems/'
 
 # Common -- Some are from Damian Conway
 
@@ -88,52 +99,7 @@ alias evernote='open -a Evernote'
 alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 
-# Git
-
-alias ungit="find . -name '.git' -exec rm -rf {} \;"
-alias gb='git branch'
-alias gba='git branch -a'
-alias gc='git commit -v'
-alias gca='git commit -v -a'
-
-alias gco='git checkout'
-alias gd='git diff'
-alias gdm='git diff master'
-alias gl='git pull'
-alias gnp="git-notpushed"
-alias gp='git push'
-alias eg='mate .git/config'
-alias gr='git remote'
-alias grv='git remote -v'
-
 # TextMate
 
 alias et="mate"
 alias ett="mate ."
-alias etr="mate app config lib db schema public spec test vendor/gems vendor/plugins Rakefile Capfile Vladfile Todofile README stories merb slices tasks features &"
-
-# Ruby
-
-alias r="rake"
-
-# Rails
-
-alias mr='mongrel_rails start'
-alias ms='mongrel_rails stop'
-alias rp='touch tmp/restart.txt'
-alias sc='./script/console'
-alias sg='./script/generate'
-alias sp='./script/plugin'
-alias ss='./script/server'
-alias tl='tail -f log/*.log'
-alias ts='thin start'
-
-# TDD / BDD
-
-alias aa='autotest'
-alias aaf='autotest -f' # Don't run all at start
-alias aas="./script/autospec"
-
-# XCode
-
-alias ox="open *.xcodeproj"

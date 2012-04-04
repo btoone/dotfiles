@@ -58,6 +58,7 @@ alias rs='be rails s'
 alias rmig='rake db:migrate'
 alias dbm='rake db:migrate'
 alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rails/console/helpers'
+alias r='~/bin/iterm $1'
 
 # Utility
 

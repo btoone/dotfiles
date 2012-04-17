@@ -7,7 +7,7 @@
     branch = auto
     interactive = auto
 [core]
-    excludesfile = /Users/btoone/.gitignore
+	excludesfile = ~/.gitignore_global
 [difftool "sourcetree"]
     cmd = opendiff \"$LOCAL\" \"$REMOTE\"
     path = 

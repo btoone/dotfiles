@@ -9,7 +9,7 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
 ## git
 
-alias eg='mate .git/config'
+alias eg='$EDITOR .git/config'
 alias ga='git add'
 alias gb='git branch'
 alias gba='git branch -a'
@@ -49,7 +49,7 @@ alias ttl='tail -f log/test.log'
 alias scaffold='script/generate scaffold'
 alias nscaffold='script/generate nifty_scaffold'
 alias rst='touch tmp/restart.txt'
-alias rr='bundle exec rake routes | mate'
+alias rr='bundle exec rake routes | $EDITOR'
 alias rake='bundle exec rake'
 alias rc='be rails c'
 alias rd='be rails dbconsole'
@@ -63,8 +63,8 @@ alias r='~/bin/iterm $1'
 # Utility
 
 alias reload='source ~/code/dotfiles/bashrc'
-alias ea='mate -w ~/code/dotfiles/bash/aliases && reload' # Edit aliases
-alias ee="mate ~/code/dotfiles/bash/env"
+alias ea='$EDITOR -w ~/code/dotfiles/bash/aliases && reload' # Edit aliases
+alias ee="$EDITOR ~/code/dotfiles/bash/env"
 
 
 # Common -- Some are from Damian Conway
@@ -102,5 +102,5 @@ alias tm='top -o vsize' # memory
 
 # TextMate
 
-alias et="mate"
-alias ett="mate ."
+alias et="$EDITOR"
+alias ett="$EDITOR ."

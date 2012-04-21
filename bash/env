@@ -1,6 +1,6 @@
 # Environment Variables
 
-export PATH=$PATH:$HOME/bin:$HOME/.rvm/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin
+export PATH=$HOME/bin:$HOME/.rvm/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export RUBYOPT=rubygems
 export EDITOR='subl --new-window'
 export HISTSIZE=10000

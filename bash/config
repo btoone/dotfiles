@@ -50,7 +50,7 @@ function padding {
 }
 
 function bash_prompt_cmd() {
-  PWD="${PWD/#$HOME/~}"                                     # force home dir to return the same lenght
+  PWD="${PWD/#$HOME/~}"                                     # force home dir to return the same length
   basedir=`basename $PWD`
   basedir_length=${#basedir}
   

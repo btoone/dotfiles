@@ -2,7 +2,7 @@ require 'rake'
 
 task :default => "install"
 
-desc "Backup and link dotfiles to user's home directory"
+desc "Installs dotfiles to user's home directory"
 task :install do
   Dir['*'].each do |file|
     next if %w[Rakefile README.md].include?(file) || File::directory?(file)

@@ -46,7 +46,7 @@ bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 
 function padding {
-  printf "%${padding}s" "\$(~/.rvm/bin/rvm-prompt v g)"     # this string of 25 chars taking away more padding
+  printf "%${padding}s" "\$(/usr/local/bin/rbenv version-name)"     # this string of 25 chars taking away more padding
 }
 
 function bash_prompt_cmd() {
@@ -57,11 +57,11 @@ function bash_prompt_cmd() {
   vcprompt=`vcprompt`
   vcprompt_length=${#vcprompt}
   
-  rvmprompt_path=`which rvm-prompt`
-  rvmprompt=`$rvmprompt_path v g`
-  rvmprompt_length=${#rvmprompt}
+  ruby_prompt_path=`which rbenv`
+  ruby_prompt=`$ruby_prompt_path version-name`
+  ruby_prompt_length=${#ruby_prompt}
   
-  padding=$(( COLUMNS - basedir_length - vcprompt_length - rvmprompt_length + 25))
+  padding=$(( COLUMNS - basedir_length - vcprompt_length - ruby_prompt_length + 34))
   PS1="\n\W \$(vcprompt) `padding`\n→ "
 
 }

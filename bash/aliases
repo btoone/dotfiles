@@ -39,6 +39,7 @@ alias ungit="find . -name '.git' -exec rm -rf {} \;"
 
 ## rails
 
+alias b='bundle execute'
 alias be='bundle execute'
 alias sc='script/console'
 alias sd='script/dbconsole'
@@ -50,11 +51,10 @@ alias scaffold='script/generate scaffold'
 alias nscaffold='script/generate nifty_scaffold'
 alias rst='touch tmp/restart.txt'
 alias rr='bundle exec rake routes | $EDITOR'
-alias rake='bundle exec rake'
-alias rc='be rails c'
-alias rd='be rails dbconsole'
-alias rg='be rails g'
-alias rs='be rails s'
+alias rc='bundle exec rails c'
+alias rd='bundle exec rails dbconsole'
+alias rg='bundle exec rails g'
+alias rs='bundle exec rails s'
 alias rmig='rake db:migrate'
 alias dbm='rake db:migrate'
 alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rails/console/helpers'

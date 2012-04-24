@@ -2,7 +2,7 @@
 
 export PATH=$PATH:$HOME/bin:$HOME/.rvm/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin
 export RUBYOPT=rubygems
-export EDITOR='subl --new-window'
+export EDITOR='subl'
 export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups

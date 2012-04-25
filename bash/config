@@ -1,5 +1,8 @@
 # Login configuration
 
+# enables vi mode for command line navigation
+set -o vi
+
 # Colors from http://wiki.archlinux.org/index.php/Color_Bash_Prompt
 # Usage: "\[$bldwht\]\W\[$txtrst\]$ "
 

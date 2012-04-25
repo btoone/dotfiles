@@ -64,7 +64,7 @@ alias r='~/bin/iterm $1'
 
 alias reload='source ~/code/dotfiles/bashrc'
 alias ea='$EDITOR -w ~/code/dotfiles/bash/aliases && reload' # Edit aliases
-alias ee="$EDITOR ~/code/dotfiles/bash/env"
+alias ee="$EDITOR -w ~/code/dotfiles/bash/env && reload"
 
 
 # Common -- Some are from Damian Conway

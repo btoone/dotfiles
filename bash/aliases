@@ -63,9 +63,6 @@ alias r='~/bin/iterm $1'
 # Utility
 
 alias reload='source ~/code/dotfiles/bashrc'
-alias ea='$EDITOR -w ~/code/dotfiles/bash/aliases && reload' # Edit aliases
-alias ee="$EDITOR -w ~/code/dotfiles/bash/env && reload"
-
 
 # Common -- Some are from Damian Conway
 
@@ -100,7 +97,9 @@ alias evernote='open -a Evernote'
 alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 
-# TextMate
+# Editor
 
+alias ea="$EDITOR --wait ~/code/dotfiles/bash/aliases && reload"
+alias ee="$EDITOR --wait ~/code/dotfiles/bash/env && reload"
 alias et="$EDITOR --new-window"
 alias ett="$EDITOR ."

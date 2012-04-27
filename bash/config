@@ -53,8 +53,8 @@ function padding {
 }
 
 function bash_prompt_cmd() {
-  PWD="${PWD/#$HOME/~}"                                     # force home dir to return the same length
-  basedir=`basename $PWD`
+  ALTPWD="${PWD/#$HOME/~}"                                     # force home dir to return the same length
+  basedir=`basename $ALTPWD`
   basedir_length=${#basedir}
   
   vcprompt=`vcprompt`

@@ -102,5 +102,5 @@ alias tm='top -o vsize' # memory
 
 # TextMate
 
-alias et="$EDITOR"
+alias et="$EDITOR --new-window"
 alias ett="$EDITOR ."

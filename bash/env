@@ -2,7 +2,8 @@
 
 export PATH=$HOME/.rbenv/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export RUBYOPT=rubygems
-export EDITOR='subl -wait --new-window'
+export EDITOR='subl'
+export GIT_EDITOR='subl --wait --new-window'
 export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups

@@ -39,8 +39,8 @@ alias ungit="find . -name '.git' -exec rm -rf {} \;"
 
 ## rails
 
-alias b='bundle execute'
-alias be='bundle execute'
+alias b='bundle exec'
+alias be='bundle exec'
 alias sc='script/console'
 alias sd='script/dbconsole'
 alias ss='script/server'

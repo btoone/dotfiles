@@ -20,13 +20,14 @@ alias gd='git diff'
 alias gdm='git diff master'
 alias gdn='git diff --name-status -r'
 alias gds='git diff --stat -r'            # diffstat
-alias gdt='git difftool -t opendiff -y'
+alias gdt='git difftool'
 alias gdv='git diff -w "$@" | vim -R -'
 alias gexport='git archive --format zip --output'
 alias gll='git log --graph --pretty=oneline --abbrev-commit'
 alias glo="git log --stat"
 alias glog='git log --oneline --graph --decorate'
 alias glop="git log --pretty=oneline"
+alias gmt="git mergetool"
 alias gnp="git-notpushed"
 alias gp='git push'
 alias gpl='git pull'

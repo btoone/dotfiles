@@ -1,8 +1,8 @@
 # Environment Variables
 
-# export PATH=$HOME/.rbenv/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
+export PATH=$HOME/.rbenv/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
-export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 export RUBYOPT=rubygems
 
 # Editor

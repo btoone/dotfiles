@@ -10,6 +10,8 @@ export EDITOR='choc'
 # export EDITOR='subl'
 # export EDITOR='mate'
 export GIT_EDITOR='$EDITOR --wait'
+
+# History
 export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups

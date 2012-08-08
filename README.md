@@ -11,7 +11,8 @@ My dotfiles to configure OS X
     cd dotfiles
     rake
 
-The rake task will create symlinks in your home directory (~) for the dotfiles, backing up any existing files with the same name.
+The rake task will create symlinks in your home directory (~) for the dotfiles
+and back up any existing files with the same name.
 
 # TODO #
 

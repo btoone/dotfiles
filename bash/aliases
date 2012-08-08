@@ -107,5 +107,5 @@ alias tm='top -o vsize' # memory
 
 alias ea="$EDITOR --wait ~/code/dotfiles/bash/aliases && reload"
 alias ee="$EDITOR --wait ~/code/dotfiles/bash/env && reload"
-alias et="$EDITOR --new-window"
+alias et="$EDITOR"
 alias ett="$EDITOR ."

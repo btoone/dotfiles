@@ -4,8 +4,12 @@
 export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 export RUBYOPT=rubygems
-export EDITOR='subl'
-export GIT_EDITOR='subl --wait --new-window'
+
+# Editor
+export EDITOR='choc'
+# export EDITOR='subl'
+# export EDITOR='mate'
+export GIT_EDITOR='$EDITOR --wait'
 export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups

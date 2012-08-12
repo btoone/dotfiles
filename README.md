@@ -17,3 +17,5 @@ and back up any existing files with the same name.
 # TODO #
 
 * set dir_color based on the unix env you're installing to in aliases
+* fix vcprompt when on linux
+* create a linux branch or a linux specific repo

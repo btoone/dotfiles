@@ -40,13 +40,16 @@ alias ungit="find . -name '.git' -exec rm -rf {} \;"
 
 ## rails
 
+# bundler
 alias b='bundle'
 alias be='bundle exec'
-alias bi="b install --path vendor"
-alias bil="bi --local"
-alias bu="b update"
-alias be="b exec"
-alias binit="bi && b package && echo 'vendor/ruby' >> .gitignore"
+alias bi='bundle install'
+alias binit='bundle init'
+alias bu='bundle update'
+alias bv='bundle install --path vendor'
+alias bvl='bundle install --path vendor --local'
+alias bvp="bundle install --path vendor && bundle package && echo 'vendor/ruby' >> .gitignore"
+
 alias sc='script/console'
 alias sd='script/dbconsole'
 alias ss='script/server'

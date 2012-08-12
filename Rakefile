@@ -5,7 +5,7 @@ task :default => "install"
 desc "Installs dotfiles to user's home directory"
 task :install do
   Dir['*'].each do |file|
-    next if %w[Rakefile README.md].include?(file) || File::directory?(file)
+    next if %w[bash Rakefile README.md zsh].include?(file)
     
     original = File.join(ENV['HOME'], ".#{file}")
     
@@ -24,20 +24,16 @@ task :install do
         exit
       else
         puts "skipping ~/.#{file}\n\n"
-      end  # case
+      end
     else
       # no pre-existing file so just create the link
       puts "linking ~/.#{file}\n\n"
       system %Q{ln -s "$PWD/#{file}" "$HOME/.#{file}"}
     end
-  end  # file
+  end
   
   # Symlink vim files
-
   puts "Creating symlinks for vim dotfiles\n\n"
-  
-  puts "... linking .vim directory\n\n"
-  system %Q{ln -s "$PWD/vim" "$HOME/.vim"}
   
   puts "... linking .vimrc\n\n"
   system %Q{ln -s "$PWD/vim/vimrc" "$HOME/.vimrc"}

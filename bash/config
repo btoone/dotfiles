@@ -59,6 +59,9 @@ function padding {
 }
 
 function bash_prompt_cmd() {
+  username="`whoami`"
+  username_length=${#username}
+  
   ALTPWD="${PWD/#$HOME/~}"                                     # force home dir to return the same length
   basedir=`basename $ALTPWD`
   basedir_length=${#basedir}
@@ -70,7 +73,7 @@ function bash_prompt_cmd() {
   ruby_prompt_path=`which rbenv`
   ruby_prompt=`$ruby_prompt_path version-name`
   ruby_prompt_length=${#ruby_prompt}
-  padding=$(( COLUMNS - basedir_length - vcprompt_length - ruby_prompt_length + 34))  # comment out when on linux
+  padding=$(( COLUMNS - username_length - basedir_length - vcprompt_length - ruby_prompt_length + 31))  # comment out when on linux
 
   # rvm
   # ruby_prompt_path=`which rvm-prompt`
@@ -78,7 +81,7 @@ function bash_prompt_cmd() {
   # ruby_prompt_length=${#ruby_prompt}
   # padding=$(( COLUMNS - basedir_length - vcprompt_length - ruby_prompt_length + 25))
   
-  PS1="\n\W \$(vcprompt) `padding`\n→ "
+  PS1="\n[\u] \W \$(vcprompt) `padding`\n→ "
 
 }
 PROMPT_COMMAND=bash_prompt_cmd

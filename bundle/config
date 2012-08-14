@@ -1,1 +1,1 @@
-BUNDLE_PATH: vendor/bundle
+# BUNDLE_PATH: vendor/bundle    # default is vendor/ruby

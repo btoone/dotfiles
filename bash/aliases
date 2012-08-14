@@ -43,12 +43,12 @@ alias ungit="find . -name '.git' -exec rm -rf {} \;"
 # bundler
 alias b='bundle'
 alias be='bundle exec'
-alias bi='bundle install'
+alias bi='bundle install --path vendor'
 alias binit='bundle init'
 alias bu='bundle update'
-alias bv='bundle install --path vendor'
-alias bvl='bundle install --path vendor --local'
-alias bvp="bundle install --path vendor && bundle package && echo 'vendor/ruby' >> .gitignore"
+alias biv='bundle install --path vendor'
+alias bil='bundle install --path vendor --local'
+alias bip="bundle install --path vendor && bundle package && echo 'vendor/ruby' >> .gitignore"
 
 alias sc='script/console'
 alias sd='script/dbconsole'

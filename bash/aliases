@@ -3,12 +3,19 @@ alias ls='ls -pG'
 # alias ls='ls -p --color=auto'   # uncomment for dir colors on linux
 alias ll='ls -lph'
 alias grep='GREP_COLOR="1;33;47" LANG=C grep --color=auto'
-alias vi='vim -N'
-alias vim='vim -N'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
-## git
+# vi
+alias vi='vim -N'
+alias vim='vim -N'
 
+# tmux
+alias tma="tmux attach -t"
+alias tmm="tmux attach || tmux"
+alias tmn="tmux new -s"
+alias tml="tmux ls"
+
+# git
 alias eg='$EDITOR .git/config'
 alias ga='git add'
 alias gb='git branch'
@@ -38,8 +45,6 @@ alias gs='git status'
 alias gui='open -a sourcetree .'
 alias ungit="find . -name '.git' -exec rm -rf {} \;"
 
-## rails
-
 # bundler
 alias b='bundle'
 alias be='bundle exec'
@@ -50,6 +55,7 @@ alias biv='bundle install --path vendor'
 alias bil='bundle install --path vendor --local'
 alias bip="bundle install --path vendor && bundle package && echo 'vendor/ruby' >> .gitignore"
 
+# rails
 alias sc='script/console'
 alias sd='script/dbconsole'
 alias ss='script/server'
@@ -64,17 +70,25 @@ alias rc='bundle exec rails c'
 alias rd='bundle exec rails dbconsole'
 alias rg='bundle exec rails g'
 alias rs='bundle exec rails s'
+alias fs='bundle exec foreman start'
 alias rmig='rake db:migrate'
 alias dbm='rake db:migrate'
 alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rails/console/helpers'
 alias r='~/bin/iterm $1'
 
-# Utility
+# vagrant
+alias v='vagrant'
+alias vs='vagrant status'
+alias vsh='vagrant ssh'
+alias vup='vagrant up'
+alias vhalt='vagrant halt'
+alias vpro='vagrant provision'
+alias vrel='vagrant reload'
 
-alias reload='source ~/code/dotfiles/bashrc'
+# utility
+alias reload='source ~/code/dotfiles/bashrc && echo Reloaded!'
 
-# Common -- Some are from Damian Conway
-
+# common
 alias a='ls -A' # -A all except literal . ..
 alias la="ls -A -l -G"
 alias c='clear'
@@ -95,19 +109,16 @@ alias s='cd ..'   # up one dir
 alias e='exit'
 alias k9="killall -9"
 
-# Finder
-
+# finder
 alias o='open . &'
 alias ff='open -a Firefox'
 alias evernote='open -a Evernote'
 
-# Processes
-
+# processes
 alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 
-# Editor
-
+# editor
 alias ea="$EDITOR --wait ~/code/dotfiles/bash/aliases && reload"
 alias ee="$EDITOR --wait ~/code/dotfiles/bash/env && reload"
 alias et="$EDITOR"

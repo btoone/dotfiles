@@ -57,6 +57,11 @@ function padding {
 }
 
 function bash_prompt_cmd() {
+  
+  # TODO histcmd length isnt updating with the number of digits ie 1 = 1; 10 = 2; 100 = 3
+  histcmd="`echo $HISTCMD`"
+  histcmd_length=${#histcmd}+3
+
   username="`whoami`"
   username_length=${#username}
   
@@ -71,15 +76,15 @@ function bash_prompt_cmd() {
   ruby_prompt_path=`which rbenv`
   ruby_prompt=`$ruby_prompt_path version-name`
   ruby_prompt_length=${#ruby_prompt}
-  padding=$(( COLUMNS - username_length - basedir_length - vcprompt_length - ruby_prompt_length + 31))
+  padding=$(( COLUMNS - histcmd_length - username_length - basedir_length - vcprompt_length - ruby_prompt_length + 30))
   
   # rvm
   # ruby_prompt_path=`which rvm-prompt`
   # ruby_prompt=`$ruby_prompt_path v g`
   # ruby_prompt_length=${#ruby_prompt}
-  # padding=$(( COLUMNS - basedir_length - vcprompt_length - ruby_prompt_length + 25))
+  # padding=$(( COLUMNS - histcmd_length - basedir_length - vcprompt_length - ruby_prompt_length + 25))
   
-  PS1="\n[\u] \W \$(vcprompt) `padding`\n→ "
+  PS1="\n(\!)[\u] \W \$(vcprompt) `padding`\n→ "
   
 }
 PROMPT_COMMAND=bash_prompt_cmd

@@ -6,9 +6,9 @@ export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH
 export RUBYOPT=rubygems
 
 # Editor
-export EDITOR='choc'
-# export EDITOR='subl'
+export EDITOR='subl'
 # export EDITOR='mate'
+# export EDITOR='vim'
 export GIT_EDITOR='$EDITOR --wait'
 
 # History

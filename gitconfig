@@ -7,9 +7,10 @@
     branch = auto
     interactive = auto
 [core]
-	excludesfile = ~/.gitignore_global
+    excludesfile = ~/.gitignore_global
+    editor = vim
 [diff]
-	tool = opendiff
+    tool = opendiff
 [merge]
     tool = opendiff
 [difftool "opendiff"]

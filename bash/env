@@ -9,7 +9,6 @@ export RUBYOPT=rubygems
 export EDITOR='subl'
 # export EDITOR='mate'
 # export EDITOR='vim'
-export GIT_EDITOR='$EDITOR --wait'
 
 # History
 export HISTSIZE=10000

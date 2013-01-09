@@ -1,0 +1,65 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'fileutils'
+require 'open-uri'
+require 'awesome_print'
+
+bundles_dir = File.join(File.dirname(__FILE__), "bundle")
+
+FileUtils.rm_rf(bundles_dir)
+FileUtils.mkdir(bundles_dir)
+FileUtils.cd(bundles_dir)
+
+git_bundles = YAML.load(DATA)
+
+puts "\nINFO: Install directory: #{bundles_dir}"
+
+git_bundles.each do |key, value|
+  puts "\nINFO: Installing #{key} (#{value})"
+  `git clone #{value}`
+end
+
+Dir["*/.git"].each {|f| FileUtils.rm_rf(f) }
+
+puts "\nINFO: Finished installing extensions."
+
+
+__END__
+
+commandt: git://github.com/wincent/Command-T.git
+nerdtree: git://github.com/scrooloose/nerdtree.git
+autoclose: git://github.com/Townk/vim-autoclose.git
+tcomment: git://github.com/vim-scripts/tComment.git
+ruby: git://github.com/vim-ruby/vim-ruby.git
+endwise: git://github.com/tpope/vim-endwise.git
+fugitive: git://github.com/tpope/vim-fugitive.git
+rails: git://github.com/tpope/vim-rails.git
+surround: git://github.com/tpope/vim-surround.git
+# key: git://github.com/Shougo/neocomplcache.git
+# key: git://github.com/ecomba/vim-ruby-refactoring.git
+# key: git://github.com/godlygeek/tabular.git
+# key: git://github.com/groenewege/vim-less.git
+# key: git://github.com/elzr/vim-json.git
+# key: git://github.com/jgdavey/vim-blockle.git
+# key: git://github.com/kana/vim-textobj-user.git
+# key: git://github.com/kchmck/vim-coffee-script.git
+# key: git://github.com/kien/ctrlp.vim.git
+# key: git://github.com/nelstrom/vim-textobj-rubyblock.git
+# key: git://github.com/pangloss/vim-javascript.git
+# key: git://github.com/sickill/vim-pasta.git
+# key: git://github.com/timcharper/textile.vim.git
+# key: git://github.com/tpope/vim-cucumber.git
+# key: git://github.com/tpope/vim-git.git
+# key: git://github.com/tpope/vim-haml.git
+# key: git://github.com/tpope/vim-markdown.git
+# key: git://github.com/tpope/vim-repeat.git
+# key: git://github.com/tpope/vim-vividchalk.git
+# key: git://github.com/tsaleh/vim-matchit.git
+# key: git://github.com/tsaleh/vim-shoulda.git
+# key: git://github.com/tsaleh/vim-tmux.git
+# key: git://github.com/vim-scripts/Gist.vim.git
+# key: git://github.com/vim-scripts/IndexedSearch.git
+# key: git://github.com/vim-scripts/jQuery.git
+# key: git://github.com/Lokaltog/vim-powerline.git
+# key: git://github.com/bbommarito/vim-slim.git

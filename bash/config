@@ -88,3 +88,10 @@ function bash_prompt_cmd() {
   
 }
 PROMPT_COMMAND=bash_prompt_cmd
+
+# http://stackoverflow.com/questions/13648237/ctrls-horizontal-split-not-working-with-command-t-in-vim
+# In most terminals, Vim cannot distinguish between Enter and its combinations
+# with Ctrl or Shift. The terminal's flow control commands may interfere with
+# Ctrl-S and Ctrl-Q; this fixes the terminal (not vim)
+
+stty start undef stop undef

@@ -90,10 +90,7 @@ let mapleader = ","
 nnoremap <silent> [b :bprevious <CR>
 nnoremap <silent> ]b :bnext <CR>
 
-
-" Uncomment to use Jamis Buck's file opening plugin
-"map <Leader>t :FuzzyFinderTextMate<Enter>
-
+let g:CommandTMaxHeight=10
 
 " Controversial...swap colon and semicolon for easier commands
 " Makes it easier to do ctrl+o and a colon cmd but prevents traversal commands

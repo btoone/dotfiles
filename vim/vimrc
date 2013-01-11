@@ -67,6 +67,9 @@ colorscheme github
 " <leader> key
 let mapleader = ","
 
+" quickly switch files
+map <leader>e :edit#<CR>
+
 " Tab mappings. <leader> is '\' by default
  map <leader>tt :tabedit<cr>
  map <leader>te :tabedit
@@ -84,6 +87,7 @@ let mapleader = ","
 nnoremap <silent> [b :bprevious <CR>
 nnoremap <silent> ]b :bnext <CR>
 
+" Command-t config
 let g:CommandTMaxHeight=10
 
 " Controversial...swap colon and semicolon for easier commands

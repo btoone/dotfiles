@@ -36,6 +36,9 @@ set title                         " Set the terminal's title
 
 set visualbell                    " No beeping.
 
+" Markdown
+set colorcolumn=80
+set textwidth=80
 " Prevent annoying backup behavior
 set nobackup                      " Don't make a backup before overwriting a file.
 set nowritebackup                 " And again.

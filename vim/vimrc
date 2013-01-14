@@ -106,7 +106,7 @@ set nofoldenable        "dont fold by default
 set foldlevel=1         "this is just what i use
 
 " Automatic fold settings for specific files. Uncomment to use.
-"autocmd FileType ruby setlocal foldmethod=syntax
+autocmd FileType ruby setlocal foldmethod=syntax
 "autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
 

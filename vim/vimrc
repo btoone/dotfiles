@@ -12,7 +12,8 @@ runtime macros/matchit.vim        " Load the matchit plugin.
 
 " Overide OSX modelines=0; Enables modelines in files
 " http://unix.stackexchange.com/q/19875/30303
-set modelines=2
+set modeline
+set modelines=10
 
 syntax enable                     " Turn on syntax highlighting.
 
@@ -73,6 +74,7 @@ let mapleader = ","
 
 " quickly switch files
 map <leader>e :edit#<CR>
+
 
 " buffer nav
 nnoremap <silent> [b :bprevious <CR>

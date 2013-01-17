@@ -1,5 +1,15 @@
 #!/usr/bin/env ruby
 
+# TODO: Enable this script to prompt for deletion on a item by item basis
+#
+# Usage: 
+# To add a new plugin, add it to the yml at the end of this file then run this
+# script.
+# 
+# Warning:
+# This script will remove your bundle dir and redownload the plugins. This will
+# cause problems with any plugin that you need to compile - like CommandT
+
 require 'yaml'
 require 'fileutils'
 require 'open-uri'
@@ -31,6 +41,7 @@ commandt: git://github.com/wincent/Command-T.git
 nerdtree: git://github.com/scrooloose/nerdtree.git
 autoclose: git://github.com/Townk/vim-autoclose.git
 tcomment: git://github.com/vim-scripts/tComment.git
+showmarks: git://github.com/vim-scripts/ShowMarks.git
 ruby: git://github.com/vim-ruby/vim-ruby.git
 endwise: git://github.com/tpope/vim-endwise.git
 fugitive: git://github.com/tpope/vim-fugitive.git

@@ -58,7 +58,10 @@ endwise: git://github.com/tpope/vim-endwise.git
 fugitive: git://github.com/tpope/vim-fugitive.git
 rails: git://github.com/tpope/vim-rails.git
 surround: git://github.com/tpope/vim-surround.git
-snipmate: git://github.com/msanders/snipmate.vim.git
+snipmate: git://github.com/garbas/vim-snipmate.git
+tlib: git clone git://github.com/tomtom/tlib_vim.git
+utils: git://github.com/MarcWeber/vim-addon-mw-utils.git
+snippets: git://github.com/honza/snipmate-snippets.git
 # key: git://github.com/Shougo/neocomplcache.git
 # key: git://github.com/ecomba/vim-ruby-refactoring.git
 # key: git://github.com/godlygeek/tabular.git

@@ -2,13 +2,24 @@
 
 # TODO: Enable this script to prompt for deletion on a item by item basis
 #
-# Usage: 
-# To add a new plugin, add it to the yml at the end of this file then run this
+# Usage: Run this script from the comand line
+#
+#     ./vim/update_bundles
+#
+# To add a new plugin, add it to the YAML at the end of this file then run this
 # script.
-# 
-# Warning:
-# This script will remove your bundle dir and redownload the plugins. This will
-# cause problems with any plugin that you need to compile - like CommandT
+#
+#
+# WARNING: This script will remove your bundle dir and redownload all plugins.
+# This will cause problems with any plugin that you need to compile - like
+# CommandT. Therefore it is recommended that you only use this script for new
+# installs.
+#
+# To install new plugins, manually install by cloning into the `bundle` dir. Be
+# sure to append the plugin url to the YAML section for future installs.
+#
+#     cd ~/.vim/bundle
+#     git clone git_url_of_plugin
 
 require 'yaml'
 require 'fileutils'
@@ -47,6 +58,7 @@ endwise: git://github.com/tpope/vim-endwise.git
 fugitive: git://github.com/tpope/vim-fugitive.git
 rails: git://github.com/tpope/vim-rails.git
 surround: git://github.com/tpope/vim-surround.git
+snipmate: git://github.com/msanders/snipmate.vim.git
 # key: git://github.com/Shougo/neocomplcache.git
 # key: git://github.com/ecomba/vim-ruby-refactoring.git
 # key: git://github.com/godlygeek/tabular.git

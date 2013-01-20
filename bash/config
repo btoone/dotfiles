@@ -95,3 +95,6 @@ PROMPT_COMMAND=bash_prompt_cmd
 # Ctrl-S and Ctrl-Q; this fixes the terminal (not vim)
 
 stty start undef stop undef
+
+# tmuxinator
+[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator

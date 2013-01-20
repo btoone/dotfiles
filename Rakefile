@@ -2,10 +2,11 @@ require 'rake'
 
 task :default => "install"
 
+# TODO: update this similar to homebin rakefile
 desc "Installs dotfiles to user's home directory"
 task :install do
   Dir['*'].each do |file|
-    next if %w[bash Rakefile README.md zsh].include?(file)
+    next if %w[bash Rakefile README.md zsh vendor].include?(file)
     
     original = File.join(ENV['HOME'], ".#{file}")
     

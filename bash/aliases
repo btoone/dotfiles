@@ -55,6 +55,10 @@ alias biv='bundle install --path vendor'
 alias bil='bundle install --path vendor --local'
 alias bip="bundle install --path vendor && bundle package && echo 'vendor/ruby' >> .gitignore"
 
+# rake
+alias rr='bundle exec rake routes | $EDITOR'
+alias rmig='bundle exec rake db:migrate && bundle exec rake db:test:prepare'
+
 # rails
 alias sc='script/console'
 alias sd='script/dbconsole'
@@ -65,14 +69,11 @@ alias ttl='tail -f log/test.log'
 alias scaffold='script/generate scaffold'
 alias nscaffold='script/generate nifty_scaffold'
 alias rst='touch tmp/restart.txt'
-alias rr='bundle exec rake routes | $EDITOR'
 alias rc='bundle exec rails c'
 alias rd='bundle exec rails dbconsole'
 alias rg='bundle exec rails g'
 alias rs='bundle exec rails s'
 alias fs='bundle exec foreman start'
-alias rmig='rake db:migrate'
-alias dbm='rake db:migrate'
 alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rails/console/helpers'
 alias r='~/bin/iterm $1'
 

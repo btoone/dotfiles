@@ -1,0 +1,18 @@
+# ~/.tmuxinator/campus.yml
+# you can make as many tabs as you wish...
+
+project_name: campus
+project_root: ~/code/campus
+# pre: sudo /etc/rc.d/mysqld start
+tabs:
+  - editor:
+      layout: 1667,202x53,0,0[202x39,0,0,24,202x13,0,40,25]
+      panes:
+        - vim
+        - #empty, will just run plain bash
+  - guard: bundle exec guard
+  - git: git status
+  - routes: bundle exec rake routes | less
+  - console: bundle exec rails c
+  - dbconsole: bundle exec rails db
+  - server: bundle exec rails s

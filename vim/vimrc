@@ -43,7 +43,7 @@ set visualbell                    " No beeping.
 
 " Markdown
 set colorcolumn=80
-set textwidth=80
+set textwidth=100
 
 " Prevent annoying backup behavior
 set nobackup                      " Don't make a backup before overwriting a file.

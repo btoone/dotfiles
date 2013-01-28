@@ -98,3 +98,6 @@ stty start undef stop undef
 
 # tmuxinator
 [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
+
+# git-completion
+source ~/.git-completion

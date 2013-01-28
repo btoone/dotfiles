@@ -1,11 +1,17 @@
-# ~/.tmuxinator/notes.yml
+# ~/.tmuxinator/borrower.yml
 # you can make as many tabs as you wish...
 
-project_name: notes
-project_root: ~/notes
+project_name: borrower
+project_root: ~/code/borrower
+pre: vagrant up
 tabs:
   - editor:
       layout: 1667,202x53,0,0[202x39,0,0,24,202x13,0,40,25]
       panes:
         - vim
         - #empty, will just run plain bash
+  - git: git status
+  - console:
+      - vagrant ssh
+  - vagrant:
+      - vagrant ssh

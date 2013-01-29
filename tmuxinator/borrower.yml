@@ -13,3 +13,4 @@ tabs:
   - routes: bundle exec rake routes | less
   - server:
       - vagrant ssh
+  - production:

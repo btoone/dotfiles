@@ -1,20 +1,33 @@
 [user]
-    name = Brandon Toone
-    email = brandon@rdlk.co
+  name = Brandon Toone
+  email = brandon@rdlk.co
 [color]
-    diff = auto
-    status = auto
-    branch = auto
-    interactive = auto
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
 [core]
-    excludesfile = ~/.gitignore_global
-    editor = vim
+  excludesfile = ~/.gitignore_global
+  editor = vim
 [diff]
-    tool = opendiff
+	tool = Kaleidoscope
 [merge]
-    tool = opendiff
-[difftool "opendiff"]
-    cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-[mergetool "opendiff"]
-    cmd = opendiff \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-    trustExitCode = true
+	tool = Kaleidoscope
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[difftool]
+	prompt = false
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustExitCode = true
+[mergetool]
+	prompt = false
+# [diff]
+#   tool = opendiff
+# [merge]
+#   tool = opendiff
+# [difftool "opendiff"]
+#   cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+# [mergetool "opendiff"]
+#   cmd = opendiff \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+#   trustExitCode = true

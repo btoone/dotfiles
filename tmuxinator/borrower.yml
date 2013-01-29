@@ -5,13 +5,11 @@ project_name: borrower
 project_root: ~/code/borrower
 pre: vagrant up
 tabs:
-  - editor:
-      layout: 1667,202x53,0,0[202x39,0,0,24,202x13,0,40,25]
-      panes:
-        - vim
-        - #empty, will just run plain bash
-  - git: git status
-  - console:
+  - editor: vim
+  - shell: git status
+  - guard: bundle exec guard
+  - rails:
       - vagrant ssh
-  - vagrant:
+  - routes: bundle exec rake routes | less
+  - server:
       - vagrant ssh

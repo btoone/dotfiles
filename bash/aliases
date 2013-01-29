@@ -1,13 +1,17 @@
-alias ht='history | tail -25'
-alias ls='ls -pG'
-# alias ls='ls -p --color=auto'   # uncomment for dir colors on linux
-alias ll='ls -lph'
-alias grep='GREP_COLOR="1;33;47" LANG=C grep --color=auto'
+alias ht="history | tail -25"
+alias ls="ls -pG"
+# alias ls='ls -p --color=auto'                                                 # uncomment for dir colors on linux
+alias ll="ls -lph"
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+alias hl="hl -i"
+
+alias grep="grep --color=always -in"                                            # use colors; change to auto if causing problems
+alias egrep="egrep --color=always -in"
+alias less="less -R"                                                            # make less work with colors from grep
 
 # vi
-alias vi='vim -N'
-alias vim='vim -N'
+alias vi="vim -N"
+alias vim="vim -N"
 
 # tmux
 alias tma="tmux attach -t"

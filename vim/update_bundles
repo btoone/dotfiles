@@ -62,6 +62,7 @@ snipmate: git://github.com/garbas/vim-snipmate.git
 tlib: git clone git://github.com/tomtom/tlib_vim.git
 utils: git://github.com/MarcWeber/vim-addon-mw-utils.git
 snippets: git://github.com/honza/snipmate-snippets.git
+coffeescript: git://github.com/kchmck/vim-coffee-script.git
 # key: git://github.com/Shougo/neocomplcache.git
 # key: git://github.com/ecomba/vim-ruby-refactoring.git
 # key: git://github.com/godlygeek/tabular.git
@@ -69,7 +70,6 @@ snippets: git://github.com/honza/snipmate-snippets.git
 # key: git://github.com/elzr/vim-json.git
 # key: git://github.com/jgdavey/vim-blockle.git
 # key: git://github.com/kana/vim-textobj-user.git
-# key: git://github.com/kchmck/vim-coffee-script.git
 # key: git://github.com/kien/ctrlp.vim.git
 # key: git://github.com/nelstrom/vim-textobj-rubyblock.git
 # key: git://github.com/pangloss/vim-javascript.git

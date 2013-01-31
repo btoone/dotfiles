@@ -46,6 +46,7 @@ alias gr='git remote'
 alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
 alias grv='git remote -v'
 alias gs='git status'
+alias gss='git status --short'
 alias gui='open -a sourcetree .'
 alias ungit="find . -name '.git' -exec rm -rf {} \;"
 

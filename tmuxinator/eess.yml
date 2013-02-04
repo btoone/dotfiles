@@ -1,8 +1,8 @@
-# ~/.tmuxinator/borrower.yml
+# ~/.tmuxinator/eess.yml
 # you can make as many tabs as you wish...
 
-project_name: borrower
-project_root: ~/code/borrower
+project_name: eess
+project_root: ~/code/eess
 pre: vagrant up
 tabs:
   - editor: vim
@@ -13,4 +13,4 @@ tabs:
       - vagrant ssh
   - server:
       - vagrant ssh
-  - production:
+  - production: 

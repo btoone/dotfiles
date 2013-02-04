@@ -8,6 +8,6 @@ tabs:
   - editor: vim
   - shell: git status
   - guard: bundle exec guard
-  - rails: bundle exec rails c
   - routes: bundle exec rake routes | less
+  - rails: bundle exec rails c
   - server: bundle exec rails s

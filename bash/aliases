@@ -6,8 +6,14 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias hl="hl -i"
 
 alias grep="grep --color=always -in"                                            # use colors; change to auto if causing problems
+alias g='grep'
 alias egrep="egrep --color=always -in"
+alias ge='egrep'
 alias less="less -R"                                                            # make less work with colors from grep
+alias gal='alias | grep'
+
+# process management
+alias pgrep='pgrep -lf'
 
 # vi
 alias vi="vim -N"

@@ -31,3 +31,5 @@
 # [mergetool "opendiff"]
 #   cmd = opendiff \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 #   trustExitCode = true
+[push]
+	default = simple

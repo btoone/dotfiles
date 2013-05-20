@@ -3,14 +3,12 @@
 
 project_name: eess
 project_root: ~/code/eess
-pre: vagrant up
+# pre: vagrant up
 tabs:
-  - editor: vim
   - shell: git status
-  - guard: bundle exec guard
-  - routes: bundle exec rake routes | less
-  - rails:
-      - vagrant ssh
+  - editor: vim
+  - guard: 
+  - console: 
   - server:
-      - vagrant ssh
+  - stage: 
   - production: 

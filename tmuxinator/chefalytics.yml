@@ -1,13 +1,13 @@
-# ~/.tmuxinator/borrower.yml
+# ~/.tmuxinator/chefalytics.yml
 # you can make as many tabs as you wish...
 
-project_name: borrower
-project_root: ~/code/borrower
-# pre: vagrant up
+project_name: chefalytics
+project_root: ~/code/chefalytics
+# pre: sudo /etc/rc.d/mysqld start
 tabs:
   - shell: git status
   - editor: vim
   - guard: bundle exec guard
   - console:
   - server: bundle exec foreman start -f Procfile.dev
-  - production:
+  - staging: 

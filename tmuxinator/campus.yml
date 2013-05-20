@@ -5,9 +5,9 @@ project_name: campus
 project_root: ~/code/campus
 # pre: sudo /etc/rc.d/mysqld start
 tabs:
-  - editor: vim
   - shell: git status
-  - guard: bundle exec guard
-  - routes: bundle exec rake routes | less
-  - rails: bundle exec rails c
-  - server: bundle exec rails s
+  - editor: vim
+  - guard:
+  - console:
+  - server:
+  - production: 

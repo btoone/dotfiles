@@ -1,0 +1,8 @@
+# ~/.tmuxinator/toolbox.yml
+# you can make as many tabs as you wish...
+
+project_name: toolbox
+project_root: ~/code/toolbox
+tabs:
+  - shell: git status
+  - editor: vim

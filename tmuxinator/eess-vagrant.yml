@@ -1,0 +1,8 @@
+# ~/.tmuxinator/eess-vagrant.yml
+# you can make as many tabs as you wish...
+
+project_name: eess-vagrant
+project_root: ~/code/vm/eess-vagrant
+tabs:
+  - shell:
+  - editor:

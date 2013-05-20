@@ -3,14 +3,10 @@
 
 project_name: william
 project_root: ~/code/william
-pre: vagrant up
 tabs:
-  - editor: vim
   - shell: git status
-  - guard: bundle exec guard
-  - routes: bundle exec rake routes | less
-  - rails:
-      - vagrant ssh
+  - editor: vim
+  - guard:
+  - console:
   - server:
-      - vagrant ssh
   - production: 

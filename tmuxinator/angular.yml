@@ -1,0 +1,10 @@
+# ~/.tmuxinator/angular.yml
+# you can make as many tabs as you wish...
+
+project_name: angular
+project_root: ~/code/angular/
+tabs:
+  - shell:
+  - editor:
+  - console:
+  - server:

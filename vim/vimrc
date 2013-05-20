@@ -170,7 +170,6 @@ nnoremap k gk
 " save and close
 nmap <leader>q :wq!<CR>
 nmap <leader>w :w!<CR>
-nmap <leader><Esc> :q!<CR>
 
 
 " Splits  ,v to open a new vertical split and switch to it

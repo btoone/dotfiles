@@ -1,5 +1,5 @@
 # Environment Variables
-
+export PATH="/usr/local/bin:$PATH"                                              # bin
 export PATH="/usr/local/sbin:$PATH"                                             # sbin
 export PATH="$HOME/bin:$PATH"                                                   # homebin
 export PATH="/usr/local/mysql/bin:$PATH"                                        # mysql

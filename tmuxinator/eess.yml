@@ -9,6 +9,6 @@ tabs:
   - editor: vim
   - guard: 
   - console: 
-  - server:
+  - log:
   - stage: 
   - production: 

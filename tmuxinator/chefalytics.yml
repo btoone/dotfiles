@@ -9,5 +9,5 @@ tabs:
   - editor: vim
   - guard: bundle exec guard
   - console:
-  - server: bundle exec foreman start -f Procfile.dev
+  - log:
   - staging: 

@@ -1,0 +1,10 @@
+# ~/.tmuxinator/haygroup.yml
+# you can make as many tabs as you wish...
+
+project_name: haygroup
+project_root: ~/code/hay-101a
+tabs:
+  - shell: 
+  - editor:
+  - server: rails s
+  - logs: tail -f logs/development.log

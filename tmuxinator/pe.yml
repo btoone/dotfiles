@@ -1,0 +1,11 @@
+# ~/.tmuxinator/planetexpress.yml
+# you can make as many tabs as you wish...
+
+project_name: planet-express
+project_root: ~/Code/Prototypes/MarionetteJS/demo-apps/planet-express/
+tabs:
+  - shell:
+  - editor: vim
+  - server:
+  - logs: tail -f log/development.log
+  - console:

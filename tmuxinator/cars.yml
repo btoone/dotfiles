@@ -1,0 +1,9 @@
+# ~/.tmuxinator/cars.yml
+# you can make as many tabs as you wish...
+
+project_name: cars-front
+project_root: ~/code/prototypes/cars-front
+tabs:
+  - shell: grunt
+  - editor:
+  - server: # grunt server

@@ -103,7 +103,7 @@ autocmd FileType ruby setlocal foldmethod=syntax
 "autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
 
-" Automatically source vimrc after saving
+" Automatically source/reload vimrc after saving
 " TODO this doesn't actually take effect - It also doens't work when I
 " manually execute the command with :source ~/.vimrc
 if has("autocmd")

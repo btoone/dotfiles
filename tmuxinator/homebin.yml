@@ -1,9 +1,10 @@
 # ~/.tmuxinator/homebin.yml
 # you can make as many tabs as you wish...
 
-project_name: homebin
-project_root: ~/code/homebin
-tabs:
+name: homebin
+root: ~/code/homebin
+
+windows:
   - editor:
       layout: 1667,202x53,0,0[202x39,0,0,24,202x13,0,40,25]
       panes:

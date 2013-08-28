@@ -6,7 +6,7 @@ root: ~/code/hay-101a
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window: rbenv shell 1.9.3-p194
 
-window:
+windows:
   - shell: 
   - editor:
   - server: rails s

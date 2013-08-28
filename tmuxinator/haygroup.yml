@@ -1,9 +1,12 @@
 # ~/.tmuxinator/haygroup.yml
-# you can make as many tabs as you wish...
 
-project_name: haygroup
-project_root: ~/code/hay-101a
-tabs:
+name: haygroup
+root: ~/code/hay-101a
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: rbenv shell 1.9.3-p194
+
+window:
   - shell: 
   - editor:
   - server: rails s

@@ -1,9 +1,9 @@
 # ~/.tmuxinator/dotfiles.yml
-# you can make as many tabs as you wish...
 
-project_name: dotfiles
-project_root: ~/code/dotfiles
-tabs:
+name: dotfiles
+root: ~/code/dotfiles
+
+windows:
   - editor:
       layout: 1667,202x53,0,0[202x39,0,0,24,202x13,0,40,25]
       panes:

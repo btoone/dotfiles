@@ -1,10 +1,12 @@
 # ~/.tmuxinator/campus.yml
-# you can make as many tabs as you wish...
 
-project_name: campus
-project_root: ~/code/campus
-# pre: sudo /etc/rc.d/mysqld start
-tabs:
+name: campus
+root: ~/code/campus
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: rbenv shell 1.9.3-p194
+
+windows:
   - shell: git status
   - editor: vim
   - guard:

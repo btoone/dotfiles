@@ -103,13 +103,12 @@ autocmd FileType ruby setlocal foldmethod=syntax
 "autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
 
-" Automatically source/reload vimrc after saving
-" TODO this doesn't actually take effect - It also doens't work when I
-" manually execute the command with :source ~/.vimrc
-if has("autocmd")
-  autocmd bufwritepost .vimrc source $MYVIMRC
-  autocmd FileType ruby,eruby :let g:AutoCloseExpandEnterOn=""
-endif
+" Automatically source/reload vimrc after saving. Disabled since it doesn't
+" appear to work. To reload your config manually run the command `:source ~/.vimrc`
+" if has("autocmd")
+"   autocmd bufwritepost .vimrc source $MYVIMRC
+"   autocmd FileType ruby,eruby :let g:AutoCloseExpandEnterOn=""
+" endif
 
 
 " Make Nerd Tree smaller
@@ -135,6 +134,8 @@ vnoremap / /\v
 "imap jj <ESC>
 
 " Switch between buffers
+" ----------------------
+" Allows you to use Tab to navigate between split windows
 noremap <tab> <C-w><C-w>
 
 " Toggle the nerdtree window
@@ -166,14 +167,17 @@ nnoremap j gj
 nnoremap k gk
 
 
-" easier quitting
-" save and close
+" Easier quitting
+" ---------------
 nmap <leader>q :wq!<CR>
 nmap <leader>w :w!<CR>
 
 
 " Splits  ,v to open a new vertical split and switch to it
 nnoremap <leader>v <C-w>v<C-w>l
+nnoremap <leader>s <C-w>s<C-w>j
+
+
 " Move between splits
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j

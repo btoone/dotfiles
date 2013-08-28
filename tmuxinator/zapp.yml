@@ -1,0 +1,15 @@
+# ~/.tmuxinator/zapp.yml
+
+name: zapp
+root: ~/code/zapp
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: rbenv shell 2.0.0-p247
+
+windows:
+  - shell: git status
+  - editor: vim
+  - guard: 
+  - console: 
+  - logs: tail -f logs/development.log
+  - staging:

@@ -1,13 +1,15 @@
 # ~/.tmuxinator/chefalytics.yml
-# you can make as many tabs as you wish...
 
-project_name: chefalytics
-project_root: ~/code/chefalytics
-# pre: sudo /etc/rc.d/mysqld start
-tabs:
+name: chefalytics
+root: ~/code/chefalytics
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: rbenv shell 1.9.3-p194
+
+windows:
   - shell: git status
   - editor: vim
   - guard: bundle exec guard
   - console:
-  - log:
+  - log: tail -f logs/development.log
   - staging: 

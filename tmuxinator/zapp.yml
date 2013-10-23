@@ -12,4 +12,4 @@ windows:
   - guard: 
   - console: 
   - logs: tail -f logs/development.log
-  - staging:
+  - server:

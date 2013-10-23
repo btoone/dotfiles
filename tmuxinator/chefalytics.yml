@@ -11,5 +11,5 @@ windows:
   - editor: vim
   - guard: bundle exec guard
   - console:
-  - log: tail -f logs/development.log
+  - log: tail -f log/development.log
   - staging: 

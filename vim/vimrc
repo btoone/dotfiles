@@ -62,8 +62,8 @@ set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLo
 
 " Or use vividchalk, top-funky
 " colorscheme vividchalk
-colorscheme github
-" colorscheme topfunky-light
+" colorscheme github
+colorscheme topfunky-light
 " colorscheme railscasts
 " colorscheme twilight
 " colorscheme codeschool

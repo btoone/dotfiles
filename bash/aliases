@@ -50,12 +50,11 @@ alias gnp="git-notpushed"
 alias gp='git push'
 alias gpl='git pull'
 alias gr='git remote'
-alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
 alias grv='git remote -v'
 alias gs='git status'
 alias gss='git status --short'
 alias gui='open -a sourcetree .'
-alias ungit="find . -name '.git' -exec rm -rf {} \;"
+alias grm="git rm $(git ls-files --deleted)"      # stage deleted files - or just use `git add -u`
 
 # bundler
 alias b='bundle exec'
@@ -109,7 +108,7 @@ alias cdd='cd -'  # goto last dir cd'ed from
 alias cl='clear; l'
 
 alias cls='clear; ls'
-alias h='history'
+alias h='heroku'
 alias l.='ls -d .[^.]*'
 alias ll.='ls -ld .[^.]*'
 alias l='ls -lhGt'  # -l long listing, most recent first

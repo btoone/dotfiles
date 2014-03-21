@@ -12,4 +12,5 @@ windows:
   - guard: bundle exec guard
   - console:
   - log: tail -f log/development.log
-  - staging: 
+  - pry-remote: 
+  - heroku: heroku apps; heroku config --app enigmatic-reef-4797

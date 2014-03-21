@@ -1,0 +1,25 @@
+# ~/.tmuxinator/cusef.yml
+
+name: cusef
+root: ~/code/cusef
+
+# Optional tmux socket
+# socket_name: foo
+
+# Runs before everything. Use it to start daemons etc.
+# pre: sudo /etc/rc.d/mysqld start
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: rbenv shell 1.9.3-p194
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+# tmux_options: -f ~/.tmux.mac.conf
+
+windows:
+  - shell: git status
+  - editor: vim
+  - guard: 
+  - console: 
+  - server: bundle exec rails s
+  - logs: tail -f logs/development.log
+  - heroku: heroku apps; heroku config --app cusef-staging; !!:s/cusef-staging/cusef 

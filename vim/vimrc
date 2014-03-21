@@ -42,7 +42,7 @@ set title                         " Set the terminal's title
 set visualbell                    " No beeping.
 
 " Markdown
-set colorcolumn=80
+set colorcolumn=100
 set textwidth=100
 
 " Prevent annoying backup behavior
@@ -196,6 +196,14 @@ set gdefault
 " Ruler stuff doesn't change anything. Maybe another plugin is setting the ruler
 "set ruler                         " Show cursor position.
 "set rulerformat=%l,%c%V%=%P
+
+" CAUTION - this currently blanks out the Terminal screen after using. However it works fine with
+" MacVim.
+" Preview markdown files using <leader> p
+function! s:setupMarkup()
+  nnoremap <leader>p :silent !open -a Marked.app '%:p'<cr>
+endfunction
+au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
 
 call pathogen#infect()                 " Cause Tim Pope told me to add this
 

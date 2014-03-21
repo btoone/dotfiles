@@ -20,7 +20,11 @@ windows:
   - shell: git status
   - editor: vim
   - guard: 
-  - console: 
+  - db/console: 
+      layout: even-vertical
+      panes:
+      - bundle exec rails db
+      - bundle exec rails c 
   - server: bundle exec rails s
-  - logs: tail -f logs/development.log
+  - logs: tail -f log/development.log
   - heroku: heroku apps; heroku config --app cusef-staging; !!:s/cusef-staging/cusef 

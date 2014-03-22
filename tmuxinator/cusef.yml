@@ -11,7 +11,7 @@ root: ~/code/cusef
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window: rbenv shell 1.9.3-p194
-pre_window: export DATABASE_URL="postgres://localhost/cusef-development"
+pre_window: export DATABASE_URL="postgres://localhost/cusef_development"
 
 # Pass command line options to tmux. Useful for specifying a different tmux.conf.
 # tmux_options: -f ~/.tmux.mac.conf

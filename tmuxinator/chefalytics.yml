@@ -4,7 +4,7 @@ name: chefalytics
 root: ~/code/chefalytics
 
 # Runs before everything. Use it to start daemons etc.
-pre: export DATABASE_URL="postgres://localhost/chefalytics-development"
+pre: export DATABASE_URL="postgres://localhost/chefalytics_development"
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window: rbenv shell 1.9.3-p194

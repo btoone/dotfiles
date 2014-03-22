@@ -138,5 +138,5 @@ alias ett="$EDITOR ."
 
 # postgres
 alias pgon="pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log"
-alias pgoff="pg_ctl stop -D /usr/local/var/postgres"
+alias pgoff="pg_ctl stop -D /usr/local/var/postgres -s -m fast"
 alias pgstatus="pg_ctl status -D /usr/local/var/postgres"

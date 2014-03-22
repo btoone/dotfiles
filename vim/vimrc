@@ -1,40 +1,64 @@
-" Vim configuration.
-" Copy or symlink to ~/.vimrc or ~/_vimrc.
+" Vim configuration
+" Copy or symlink to ~/.vimrc or ~/_vimrc
 
-set nocompatible                  " Must come first because it changes other options.
+" Must come first because it changes other options
+set nocompatible
 
 
 " Plugins
-" -------
-filetype plugin on                " Turn on plugins.
-filetype plugin indent on         " Fixes vim-endwise indent problem.
-runtime macros/matchit.vim        " Load the matchit plugin.
+" =================================
+
+" Turn on plugins
+filetype plugin on
+
+" Fixes vim-endwise indent problem
+filetype plugin indent on
+
+" Load the matchit plugin
+runtime macros/matchit.vim
+
 "let g:loaded_endwise = 1
 "let g:loaded_AutoClose = 1
 
+
 " Navigation
-" ----------
-noremap <tab> <C-w><C-w>          " Use Tab to navigate between split windows 
-nnoremap j gj                     " Better default nav behavior
-nnoremap k gk                     " Better default nav behavior
+" =================================
+
+" Use Tab to navigate between split windows
+noremap <tab> <C-w><C-w>
+
+" Better default nav behavior
+" nnoremap j gj
+
+" Better default nav behavior
+" nnoremap k gk
 
 
 " Markdown
-" --------
+" =================================
+
 set colorcolumn=100
 set textwidth=100
 
 
 " Prevent backup behavior
-" -----------------------
-set nobackup                      " Don't make a backup before overwriting a file.
-set nowritebackup                 " And again.
+" =================================
+
+" Dont make a backup before overwriting a file
+set nobackup
+
+" And again
+set nowritebackup
+
 set noswapfile
-" set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location - doesnt appear to work
+
+" Keep swap files in one location - doesnt appear to work
+" set directory=$HOME/.vim/tmp//,.
 
 
 " Mode lines 
-" ----------
+" =================================
+
 " Overide OSX modelines=0; Enables modelines in files
 " http://unix.stackexchange.com/q/19875/30303
 set modeline
@@ -42,15 +66,47 @@ set modelines=10
 
 
 " Leader key remaps
-" -----------------
-let mapleader = ","                            " <leader> key
-map <leader>e :edit#<CR>                       " quickly switch files
-nmap <silent> <leader>d :NERDTreeToggle<CR>    " Toggle the nerdtree window with leader + d (,d)
+" =================================
+
+" Remap leader key to comma
+let mapleader = ","
+
+" Quickly switch to previous file
+map <leader>e :edit#<CR>
+
+" Toggle the nerdtree window with leader + d (,d)
+nmap <silent> <leader>d :NERDTreeToggle<CR>
+
+
+" Searching
+" =================================
+
+" Remap space bar to search
+nmap <Space> /
+
+" Press enter after seach to clear highlight
+nnoremap <CR> :noh<CR><CR>
+
+" Default to regex search
+nnoremap / /\v
+vnoremap / /\v
+
+" Dont need /g after :s or :g
+set gdefault
+
+" Case-insensitive searching
+set ignorecase
+
+" Highlight matches as you type
+set incsearch
+
+" Highlight matches
+set hlsearch
 
 
 " Color shemes
-" ------------
-" Or use vividchalk, top-funky
+" =================================
+
 " colorscheme vividchalk
 " colorscheme github
 colorscheme topfunky-light
@@ -61,109 +117,160 @@ colorscheme topfunky-light
 
 
 " Command-t config
-" ----------------
+" =================================
+
 let g:CommandTMaxHeight=10
 
 
 " Folding settings
-" ----------------
-set foldmethod=indent   "fold based on indent
-set foldnestmax=10      "deepest fold is 10 levels
-set nofoldenable        "dont fold by default
-set foldlevel=1         "this is just what i use
+" =================================
+
+" Fold based on indent
+set foldmethod=indent
+
+" Deepest fold is 10 levels
+set foldnestmax=10
+
+" Dont fold by default
+set nofoldenable
+
+" This is just what i use
+set foldlevel=1
+
 autocmd FileType ruby setlocal foldmethod=syntax
-"autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
+" autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
 
 " Line numbering
-" ---------------
-set number                        " Show line numbers.
-"set relativenumber               " change line numberings for ease with writing commands
+" =================================
+
+" Show line numbers
+set number
+
+" Change line numberings for ease with writing commands
+" set relativenumber
 
 
 " Buffer handling 
-" ---------------
+" =================================
+
 nnoremap <silent> [b :bprevious <CR>
 nnoremap <silent> ]b :bnext <CR>
 
 
-" Rotating among results in an ack search
-" ---------
+" Rotating results in an ack search
+" =================================
+
 map <C-n> :cn<CR>
 map <C-p> :cp<CR>
 
 
-" Searching
-" ---------
-nmap <Space> /                " Remap space bar to search
-nnoremap <CR> :noh<CR><CR>    " Press enter after seach to clear highligh
-nnoremap / /\v                " Default to regex search
-vnoremap / /\v
-set gdefault                  " don't need /g after :s or :g
-set ignorecase                    " Case-insensitive searching.
-set incsearch                     " Highlight matches as you type.
-set hlsearch                      " Highlight matches.
+" Disable the arrow keys
+" =================================
 
-
-" Get off my lawn - Disable the arrow keys
-" ----------------------------------------
-"nnoremap <Up> <nop>
+" nnoremap <Up> <nop>
 nnoremap <Left>  :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up>    :echoe "Use k"<CR>
 nnoremap <Down>  :echoe "Use j"<CR>
-"inoremap <Left>  <ESC>:echoe 'Exit insert mode and use a movment instead'<CR>
+" inoremap <Left>  <ESC>:echoe 'Exit insert mode and use a movment instead'<CR>
 
 
 " Easier quitting
-" ---------------
+" =================================
+
 nmap <leader>q :wq!<CR>
 nmap <leader>w :w!<CR>
 
 
 " Splits
-" ------ 
-nnoremap <C-h> <C-w>h               " Move between splits
+" =================================
+
+" Move between splits
+nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap <leader>v <C-w>v<C-w>l     " ,v to open a new vertical split and switch to it
-nnoremap <leader>s <C-w>s<C-w>j     " ,s to open a new horizontal split and switch to it
 
+" ,v to open a new vertical split and switch to it
+nnoremap <leader>v <C-w>v<C-w>l
+
+" ,s to open a new horizontal split and switch to it
+nnoremap <leader>s <C-w>s<C-w>j
 
 
 " Miscellaneous 
-" -------------
-"let NERDTreeWinSize=16           " Make Nerd Tree smaller
-nnoremap <leader>a :Ack                                       " Remap leader + a (,a) to Ack
-"imap jj <ESC>                    " Map ESC to jj and save my pinky   
-syntax enable                     " Turn on syntax highlighting.
-set showcmd                       " Display incomplete commands.
-set showmode                      " Display the mode you're in.
-"set history=50
-set backspace=indent,eol,start    " Intuitive backspacing.
-set hidden                        " Commands :bnext, :bprevious and :buffer won't abandon the buffer until any changes have been written
-set wildmenu                      " Enhanced command line completion.
-set wildmode=list:longest         " Complete files like a shell.
-set smartcase                     " But case-sensitive if expression contains a capital letter.
-set nowrap                        " Turn off line wrapping by default
-set scrolloff=3                   " Show 3 lines of context around the cursor.
-set title                         " Set the terminal's title
-set visualbell                    " No beeping.
-set tabstop=2                     " Global tab width.
-set shiftwidth=2                  " And again, related.
-set expandtab                     " Use spaces instead of tabs
-set laststatus=2                  " Show the status line all the time
+" =================================
+
+" set history=50
+
+" Make Nerd Tree smaller
+" let NERDTreeWinSize=16
+
+" Remap leader + a (,a) to Ack
+nnoremap <leader>a :Ack
+
+" Map ESC to jj and save my pinky   
+" imap jj <ESC>
+
+" Turn on syntax highlighting
+syntax enable
+
+" Display incomplete commands
+set showcmd
+
+" Display the mode youre in
+set showmode
+
+" Intuitive backspacing
+set backspace=indent,eol,start
+
+" Commands :bnext, :bprevious and :buffer wont abandon the buffer until any changes have been written
+set hidden
+
+" Enhanced command line completion
+set wildmenu
+
+" Complete files like a shell
+set wildmode=list:longest
+
+" But case-sensitive if expression contains a capital letter
+set smartcase
+
+" Turn off line wrapping by default
+set nowrap
+
+" Show 3 lines of context around the cursor
+set scrolloff=3
+
+" Set the terminals title
+set title
+
+" No beeping
+set visualbell
+
+" Global tab width
+set tabstop=2
+
+" And again, related
+set shiftwidth=2
+
+" Use spaces instead of tabs
+set expandtab
+
+" Show the status line all the time
+set laststatus=2
+
 
 " Useful status information at bottom of screen
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 
-" Automatically source/reload vimrc after saving. Disabled since it doesn't
+" Automatically source/reload vimrc after saving. Disabled since it doesnt
 " appear to work. To reload your config manually run the command `:source ~/.vimrc`
 " if has("autocmd")
 "   autocmd bufwritepost .vimrc source $MYVIMRC
 "   autocmd FileType ruby,eruby :let g:AutoCloseExpandEnterOn=""
 " endif
 
-
-call pathogen#infect()                 " Cause Tim Pope told me to add this
+" Cause Tim Pope told me to add this
+call pathogen#infect()

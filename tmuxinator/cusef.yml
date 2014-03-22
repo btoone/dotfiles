@@ -11,20 +11,23 @@ root: ~/code/cusef
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window: rbenv shell 1.9.3-p194
-pre_window: export DATABASE_URL="postgres://localhost/cusef_development"
 
 # Pass command line options to tmux. Useful for specifying a different tmux.conf.
 # tmux_options: -f ~/.tmux.mac.conf
 
 windows:
-  - shell: git status
-  - editor: vim
-  - guard: 
-  - db/console: 
-      layout: even-vertical
+  - consoles: 
+      layout: f4e3,227x55,0,0[227x22,0,0{113x22,0,0,52,113x22,114,0,56},227x33,0,23,57]
       panes:
-      - bundle exec rails db
-      - bundle exec rails c 
-  - server: bundle exec rails s
-  - logs: tail -f log/development.log
-  - heroku: heroku apps; heroku config --app cusef-staging; !!:s/cusef-staging/cusef 
+        - # bundle exec rails c 
+        - # bundle exec rails db
+        - # bash
+  - editor: vim
+  - guard: # bundle exec guard
+  - foreman: bundle exec foreman start -f Procfile.dev
+  - heroku: 
+    - heroku config --app cusef
+    - heroku config --app cusef-staging
+    - heroku ps
+    # - export DATABASE_URL="postgres://localhost/cusef_development"
+

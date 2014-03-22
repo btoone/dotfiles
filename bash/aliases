@@ -135,3 +135,7 @@ alias ea="$EDITOR --wait ~/code/dotfiles/bash/aliases && reload"
 alias ee="$EDITOR --wait ~/code/dotfiles/bash/env && reload"
 alias et="$EDITOR"
 alias ett="$EDITOR ."
+
+# postgres
+alias pgon="pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log"
+alias pgoff="pg_ctl stop -D /usr/local/var/postgres"

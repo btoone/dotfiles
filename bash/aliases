@@ -48,13 +48,14 @@ alias glop="git log --pretty=oneline"
 alias gmt="git mergetool"
 alias gnp="git-notpushed"
 alias gp='git push'
+#
 alias gpl='git pull'
 alias gr='git remote'
 alias grv='git remote -v'
 alias gs='git status'
 alias gss='git status --short'
 alias gui='open -a sourcetree .'
-alias grm="git rm $(git ls-files --deleted)"      # stage deleted files - or just use `git add -u`
+alias grm='git rm $(git ls-files --deleted)'      # stage deleted files - or just use `git add -u`
 
 # bundler
 alias b='bundle exec'

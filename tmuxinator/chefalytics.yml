@@ -4,16 +4,23 @@ name: chefalytics
 root: ~/code/chefalytics
 
 # Runs before everything. Use it to start daemons etc.
-pre: export DATABASE_URL="postgres://localhost/chefalytics_development"
+pre: pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/local/var/postgres/server.log
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 pre_window: rbenv shell 1.9.3-p194
 
 windows:
-  - shell: git status
-  - editor: vim
+  - consoles: 
+      layout: f4e3,227x55,0,0[227x22,0,0{113x22,0,0,52,113x22,114,0,56},227x33,0,23,57]
+      panes:
+        - bundle exec rails c 
+        - bundle exec rails db
+        - # bash
+  - editor: vim .
   - guard: bundle exec guard
-  - console:
-  - log: tail -f log/development.log
-  - pry-remote: 
-  - heroku: heroku apps; heroku config --app enigmatic-reef-4797
+  - foreman: bundle exec foreman start -f Procfile.dev
+  - heroku: 
+    - export DATABASE_URL="postgres://localhost/chefalytics_development"             # set database_url for use with pgbackups:transfer plugin
+    - heroku ps
+    - heroku config --app shielded-shelf-8847   # production 
+    - heroku config --app enigmatic-reef-4797   # staging

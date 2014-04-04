@@ -1,7 +1,7 @@
 # ~/.tmuxinator/notes.yml
 
 name: notes
-root: ~/notes
+root: ~/Notes
 
 windows:
   - editor:

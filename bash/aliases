@@ -1,15 +1,15 @@
 alias ht="history | tail -25"
 alias ls="ls -pG"
-# alias ls='ls -p --color=auto'                                                 # uncomment for dir colors on linux
+# alias ls='ls -p --color=auto'                                                # dir colors on linux
 alias ll="ls -lph"
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias hl="hl -i"
 
 alias grep="grep --color=always -i"                                            # use colors; change to auto if causing problems
-# alias g='grep' # I use git more often so it gets the 'g' alias
+alias g='grep'
 alias egrep="egrep --color=always -i"
 alias ge='egrep'
-alias less="less -R"                                                            # make less work with colors from grep
+alias less="less -R"                                                           # make less work with colors from grep
 alias gal='alias | grep'
 
 # process management
@@ -26,36 +26,36 @@ alias tmn="tmux new -s"
 alias tml="tmux ls"
 
 # git
-alias g='git'
-alias eg='$EDITOR .git/config'
 alias ga='git add'
-alias gb='git branch'
-alias gba='git branch -a'
+alias gb='git branch -v'
 alias gc='git commit'
 alias gca='git commit -a'
+alias gcam='git commit -a -m'
+alias gcm='git commit -m'
 alias gco='git checkout'
 alias gd='git diff'
-alias gdm='git diff master'
-alias gdn='git diff --name-status -r'
-alias gds='git diff --stat -r'            # diffstat
-alias gdt='git difftool'
-alias gdv='git diff -w "$@" | vim -R -'
 alias gexport='git archive --format zip --output'
 alias gll='git log --graph --pretty=oneline --abbrev-commit'
 alias glo="git log --stat"
 alias glog='git log --oneline --graph --decorate'
 alias glop="git log --pretty=oneline"
-alias gmt="git mergetool"
-alias gnp="git-notpushed"
-alias gp='git push'
-#
-alias gpl='git pull'
-alias gr='git remote'
-alias grv='git remote -v'
 alias gs='git status'
 alias gss='git status --short'
-alias gui='open -a sourcetree .'
-alias grm='git rm $(git ls-files --deleted)'      # stage deleted files - or just use `git add -u`
+alias gr='git config -l | grep remote.*url | tail -n +2'
+alias grm='git rm $(git ls-files --deleted)'                                   # stage deleted files - or just use `git add -u`
+# alias g='git'
+# alias eg='$EDITOR .git/config'
+# alias gba='git branch -a'
+# alias gdm='git diff master'
+# alias gdn='git diff --name-status -r'
+# alias gds='git diff --stat -r
+# alias gdt='git difftool'
+# alias gdv='git diff -w "$@" | vim -R -'
+# alias gmt="git mergetool"
+# alias gnp="git-notpushed"
+# alias gp='git push'
+# alias gpl='git pull'
+# alias gui='open -a sourcetree .'
 
 # bundler
 alias b='bundle exec'

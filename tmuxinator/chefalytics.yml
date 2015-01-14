@@ -7,7 +7,7 @@ root: ~/code/chefalytics
 pre: pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/local/var/postgres/server.log
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: rbenv shell 2.0.0-p247 
+pre_window: rbenv shell 2.0.0-p481 
 
 windows:
   - consoles: 
@@ -18,8 +18,8 @@ windows:
         - bundle exec rails c 
         - bundle exec rails db
         - # bash
-  - editor: # vim .
-  - guard: # bundle exec guard
+  # - editor: # vim .
+  # - guard: # bundle exec guard
   - foreman: bundle exec foreman start -f Procfile.dev
   - heroku: 
     - export DATABASE_URL="postgres://root@localhost:5432/chefalytics_development"             # set database_url for use with pgbackups:transfer plugin

@@ -1,3 +1,4 @@
+# vim: ft=gitconfig 
 [user]
 	name = Brandon Toone
 	email = brandon@rdlk.co
@@ -32,7 +33,8 @@
 	cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustExitCode = true
 [alias]
-  b = branch -v
+  b = branch -av
+  branch = branch -av
   c = commit
   ca = commit -a
   cam = commit -a -m
@@ -40,6 +42,11 @@
   co = checkout
   uncommit = reset --soft HEAD~1
   unstage = reset HEAD
+  ds = diff --staged
+  dlc = diff --staged HEAD~1
+
+  # Delete branch locally and on remote
+  rmb = !sh -c 'git branch -D $1 && git push origin --delete $1' -
 
   # Add all unstaged changes to previous commit
   caa = commit -a --amend -C HEAD
@@ -47,7 +54,7 @@
   # List all git aliases
   la = !git config -l | grep alias | cut -c 7-
 
-  # Grep on filename
+  # Grep on filename. Usage: git f <pattern>
   f = !git ls-files | grep -i
 
   # Add files with long path. Usage: git long <pattern-in-full-path>

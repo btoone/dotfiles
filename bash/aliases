@@ -6,7 +6,6 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias hl="hl -i"
 
 alias grep="grep --color=always -i"                                            # use colors; change to auto if causing problems
-alias g='grep'
 alias egrep="egrep --color=always -i"
 alias ge='egrep'
 alias less="less -R"                                                           # make less work with colors from grep
@@ -26,6 +25,7 @@ alias tmn="tmux new -s"
 alias tml="tmux ls"
 
 # git
+alias g='git'
 alias eg='$EDITOR ~/.gitconfig'
 alias egg='$EDITOR .git/config'
 alias ga='git add'
@@ -47,7 +47,7 @@ alias gp='git push'
 alias gpl='git pull'
 alias gs='git status'
 alias gss='git status --short'
-alias gr='git config -l | grep remote.*url | tail -n +2'
+alias grem='git config -l | grep -e ^remote.*url'
 alias grm='git rm $(git ls-files --deleted)'                                   # stage deleted files - or just use `git add -u`
 # alias g='git'
 # alias gba='git branch -a'

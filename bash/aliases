@@ -26,6 +26,8 @@ alias tmn="tmux new -s"
 alias tml="tmux ls"
 
 # git
+alias eg='$EDITOR ~/.gitconfig'
+alias egg='$EDITOR .git/config'
 alias ga='git add'
 alias gb='git branch -v'
 alias gc='git commit'
@@ -34,27 +36,26 @@ alias gcam='git commit -a -m'
 alias gcm='git commit -m'
 alias gco='git checkout'
 alias gd='git diff'
+alias gdt='git difftool'
 alias gexport='git archive --format zip --output'
 alias gll='git log --graph --pretty=oneline --abbrev-commit'
 alias glo="git log --stat"
 alias glog='git log --oneline --graph --decorate'
 alias glop="git log --pretty=oneline"
+alias gmt="git mergetool"
+alias gp='git push'
+alias gpl='git pull'
 alias gs='git status'
 alias gss='git status --short'
 alias gr='git config -l | grep remote.*url | tail -n +2'
 alias grm='git rm $(git ls-files --deleted)'                                   # stage deleted files - or just use `git add -u`
 # alias g='git'
-# alias eg='$EDITOR .git/config'
 # alias gba='git branch -a'
 # alias gdm='git diff master'
 # alias gdn='git diff --name-status -r'
 # alias gds='git diff --stat -r
-# alias gdt='git difftool'
 # alias gdv='git diff -w "$@" | vim -R -'
-# alias gmt="git mergetool"
 # alias gnp="git-notpushed"
-# alias gp='git push'
-# alias gpl='git pull'
 # alias gui='open -a sourcetree .'
 
 # bundler

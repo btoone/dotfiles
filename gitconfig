@@ -39,6 +39,7 @@
   cam = commit -a -m
   cm = commit -m
   co = checkout
+  cob = checkout -b
   ds = diff --staged
   dlc = diff --staged HEAD~1
   p = push
@@ -51,6 +52,9 @@
 
   # Add all unstaged changes to previous commit
   caa = commit -a --amend -C HEAD
+
+  # Add only the staged changes to previous commit
+  csa = commit --amend -C HEAD
 
   # List all git aliases
   la = !git config -l | grep alias | cut -c 7-

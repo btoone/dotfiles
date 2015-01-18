@@ -23,7 +23,8 @@ alias tma="tmux attach -t"
 alias tmm="tmux attach || tmux"
 alias tmn="tmux new -s"
 alias tml="tmux ls"
-alias tks="tmux kill-session"
+alias tmls="tmux ls"
+alias tmks="tmux kill-session -t"
 
 # git
 alias g='git'

@@ -1,33 +1,52 @@
-# Environment Variables
-export PATH="/usr/local/bin:$PATH"                                              # bin
-export PATH="/usr/local/sbin:$PATH"                                             # sbin
-export PATH="$HOME/bin:$PATH"                                                   # homebin
-export PATH="/usr/local/mysql/bin:$PATH"                                        # mysql
-export PATH="$HOME/.rbenv/bin:$PATH"                                            # rbenv
-export PATH="/usr/local/share/npm/bin:$PATH"                                    # npm
-export PATH="/usr/local/heroku/bin:$PATH"                                       # heroku
-# export PATH=$PATH:$HOME/.rvm/bin                                              # rvm
+# Environment variables. Note the the position of each line in this file that 
+# effects PATH matters.
+
+## RBENV
+# 
+# Enable shims and autocomplete. FYI this will prepend rbenv path info to PATH 
+# each time `~/.bashrc` is reloaded.
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+## PATH
+#
+# Always prepend the value to $PATH. This means that the last export added takes
+# first precedence.
+# 
+# Default system path:
+# 
+#     /usr/local/bin
+#     /usr/bin
+#     /bin
+#     /usr/sbin
+#     /sbin
+#
+
+export PATH="/usr/local/sbin:$PATH"                                             # homebrew installs admin tools here
+export PATH="$HOME/bin:$PATH"                                                   # personal tools
+export PATH="./bin:$PATH"                                                       # project binstubs
+
+## Rubygems
 export RUBYOPT=rubygems
 
-# Editor
+## Editor
 # export EDITOR='subl'
 # export EDITOR='mate'
 export EDITOR='vim'
 
-# History
+## History
 export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups
 
-# directory listing colors
+## Directory listing colors
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
 # export LSCOLORS=ExFxCxDxBxegedabagacad    # light backgrounds
 
-# java
+## Java
 # export JAVA_HOME=`/usr/libexec/java_home -v 1.6`
 # export JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/
 # export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework
 
-# PostgreSQL
+## PostgreSQL
 # export DATABASE_URL=postgres://localhost/database-name

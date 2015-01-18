@@ -16,7 +16,6 @@ windows:
       layout: even-verical
       panes:
         - bundle exec rails c 
-        - bundle exec rails db
         - # bash
   # - editor: # vim .
   # - guard: # bundle exec guard

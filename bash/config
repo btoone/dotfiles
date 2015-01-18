@@ -102,7 +102,9 @@ function bash_prompt_cmd() {
 #
 function prompt_command() {
   bash_prompt_cmd                                                               # format the prompt
-  history -a; history -n                                                        # update history from all windows/panes
+
+  # This has some strange behavior and doesn't work exactly as I expect; need to research more
+  # history -a; history -n                                                        # update history from all windows/panes
 }
 
 PROMPT_COMMAND=prompt_command

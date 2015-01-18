@@ -21,7 +21,6 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 #     /sbin
 #
 
-export PATH="/usr/local/bin:$PATH"                                              # in the default path already but add here to force it to occur before `~/.rbenv/shims`
 export PATH="/usr/local/sbin:$PATH"                                             # homebrew installs admin tools here
 export PATH="$HOME/bin:$PATH"                                                   # personal tools
 export PATH="./bin:$PATH"                                                       # project binstubs

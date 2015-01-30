@@ -135,8 +135,8 @@ alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 
 # editor
-alias ea="$EDITOR --wait ~/code/dotfiles/bash/aliases && reload"
-alias ee="$EDITOR --wait ~/code/dotfiles/bash/env && reload"
+alias ea="$EDITOR ~/code/dotfiles/bash/aliases && reload"
+alias ee="$EDITOR ~/code/dotfiles/bash/env && reload"
 alias et="$EDITOR"
 alias ett="$EDITOR ."
 

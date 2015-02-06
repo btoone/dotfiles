@@ -6,4 +6,5 @@ source ~/code/dotfiles/bash/cdhistory
 
 # Activate Autoenv
 # Per-project shell environments - https://github.com/kennethreitz/autoenv
-source /usr/local/opt/autoenv/activate.sh
+# source /usr/local/opt/autoenv/activate.sh
+# source ~/.autoenv/activate.sh

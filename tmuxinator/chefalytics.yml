@@ -23,5 +23,5 @@ windows:
   - heroku: 
     - export DATABASE_URL="postgres://root@localhost:5432/chefalytics_development"             # set database_url for use with pgbackups:transfer plugin
     - heroku ps
-    - heroku config --app shielded-shelf-8847   # production 
-    - heroku config --app enigmatic-reef-4797   # staging
+    - heroku config --app chefapp-alpha-7651     # alpha
+    - heroku config --app chefapp-staging-4797   # staging

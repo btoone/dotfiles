@@ -48,7 +48,7 @@ puts "\nINFO: Finished installing extensions."
 
 __END__
 
-commandt: git://github.com/wincent/Command-T.git
+# commandt: git://github.com/wincent/Command-T.git    # breaks vim in the latest version of OSX 10.10.2
 nerdtree: git://github.com/scrooloose/nerdtree.git
 autoclose: git://github.com/Townk/vim-autoclose.git
 tcomment: git://github.com/vim-scripts/tComment.git

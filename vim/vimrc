@@ -201,6 +201,19 @@ nnoremap <leader>v <C-w>v<C-w>l
 nnoremap <leader>s <C-w>s<C-w>j
 
 
+" Find
+" =================================
+
+" ,f to launch find
+nnoremap <leader>ff :find *
+
+" ,fs to launch find in a horizontally split window
+nnoremap <leader>fs :sfind *
+
+" ,fv to launch find in a vertically split window
+nnoremap <leader>fv :vert sfind *
+
+
 " Miscellaneous 
 " =================================
 
@@ -227,7 +240,8 @@ set showmode
 " Intuitive backspacing
 set backspace=indent,eol,start
 
-" Commands :bnext, :bprevious and :buffer wont abandon the buffer until any changes have been written
+" Commands :bnext, :bprevious and :buffer wont abandon the buffer until all 
+" changes have been written
 set hidden
 
 " Enhanced command line completion

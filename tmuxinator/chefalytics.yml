@@ -25,3 +25,9 @@ windows:
     - heroku ps
     - heroku config --app chefapp-alpha-7651     # alpha
     - heroku config --app chefapp-staging-4797   # staging
+  - protractor: 
+      layout: even-vertical
+      panes: 
+        - webdriver-manager start 
+        - protractor protractor/config.js
+

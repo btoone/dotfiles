@@ -20,8 +20,8 @@ runtime macros/matchit.vim
 "let g:loaded_endwise = 1
 "let g:loaded_AutoClose = 1
 
-" Configure Command-T
-set wildignore+=node_modules/**,app/bower_components/**
+" Configure ctrlp
+set runtimepath^=~/.vim/bundle/ctrlp.vim 
 
 " Navigation
 " =================================

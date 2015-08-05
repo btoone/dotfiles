@@ -105,23 +105,29 @@ set incsearch
 " Highlight matches
 set hlsearch
 
+" Turn on syntax highlighting
+syntax enable
+
 
 " Color shemes
 " =================================
 
+set background=dark
+" set background=light
+
 " colorscheme vividchalk
 " colorscheme github
-colorscheme topfunky-light
+" colorscheme topfunky-light
 " colorscheme railscasts
 " colorscheme twilight
 " colorscheme codeschool
 " colorscheme grb256
+" colorscheme base16-default          " requires background=dark to be set
+" colorscheme tomorrow
+colorscheme tomorrow-night
+" colorscheme tomorrow-night-bright
 
 
-" Command-t config
-" =================================
-
-let g:CommandTMaxHeight=10
 
 
 " Folding settings
@@ -227,9 +233,6 @@ nnoremap <leader>a :Ack
 
 " Map ESC to jj and save my pinky   
 " imap jj <ESC>
-
-" Turn on syntax highlighting
-syntax enable
 
 " Display incomplete commands
 set showcmd

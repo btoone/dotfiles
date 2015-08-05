@@ -63,6 +63,8 @@ tlib: git clone git://github.com/tomtom/tlib_vim.git
 utils: git://github.com/MarcWeber/vim-addon-mw-utils.git
 snippets: git://github.com/honza/snipmate-snippets.git
 coffeescript: git://github.com/kchmck/vim-coffee-script.git
+emmet: git@github.com:mattn/emmet-vim.git
+ctrlp: git@github.com:kien/ctrlp.vim.git
 # key: git://github.com/Shougo/neocomplcache.git
 # key: git://github.com/ecomba/vim-ruby-refactoring.git
 # key: git://github.com/godlygeek/tabular.git

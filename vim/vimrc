@@ -29,6 +29,10 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 " Use Tab to navigate between split windows
 noremap <tab> <C-w><C-w>
 
+" Remap shift-h and shift-l to jump to the beginning and end of the line
+nnoremap H ^
+nnoremap L $
+
 " Better default nav behavior
 " nnoremap j gj
 
@@ -112,9 +116,6 @@ syntax enable
 " Color shemes
 " =================================
 
-set background=dark
-" set background=light
-
 " colorscheme vividchalk
 " colorscheme github
 " colorscheme topfunky-light
@@ -127,7 +128,8 @@ set background=dark
 colorscheme tomorrow-night
 " colorscheme tomorrow-night-bright
 
-
+set background=dark
+" set background=light
 
 
 " Folding settings
@@ -231,8 +233,9 @@ nnoremap <leader>fv :vert sfind *
 " Remap leader + a (,a) to Ack
 nnoremap <leader>a :Ack
 
-" Map ESC to jj and save my pinky   
-" imap jj <ESC>
+" Map ESC to ;;
+inoremap ;; <ESC>
+vnoremap ;; <ESC>
 
 " Display incomplete commands
 set showcmd

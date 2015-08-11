@@ -1,8 +1,14 @@
 " Vim configuration
-" Copy or symlink to ~/.vimrc or ~/_vimrc
 
 " Must come first because it changes other options
 set nocompatible
+
+" Make it obvious where 80 characters is
+set textwidth=80
+set colorcolumn=+1
+
+" Autocomplete with dictionary words when spell check is on
+set complete+=kspell
 
 
 " Plugins
@@ -43,8 +49,19 @@ nnoremap L $
 " Markdown
 " =================================
 
-set colorcolumn=100
-set textwidth=100
+" Enable spellchecking for Markdown
+autocmd FileType markdown setlocal spell
+
+" Automatically wrap at 80 characters for Markdown
+autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+
+
+" Git
+" =================================
+
+" Automatically wrap at 72 characters and spell check git commit messages 
+autocmd FileType gitcommit setlocal textwidth=72
+autocmd FileType gitcommit setlocal spell
 
 
 " Prevent backup behavior
@@ -156,9 +173,17 @@ autocmd FileType ruby setlocal foldmethod=syntax
 
 " Show line numbers
 set number
+set numberwidth=5
 
 " Change line numberings for ease with writing commands
 " set relativenumber
+
+
+" Split panes
+" =================================
+
+set splitbelow
+set splitright
 
 
 " Buffer handling 

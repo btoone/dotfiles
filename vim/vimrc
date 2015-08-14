@@ -1,4 +1,3 @@
-
 " Must come first because it changes other options
 set nocompatible
 filetype off

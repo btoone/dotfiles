@@ -3,6 +3,9 @@
 set nocompatible
 filetype off
 
+" Enable copy/paste integration with pbcopy/pbpaste
+set clipboard=unnamed
+
 " Plugins
 " =================================
 

@@ -180,13 +180,6 @@ set numberwidth=5
 " set relativenumber
 
 
-" Split panes
-" =================================
-
-set splitbelow
-set splitright
-
-
 " Buffer handling 
 " =================================
 
@@ -221,6 +214,10 @@ nmap <leader>w :w!<CR>
 
 " Splits
 " =================================
+
+" 
+set splitbelow
+set splitright
 
 " Move between splits
 nnoremap <C-h> <C-w>h

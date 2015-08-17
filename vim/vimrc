@@ -325,5 +325,3 @@ set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLo
 "   autocmd FileType ruby,eruby :let g:AutoCloseExpandEnterOn=""
 " endif
 
-" Cause Tim Pope told me to add this
-call pathogen#infect()

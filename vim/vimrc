@@ -101,6 +101,13 @@ map <leader>e :edit#<CR>
 " Toggle the nerdtree window with leader + d (,d)
 nmap <silent> <leader>d :NERDTreeToggle<CR>
 
+" Remap leader + a (,a) to Ack
+nnoremap <leader>a :Ack
+
+" Easier quitting
+nmap <leader>q :wq!<CR>
+nmap <leader>w :w!<CR>
+
 
 " Searching
 " =================================
@@ -121,10 +128,10 @@ set gdefault
 " Case-insensitive searching
 set ignorecase
 
-" Highlight matches as you type
+" Enable incremental searching
 set incsearch
 
-" Highlight matches
+" Highlight matches as you type
 set hlsearch
 
 " Turn on syntax highlighting
@@ -205,13 +212,6 @@ nnoremap <Down>  :echoe "Use j"<CR>
 " inoremap <Left>  <ESC>:echoe 'Exit insert mode and use a movment instead'<CR>
 
 
-" Easier quitting
-" =================================
-
-nmap <leader>q :wq!<CR>
-nmap <leader>w :w!<CR>
-
-
 " Splits
 " =================================
 
@@ -262,8 +262,8 @@ nnoremap // q/
 " Make Nerd Tree smaller
 " let NERDTreeWinSize=16
 
-" Remap leader + a (,a) to Ack
-nnoremap <leader>a :Ack
+" Open a new unnamed buffer using ctrl + n
+nnoremap <C-n> :enew<CR>
 
 " Map ESC to ;;
 inoremap ;; <ESC>

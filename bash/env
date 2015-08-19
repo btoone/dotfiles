@@ -31,7 +31,8 @@ export RUBYOPT=rubygems
 ## Editor
 # export EDITOR='subl'
 # export EDITOR='mate'
-export EDITOR='vim'
+export VISUAL=vim
+export EDITOR=$VISUAL
 
 ## History
 export HISTSIZE=10000

@@ -21,12 +21,15 @@ Plugin 'tpope/vim-speeddating'
 Plugin 'mattn/emmet-vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Townk/vim-autoclose'
+Plugin 'xolox/vim-misc'                                                        " dependency of easytags
+Plugin 'xolox/vim-easytags'
+Plugin 'majutsushi/tagbar'
 
 " Snipmate and dependancies
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
-Plugin 'honza/vim-snippets'                                                     " an optional library of snippets
+Plugin 'honza/vim-snippets'                                                    " an optional library of snippets
 
 " Syntax support
 Plugin 'tpope/vim-jdaddy'

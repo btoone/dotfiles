@@ -14,10 +14,6 @@ alias gal='alias | grep'
 # process management
 alias pgrep='pgrep -fil'
 
-# vi
-alias vi="vim -N"
-alias vim="vim -N"
-
 # tmux
 alias tma="tmux attach -t"
 alias tmm="tmux attach || tmux"
@@ -28,8 +24,6 @@ alias tmk="tmux kill-session -t"
 
 # git
 alias g='git'
-alias eg='$EDITOR ~/.gitconfig'
-alias egg='$EDITOR .git/config'
 alias ga='git add'
 alias gb='git branch -v'
 alias gc='git commit'
@@ -93,16 +87,19 @@ alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rail
 alias r='~/bin/iterm $1'
 
 # vagrant
-alias v='vagrant'
-alias vs='vagrant status'
-alias vsh='vagrant ssh'
-alias vup='vagrant up'
-alias vhalt='vagrant halt'
-alias vpro='vagrant provision'
-alias vrel='vagrant reload'
+alias vg='vagrant'
+alias vgs='vagrant status'
+alias vgsh='vagrant ssh'
+alias vgu='vagrant up'
+alias vgh='vagrant halt'
+alias vgp='vagrant provision'
+alias vgr='vagrant reload'
 
 # utility
 alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'
+
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
 
 # common
 alias a='ls -A' # -A all except literal . ..
@@ -135,10 +132,17 @@ alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 
 # editor
+alias e="$EDITOR"
+alias v="$VISUAL"
+alias ee="$EDITOR ."
+alias eg='$EDITOR ~/.gitconfig'
 alias ea="$EDITOR ~/code/dotfiles/bash/aliases && reload"
 alias ee="$EDITOR ~/code/dotfiles/bash/env && reload"
-alias et="$EDITOR"
-alias ett="$EDITOR ."
+alias ev="$EDITOR ~/code/dotfiles/vim/vimrc && reload"
+alias et="$EDITOR ~/code/dotfiles/tmux.conf && reload"
+
+# vim
+alias vi="vim"
 
 # postgres
 alias pgon="pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log"

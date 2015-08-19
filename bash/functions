@@ -80,9 +80,9 @@ function cdc() {
   cd $1; ls 
 }
 
-function mkc() { 
-  mkdir -p "$1"
-  cd "$1" 
+# Make directory and change into it
+function mcd() { 
+  mkdir -p "$1" && cd "$1";
 }
 
 # copy working directory

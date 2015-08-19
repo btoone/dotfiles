@@ -42,11 +42,7 @@ nnoremap L $
 " Markdown
 " =================================
 
-" Make it obvious where 80 characters is
-set textwidth=80
-set colorcolumn=+1
-
-" Autocomplete with dictionary words when spell check is on
+" Autocomplete with dictionary words when spell check is on using C-n and C-p
 set complete+=kspell
 
 " Enable spellchecking for Markdown
@@ -54,6 +50,8 @@ autocmd FileType markdown setlocal spell
 
 " Automatically wrap at 80 characters for Markdown
 autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+
+" Set syntax highlighting for markdown
 autocmd BufReadPost,BufNewFile *.md set filetype=markdown
 
 
@@ -94,6 +92,7 @@ set modelines=10
 
 " Remap leader key to comma
 let mapleader = ","
+" let mapleader = " "
 
 " Quickly switch to previous file
 map <leader>e :edit#<CR>
@@ -108,6 +107,14 @@ nnoremap <leader>a :Ack
 nmap <leader>q :wq!<CR>
 nmap <leader>w :w!<CR>
 
+" Index ctags from any project, including those outside Rails
+map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
+
+" Use ctrl+p to serach ctags
+nnoremap <leader>. :CtrlPTag<CR>
+
+" Toggle the tagbar
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 " Searching
 " =================================
@@ -263,7 +270,7 @@ nnoremap // q/
 " let NERDTreeWinSize=16
 
 " Open a new unnamed buffer using ctrl + n
-nnoremap <C-n> :enew<CR>
+nnoremap <leader>n :enew<CR>
 
 " Map ESC to ;;
 inoremap ;; <ESC>
@@ -294,6 +301,9 @@ set smartcase
 " Turn off line wrapping by default
 set nowrap
 
+" Make it obvious where 80 characters is
+set colorcolumn=80
+
 " Show 3 lines of context around the cursor
 set scrolloff=3
 
@@ -317,6 +327,12 @@ set laststatus=2
 
 " Useful status information at bottom of screen
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
+
+" Use tab key for tab completion
+imap <Tab> <C-P>
+
+" Add .git to the seach path for tags
+" set tags=.git/tags
 
 " Automatically source/reload vimrc after saving. Disabled since it doesnt
 " appear to work. To reload your config manually run the command `:source ~/.vimrc`

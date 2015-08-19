@@ -329,7 +329,7 @@ set laststatus=2
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 
 " Use tab key for tab completion
-imap <Tab> <C-P>
+" imap <Tab> <C-P>    " disabled since it conflics with snippets and markdown completion. Just use the default <c-p> instead
 
 " Add .git to the seach path for tags
 " set tags=.git/tags

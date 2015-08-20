@@ -1,11 +1,11 @@
 # ~/.tmuxinator/notes.yml
 
 name: notes
-root: ~/Notes
+root: ~/notes
 
 windows:
   - editor:
       layout: 1667,202x53,0,0[202x39,0,0,24,202x13,0,40,25]
       panes:
         - vim
-        - #empty, will just run plain bash
+        - # empty, will just run plain bash

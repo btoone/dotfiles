@@ -116,6 +116,12 @@ nnoremap <leader>. :CtrlPTag<CR>
 " Toggle the tagbar
 nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
+" Toggle spell
+nmap <silent> <leader>s :setlocal spell!<CR>
+
+" Set region to US
+set spelllang=en_us
+
 " Searching
 " =================================
 
@@ -233,10 +239,10 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " ,v to open a new vertical split and switch to it
-nnoremap <leader>v <C-w>v<C-w>l
+nnoremap <leader>vs <C-w>v<C-w>l
 
 " ,s to open a new horizontal split and switch to it
-nnoremap <leader>s <C-w>s<C-w>j
+nnoremap <leader>sp <C-w>s<C-w>j
 
 
 " Find
@@ -328,8 +334,8 @@ set laststatus=2
 " Useful status information at bottom of screen
 set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 
-" Use tab key for tab completion
-" imap <Tab> <C-P>    " disabled since it conflics with snippets and markdown completion. Just use the default <c-p> instead
+" Use tab key for tab completion - conflicts with markdown autocomplete and tab completion using <c-p>
+" imap <Tab> <C-P>
 
 " Add .git to the seach path for tags
 " set tags=.git/tags

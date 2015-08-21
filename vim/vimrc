@@ -135,8 +135,12 @@ nmap <F5> :setlocal spell!<cr>
 " Open a new unnamed buffer using ctrl + n
 nnoremap <leader>n :enew<CR>
 
-" Toggle the scratch buffer
+" Toggle the scratch buffer - use <tab> to close buffer
 nnoremap <leader>s :Scratch<cr>
+
+" Make it easier to backspace while typing
+" imap <C-u> <C-w>
+imap <C-]> <C-w>
 
 " ,vs to open a new vertical split and switch to it
 " nnoremap <leader>vs <C-w>v<C-w>l

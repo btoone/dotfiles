@@ -301,7 +301,7 @@ set hidden
 set wildmenu
 
 " Complete files like a shell
-set wildmode=list:longest
+set wildmode=longest:full,full
 
 " But case-sensitive if expression contains a capital letter
 set smartcase

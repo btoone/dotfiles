@@ -24,6 +24,7 @@ Plugin 'Townk/vim-autoclose'
 Plugin 'xolox/vim-misc'                                                        " dependency of easytags
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
+Plugin 'bling/vim-airline'
 
 " Snipmate and dependancies
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -38,8 +39,10 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'kchmck/vim-coffee-script'
 
 " Markdown support
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+" Plugin 'godlygeek/tabular'
+" Plugin 'plasticboy/vim-markdown'
+" Plugin 'suan/vim-instant-markdown'
+Plugin 'tpope/vim-markdown'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

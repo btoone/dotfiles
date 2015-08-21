@@ -2,9 +2,6 @@
 set nocompatible
 filetype off
 
-" Enable copy/paste integration with pbcopy/pbpaste
-set clipboard=unnamed
-
 " Plugins
 " =================================
 
@@ -13,14 +10,23 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
+filetype on
+filetype plugin on
+
 " Fixes vim-endwise indent problem
-filetype plugin indent on
+filetype indent on
+
+" Turn on syntax highlighting
+syntax on
 
 " Load the matchit plugin
 runtime macros/matchit.vim
 
 " Configure ctrlp
-set runtimepath^=~/.vim/bundle/ctrlp.vim 
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
+" Enable copy/paste integration with pbcopy/pbpaste
+set clipboard=unnamed
 
 " Navigation
 " =================================
@@ -51,14 +57,21 @@ autocmd FileType markdown setlocal spell
 " Automatically wrap at 80 characters for Markdown
 autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 
-" Set syntax highlighting for markdown
+" Force *.md files to be detected as markdown filetype
 autocmd BufReadPost,BufNewFile *.md set filetype=markdown
+
+" Preview markdown (,p) with Marked.app
+function! s:setupMarkup()
+  nnoremap <leader>p :!open -a Marked.app '%:p'<cr>
+endfunction
+
+au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
 
 
 " Git
 " =================================
 
-" Automatically wrap at 72 characters and spell check git commit messages 
+" Automatically wrap at 72 characters and spell check git commit messages
 autocmd FileType gitcommit setlocal textwidth=72
 autocmd FileType gitcommit setlocal spell
 
@@ -78,7 +91,7 @@ set noswapfile
 " set directory=$HOME/.vim/tmp//,.
 
 
-" Mode lines 
+" Mode lines
 " =================================
 
 " Overide OSX modelines=0; Enables modelines in files
@@ -119,8 +132,8 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " Toggle spell
 nmap <silent> <leader>s :setlocal spell!<CR>
 
-" Set region to US
-set spelllang=en_us
+" Open a new unnamed buffer using ctrl + n
+nnoremap <leader>n :enew<CR>
 
 " Searching
 " =================================
@@ -146,9 +159,6 @@ set incsearch
 
 " Highlight matches as you type
 set hlsearch
-
-" Turn on syntax highlighting
-syntax enable
 
 
 " Color shemes
@@ -200,7 +210,7 @@ set numberwidth=5
 " set relativenumber
 
 
-" Buffer handling 
+" Buffer handling
 " =================================
 
 nnoremap <silent> [b :bprevious <CR>
@@ -228,7 +238,7 @@ nnoremap <Down>  :echoe "Use j"<CR>
 " Splits
 " =================================
 
-" 
+" Normalize split behavior
 set splitbelow
 set splitright
 
@@ -257,7 +267,7 @@ nnoremap <leader>fs :sfind *
 " ,fv to launch find in a vertically split window
 nnoremap <leader>fv :vert sfind *
 
-" Command-line window 
+" Command-line window
 " =================================
 
 " Remap :: to open the command-line history window (q:)
@@ -267,16 +277,8 @@ nnoremap :: q:
 nnoremap // q/
 
 
-" Miscellaneous 
+" Miscellaneous
 " =================================
-
-" set history=50
-
-" Make Nerd Tree smaller
-" let NERDTreeWinSize=16
-
-" Open a new unnamed buffer using ctrl + n
-nnoremap <leader>n :enew<CR>
 
 " Map ESC to ;;
 inoremap ;; <ESC>
@@ -286,12 +288,12 @@ vnoremap ;; <ESC>
 set showcmd
 
 " Display the mode youre in
-set showmode
+set noshowmode
 
 " Intuitive backspacing
 set backspace=indent,eol,start
 
-" Commands :bnext, :bprevious and :buffer wont abandon the buffer until all 
+" Commands :bnext, :bprevious and :buffer wont abandon the buffer until all
 " changes have been written
 set hidden
 
@@ -331,13 +333,25 @@ set expandtab
 " Show the status line all the time
 set laststatus=2
 
-" Useful status information at bottom of screen
-set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
+" Set region to US
+set spelllang=en_us
+
+" Useful status information at bottom of screen - prefer powerline from
+" bling/vim-airline instead
+" set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
+
+" Enable symbol usage with powerline (bling/vim-airline)
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'powerlineish'
+" let g:airline_theme = 'tomorrow'
+" let g:airline_theme = 'papercolor'
+" let g:airline_theme = 'bubblegum'
 
 " Use tab key for tab completion - conflicts with markdown autocomplete and tab completion using <c-p>
 " imap <Tab> <C-P>
 
-" Add .git to the seach path for tags
+" Add .git to the seach path for tags - cant get vim to find the tags file
+" when its in the .git folder
 " set tags=.git/tags
 
 " Automatically source/reload vimrc after saving. Disabled since it doesnt

@@ -104,20 +104,20 @@ set modelines=10
 " =================================
 
 " Remap leader key to comma
-let mapleader = ","
-" let mapleader = " "
+" let mapleader = ","
+let mapleader = " "
 
 " Quickly switch to previous file
 map <leader>e :edit#<CR>
 
 " Toggle the nerdtree window with leader + d (,d)
-nmap <silent> <leader>d :NERDTreeToggle<CR>
+nmap <leader>d :NERDTreeToggle<CR>
 
 " Remap leader + a (,a) to Ack
 nnoremap <leader>a :Ack
 
 " Easier quitting
-nmap <leader>q :wq!<CR>
+nmap <leader>q :q<CR>
 nmap <leader>w :w!<CR>
 
 " Index ctags from any project, including those outside Rails
@@ -130,16 +130,23 @@ nnoremap <leader>. :CtrlPTag<CR>
 nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 " Toggle spell
-nmap <silent> <leader>s :setlocal spell!<CR>
+nmap <F5> :setlocal spell!<cr>
 
 " Open a new unnamed buffer using ctrl + n
 nnoremap <leader>n :enew<CR>
 
+" Toggle the scratch buffer
+nnoremap <leader>s :Scratch<cr>
+
+" ,vs to open a new vertical split and switch to it
+" nnoremap <leader>vs <C-w>v<C-w>l
+
+" ,sp to open a new horizontal split and switch to it
+" nnoremap <leader>sp <C-w>s<C-w>j
+
+
 " Searching
 " =================================
-
-" Remap space bar to search
-nmap <Space> /
 
 " Press enter after seach to clear highlight
 nnoremap <CR> :noh<CR><CR>
@@ -247,13 +254,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
-" ,v to open a new vertical split and switch to it
-nnoremap <leader>vs <C-w>v<C-w>l
-
-" ,s to open a new horizontal split and switch to it
-nnoremap <leader>sp <C-w>s<C-w>j
-
 
 " Find
 " =================================

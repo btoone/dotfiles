@@ -60,9 +60,9 @@ autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 " Force *.md files to be detected as markdown filetype
 autocmd BufReadPost,BufNewFile *.md set filetype=markdown
 
-" Preview markdown (,p) with Marked.app
+" Preview markdown (,p) with Marked2.app
 function! s:setupMarkup()
-  nnoremap <leader>p :!open -a Marked.app '%:p'<cr>
+  nnoremap <leader>p :!open -a Marked\ 2.app '%:p'<cr>
 endfunction
 
 au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()

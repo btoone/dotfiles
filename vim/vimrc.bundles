@@ -43,6 +43,7 @@ Plugin 'kchmck/vim-coffee-script'
 " Plugin 'godlygeek/tabular'
 " Plugin 'plasticboy/vim-markdown'
 " Plugin 'suan/vim-instant-markdown'
+" Plugin 'gabrielelana/vim-markdown'
 Plugin 'tpope/vim-markdown'
 
 " All of your Plugins must be added before the following line

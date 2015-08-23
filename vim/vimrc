@@ -31,8 +31,8 @@ set clipboard=unnamed
 " Navigation
 " =================================
 
-" Use Tab to navigate between split windows
-noremap <tab> <C-w><C-w>
+" Use Tab to navigate between split windows - conflicts with snippets
+" noremap <tab> <C-w><C-w>
 
 " Remap shift-h and shift-l to jump to the beginning and end of the line
 nnoremap H ^

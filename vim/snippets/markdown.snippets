@@ -2,3 +2,29 @@
 
 snippet li                                                                                                                                                            
 	[${1:text}](${2:address}) 
+
+snippet nnote
+	title: ${1:Title}  
+	author: Brandon Toone  
+	date: `strftime("%Y-%m-%d")`  
+	keywords: notes, meeting, ${2}  
+	base header level: 2  
+	description:  
+
+	# [%title] 
+
+	## Notes
+
+	${3:Preview in **Marked2.app** with `<leader>p`}
+
+	-------------------------------------------------------------------------------
+
+	## Questions
+
+	1. ...
+
+	## Todos
+
+	- [ ] A todo item 
+	- [x] A completed todo item
+

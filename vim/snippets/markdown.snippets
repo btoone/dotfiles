@@ -3,10 +3,10 @@
 snippet li                                                                                                                                                            
 	[${1:text}](${2:address}) 
 
-snippet td
+snippet tt
 	- [ ] ${1}
 
-snippet nnote
+snippet nn
 	title: ${1:Title}  
 	author: Brandon Toone  
 	date: `strftime("%Y-%m-%d")`  
@@ -30,4 +30,12 @@ snippet nnote
 
 	- [ ] A todo item 
 	- [x] A completed todo item
+
+snippet meta
+	title: ${1}  
+	author: Brandon Toone  
+	date: `strftime("%Y-%m-%d")`  
+	keywords: ${2}
+	${3:description:} ${4}
+
 

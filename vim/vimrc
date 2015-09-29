@@ -136,7 +136,7 @@ nmap <F5> :setlocal spell!<cr>
 nnoremap <leader>n :enew<CR>
 
 " Toggle the scratch buffer - use <tab> to close buffer
-nnoremap <leader>s :Scratch<cr>
+nnoremap <leader>s :ScratchPreview<cr>
 
 " Make it easier to backspace while typing
 imap <C-u> <C-w>

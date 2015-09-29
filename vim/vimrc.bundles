@@ -39,6 +39,8 @@ Plugin 'tpope/vim-jdaddy'
 Plugin 'tpope/vim-rails'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'pangloss/vim-javascript'
+Plugin 'claco/jasmine.vim'
 
 " Markdown support
 " Plugin 'godlygeek/tabular'

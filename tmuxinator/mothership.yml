@@ -1,13 +1,13 @@
-# ~/.tmuxinator/bnfs.yml
+# ~/.tmuxinator/mothership.yml
 
-name: bnfs
-root: ~/code/bnfs
+name: mothership
+root: ~/code/mothership
 
 # Optional tmux socket
 # socket_name: foo
 
 # Runs before everything. Use it to start daemons etc.
-pre: mongod --fork --config /usr/local/etc/mongod.conf
+# pre: pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/local/var/postgres/server.log
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 # pre_window: rbenv shell 1.9.3-p194
@@ -21,10 +21,9 @@ windows:
       # layout: f4e3,227x55,0,0[227x22,0,0{113x22,0,0,52,113x22,114,0,56},227x33,0,23,57]          # 3 pane custom layout (2 up, 1 down)
       panes:
         - # bash
-        - mongo bnfs-dev
+        - foreman start -f Procfile
   - editor: vim
-  - tests: # 
-  - foreman: foreman start -f Procfile.dev
   - heroku: 
+    - export DATABASE_URL="postgres://root@localhost:5432/mothership_dev"                          # set database_url for use with pgbackups:transfer plugin
     - heroku ps
-    - heroku config --app caseproof-bnfs2
+    - heroku config --app caseproof-mothership

@@ -29,10 +29,11 @@ export PATH="./bin:$PATH"                                                       
 export RUBYOPT=rubygems
 
 ## Editor
+export EDITOR=vim
 # export EDITOR='subl'
 # export EDITOR='mate'
 export VISUAL=vim
-export EDITOR=$VISUAL
+# export EDITOR=$VISUAL
 
 ## History
 export HISTSIZE=10000

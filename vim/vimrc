@@ -24,6 +24,7 @@ runtime macros/matchit.vim
 
 " Configure ctrlp
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+set wildignore+=*/node_modules/*
 
 " Enable copy/paste integration with pbcopy/pbpaste
 set clipboard=unnamed
@@ -127,7 +128,7 @@ map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/b
 nnoremap <leader>. :CtrlPTag<CR>
 
 " Toggle the tagbar
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
+nnoremap <silent> <Leader>t :TagbarToggle<CR>
 
 " Toggle spell
 nmap <F5> :setlocal spell!<cr>
@@ -298,8 +299,7 @@ set noshowmode
 " Intuitive backspacing
 set backspace=indent,eol,start
 
-" Commands :bnext, :bprevious and :buffer wont abandon the buffer until all
-" changes have been written
+" Hide unsaved buffers instead of closing them
 set hidden
 
 " Enhanced command line completion

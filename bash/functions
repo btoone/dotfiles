@@ -1,5 +1,10 @@
-function alias-help() {
+function myaliases() {
   echo "Alias Usage"
+  echo
+  echo " Vim"
+  echo "  v          = $VISUAL"
+  echo "  vf         = find . -name "*$1*" -exec vim {} +"
+  echo "  vv         = $VISUAL ."
   echo
   echo " Rails"
   echo "  b          = bundle exec"
@@ -71,12 +76,18 @@ function railsapp {
   rails $appname -m http://github.com/btoone/rails-templates/raw/master/$template.rb $@
 }
 
-# quicker cd
-function cr() {
+# usage: cc
+function cc() {
   cd ~/code/$*
 }
 
-function cdc() { 
+# usage: cn
+function cn() {
+  cd ~/notes/$*
+}
+
+# usage: cl [somedir]
+function cl() { 
   cd $1; ls 
 }
 
@@ -182,3 +193,9 @@ function __rm_single_file(){
       echo "No such file or directory: $file"
   fi
 }
+
+# usage: vf [pattern]
+function vf() { 
+  find . -iname "*$1*" -exec vim {} +
+}
+

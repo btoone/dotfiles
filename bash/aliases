@@ -2,7 +2,6 @@ alias ht="history | tail -25"
 alias ls="ls -pG"
 # alias ls='ls -p --color=auto'                                                # dir colors on linux
 alias ll="ls -lph"
-alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias hl="hl -i"
 
 alias grep="grep --color=always -i"                                            # use colors; change to auto if causing problems
@@ -101,9 +100,7 @@ alias a='ls -A' # -A all except literal . ..
 alias la="ls -A -l -G"
 alias c='clear'
 alias cdd='cd -'  # goto last dir cd'ed from
-alias cl='clear; l'
-
-alias cls='clear; ls'
+alias cls='clear; l'
 alias h='heroku'
 alias l.='ls -d .[^.]*'
 alias ll.='ls -ld .[^.]*'
@@ -128,13 +125,14 @@ alias tm='top -o vsize' # memory
 
 # editor
 alias e="$EDITOR"
-alias v="$VISUAL"
 alias ee="$EDITOR ."
 alias eg='$EDITOR ~/.gitconfig'
 alias ea="$EDITOR ~/code/dotfiles/bash/aliases && reload"
 alias ee="$EDITOR ~/code/dotfiles/bash/env && reload"
 alias ev="$EDITOR ~/code/dotfiles/vim/vimrc && reload"
 alias et="$EDITOR ~/code/dotfiles/tmux.conf && reload"
+alias v="$VISUAL"
+alias vv="$VISUAL ."
 
 # vim
 alias vi="vim"

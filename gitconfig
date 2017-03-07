@@ -12,14 +12,14 @@
 	excludesfile = ~/.gitignore_global
   editor = vim
 [push]
-	default = simple
+	default = current
 [mergetool "Kaleidoscope"]
-  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-  trustexitcode = true
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustexitcode = true
 [merge]
   tool = Kaleidoscope
 [difftool "Kaleidoscope"]
-  cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [difftool]
   prompt = false
 [mergetool]
@@ -33,17 +33,10 @@
 ; 	cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 ; 	trustExitCode = true
 [alias]
-  b = branch -av
-  c = commit
-  ca = commit -a
-  cam = commit -a -m
-  cm = commit -m
   co = checkout
   cob = checkout -b
   ds = diff --staged
   dlc = diff --staged HEAD~1
-  p = push
-  pu = pull
   uncommit = reset --soft HEAD~1
   unstage = reset HEAD
 
@@ -72,3 +65,18 @@
   r = reset HEAD
   rr = reset HEAD~1
   rrr = reset HEAD~2
+[difftool "sourcetree"]
+	cmd = /usr/local/bin/ksdiff -w \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustExitCode = true
+[commit]
+	template = /Users/Brandon/.stCommitMsg
+[filter "lfs"]
+	process = git-lfs filter-process
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	required = true
+[credential]
+	helper = osxkeychain

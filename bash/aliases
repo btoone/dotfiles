@@ -20,6 +20,7 @@ alias tmn="tmux new -s"
 alias tml="tmux ls"
 alias tmls="tmux ls"
 alias tmk="tmux kill-session -t"
+alias tm="tmuxinator"
 
 # git
 alias g='git'
@@ -30,16 +31,17 @@ alias gca='git commit -a'
 alias gcam='git commit -a -m'
 alias gcm='git commit -m'
 alias gco='git checkout'
+alias gco='git checkout -b'
 alias gd='git diff'
 alias gdt='git difftool'
 alias gexport='git archive --format zip --output'
 alias gl="git log"
-alias gll="git log --oneline"
+alias gll="git log --oneline --decorate"
 alias gls="git log --stat"
 alias glg='git log --oneline --graph --decorate --all'
 alias gmt="git mergetool"
-alias gps='git push'
 alias gpl='git pull'
+alias gpu='git push'
 alias gs='git status'
 alias gss='git status --short'
 alias grem='git config -l | grep -e ^remote.*url'
@@ -120,8 +122,8 @@ alias ff='open -a Firefox'
 alias evernote='open -a Evernote'
 
 # processes
-alias tu='top -o cpu' # cpu
-alias tm='top -o vsize' # memory
+alias tou='top -o cpu' # cpu
+alias tom='top -o vsize' # memory
 
 # editor
 alias e="$EDITOR"
@@ -143,3 +145,6 @@ alias pgoff="pg_ctl stop -D /usr/local/var/postgres -s -m fast"
 alias pgrestart="pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/local/var/postgres/server.log"
 alias pgstatus="pg_ctl status -D /usr/local/var/postgres"
 alias pgst="pg_ctl status -D /usr/local/var/postgres"
+
+# shortcuts
+alias vj="vim ~/Journals"

@@ -25,11 +25,13 @@ alias tm="tmuxinator"
 # git
 alias g='git'
 alias ga='git add'
+alias gaa='git add -a'
 alias gb='git branch -v'
 alias gc='git commit'
 alias gca='git commit -a'
 alias gcam='git commit -a -m'
 alias gcm='git commit -m'
+alias gcmn ='git commit -a --author="Nikola Novakovic <nikola.novakovic9@gmail.com>"'
 alias gco='git checkout'
 alias gco='git checkout -b'
 alias gd='git diff'

@@ -1,17 +1,20 @@
 alias ht="history | tail -25"
+alias hst="history | grep"
 alias ls="ls -pG"
 # alias ls='ls -p --color=auto'                                                # dir colors on linux
 alias ll="ls -lph"
 alias hl="hl -i"
 
+alias grp="grep --color=always -i"                                            # use colors; change to auto if causing problems
 alias grep="grep --color=always -i"                                            # use colors; change to auto if causing problems
 alias egrep="egrep --color=always -i"
-alias ge='egrep'
+alias ge="egrep"
 alias less="less -R"                                                           # make less work with colors from grep
-alias gal='alias | grep'
+alias gal="alias | grep"
 
 # process management
 alias pgrep='pgrep -fil'
+alias pg='pgrep -fil'
 
 # tmux
 alias tma="tmux attach -t"
@@ -31,7 +34,7 @@ alias gc='git commit'
 alias gca='git commit -a'
 alias gcam='git commit -a -m'
 alias gcm='git commit -m'
-alias gcmn ='git commit -a --author="Nikola Novakovic <nikola.novakovic9@gmail.com>"'
+alias gcmn='git commit -a --author="Nikola Novakovic <nikola.novakovic9@gmail.com>"'
 alias gco='git checkout'
 alias gco='git checkout -b'
 alias gd='git diff'
@@ -47,9 +50,7 @@ alias gpu='git push'
 alias gs='git status'
 alias gss='git status --short'
 alias grem='git config -l | grep -e ^remote.*url'
-alias grm='git rm $(git ls-files --deleted)'                                   # stage deleted files - or just use `git add -u`
-# alias g='git'
-# alias gba='git branch -a'
+alias grm='git rm $(git ls-files --deleted)'  # stage deleted files - or just use `git add -u`
 # alias gdm='git diff master'
 # alias gdn='git diff --name-status -r'
 # alias gds='git diff --stat -r
@@ -99,11 +100,15 @@ alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
+# cd
+alias cdd='cd ~/code/dotfiles'
+alias cdl='cd -'
+alias s='cd ..'
+
 # common
 alias a='ls -A' # -A all except literal . ..
 alias la="ls -A -l -G"
 alias c='clear'
-alias cdd='cd -'  # goto last dir cd'ed from
 alias cls='clear; l'
 alias h='heroku'
 alias l.='ls -d .[^.]*'
@@ -113,7 +118,6 @@ alias l='ls -lhGt'  # -l long listing, most recent first
 alias lh="ls -lh"
 alias lt='ls -lt' # sort with recently modified first
 alias md='mkdir -p'
-alias s='cd ..'   # up one dir
 
 alias e='exit'
 alias k9="killall -9"

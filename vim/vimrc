@@ -118,7 +118,7 @@ nmap <leader>d :NERDTreeToggle<CR>
 nnoremap <leader>a :Ack
 
 " Easier quitting
-nmap <leader>q :q<CR>
+nmap <leader>q :wq<CR>
 nmap <leader>w :w!<CR>
 
 " Index ctags from any project, including those outside Rails

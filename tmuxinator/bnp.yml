@@ -1,13 +1,14 @@
-# ~/.tmuxinator/buy-now-plus.yml
+# ~/.tmuxinator/bnp.yml
 
-name: buy-now-plus
+name: Buy Now Plus
 root: ~/code/buy-now-plus
 
 # Optional tmux socket
 # socket_name: foo
 
 # Runs before everything. Use it to start daemons etc.
-pre: mongod --fork --config /usr/local/etc/mongod.conf
+# pre: mongod --fork --config /usr/local/etc/mongod.conf
+pre: brew services restart mongodb
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 # pre_window: rbenv shell 1.9.3-p194

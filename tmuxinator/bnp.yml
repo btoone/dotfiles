@@ -1,6 +1,6 @@
 # ~/.tmuxinator/bnp.yml
 
-name: Buy Now Plus
+name: buy-now-plus
 root: ~/code/buy-now-plus
 
 # Optional tmux socket

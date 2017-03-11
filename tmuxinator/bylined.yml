@@ -1,7 +1,7 @@
 # ~/.tmuxinator/bylined.yml
 
 name: bylined
-root: ~/code/bylined
+root: ~/code/Bylined-API
 
 # Optional tmux socket
 # socket_name: foo

@@ -139,7 +139,7 @@ alias ea="$EDITOR ~/code/dotfiles/bash/aliases && reload"
 alias ee="$EDITOR ~/code/dotfiles/bash/env && reload"
 alias ev="$EDITOR ~/code/dotfiles/vim/vimrc && reload"
 alias et="$EDITOR ~/code/dotfiles/tmux.conf && reload"
-alias es="$EDITOR ~/code/dotfiles/vim/snippets/* vim/bundle/vim-snippets/snippets/* +ls && reload"
+alias es="$EDITOR ~/code/dotfiles/vim/snippets/* vim/bundle/vim-snippets/snippets/* +CtrlPBuffer && reload"
 alias v="$VISUAL"
 alias vv="$VISUAL ."
 

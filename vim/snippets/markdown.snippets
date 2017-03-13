@@ -6,7 +6,7 @@ snippet li
 snippet tt
 	- [ ] ${1}
 
-snippet nn
+snippet note
 	title: ${1:title}  
 	author: Brandon Toone  
 	date: `strftime("%Y-%m-%d")`  
@@ -16,27 +16,31 @@ snippet nn
 
 	# [%title] 
 
+	## Agenda
+
 	## Notes
 
 	${4:Note: Preview this note in Marked app with \`<leader>p\`}
 
+
 	-------------------------------------------------------------------------------
+
 
 	## Questions
 
 	1.  
 
-	## Todo
+	## Tasks
 	
 	Note: Make a todo item using the snippet \`tt <tab>\`
 	
 	- [ ] 
 
 snippet meta
-	title: ${1}  
+	title: ${1:title}  
 	author: Brandon Toone  
 	date: `strftime("%Y-%m-%d")`  
 	keywords: ${2}
-	${3:description:} ${4}
+	description: ${3}
 
-
+	${4}

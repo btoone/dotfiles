@@ -104,8 +104,7 @@ set modelines=10
 " Leader key remaps
 " =================================
 
-" Remap leader key to comma
-" let mapleader = ","
+" Remap leader key to space
 let mapleader = " "
 
 " Quickly switch to previous file
@@ -118,7 +117,7 @@ nmap <leader>d :NERDTreeToggle<CR>
 nnoremap <leader>a :Ack
 
 " Easier quitting
-nmap <leader>q :wq<CR>
+nmap <leader>q :q<CR>
 nmap <leader>w :w!<CR>
 
 " Index ctags from any project, including those outside Rails
@@ -126,6 +125,7 @@ map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/b
 
 " Use ctrl+p to serach ctags
 nnoremap <leader>. :CtrlPTag<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
 
 " Toggle the tagbar
 nnoremap <silent> <Leader>t :TagbarToggle<CR>

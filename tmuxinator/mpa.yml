@@ -1,7 +1,7 @@
-# ~/.tmuxinator/mp.yml
+# ~/.tmuxinator/mpa.yml
 
-name: memberpress
-root: ~/code/plugins/memberpress
+name: memberpress-analytics
+root: ~/code/memberpress-analytics
 
 # Optional tmux socket
 # socket_name: foo
@@ -28,10 +28,10 @@ root: ~/code/plugins/memberpress
 # attach: false
 
 # Runs after everything. Use it to attach to tmux with custom options etc.
-# post: tmux -CC attach -t wp
+# post: tmux -CC attach -t mpa
 
 windows:
-  - code:
+  - editor:
       layout: main-horizontal
       # Synchronize all panes of this window, can be enabled before or after the pane commands run.
       # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
@@ -39,5 +39,5 @@ windows:
       panes:
         - vim
         - 
-  - log: cd ~/Sites/caspyin.dev/wp-content && tail -f debug.log
-  - ultra: ultrahook stripe http://caspyin.dev:80/mepr/notify/ojvtde-3fp/whk 
+  - app: rerun 'bin/foreman start'
+

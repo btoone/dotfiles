@@ -23,10 +23,10 @@ windows:
       panes:
         - vim
         - 
-  - app: foreman start -f Procfile.dev
   - app: heroku local -f Procfile.dev
+  # - app: foreman start -f Procfile.dev
   - mongo: mongo buy-now-plus-dev
-  - tests: # 
+  - tests: npm test
   # - heroku: 
   #   - heroku ps
   #   - heroku config --app buy-now-plus

@@ -31,8 +31,9 @@ root: ~/code/plugins/memberpress
 # post: tmux -CC attach -t wp
 
 windows:
-  - code:
-      layout: main-horizontal
+  - editor:
+      layout: c13c,204x47,0,0[204x38,0,0,4,204x8,0,39,8]                                           # 2 pane custom layout (top 75%, bottom 25%)
+      # layout: main-horizontal
       # Synchronize all panes of this window, can be enabled before or after the pane commands run.
       # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
       # synchronize: after

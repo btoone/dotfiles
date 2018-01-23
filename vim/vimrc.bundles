@@ -25,8 +25,9 @@ Plugin 'Townk/vim-autoclose'
 Plugin 'xolox/vim-misc'                                                        " dependency of easytags
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
 Plugin 'mtth/scratch.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Snipmate and dependancies
 Plugin 'MarcWeber/vim-addon-mw-utils'

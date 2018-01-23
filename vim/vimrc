@@ -335,22 +335,23 @@ set shiftwidth=2
 " Use spaces instead of tabs
 set expandtab
 
-" Show the status line all the time
-set laststatus=2
+" Show the status line all the time (overridden by vim-airline)
+" set laststatus=1
 
 " Set region to US
 set spelllang=en_us
 
 " Useful status information at bottom of screen - prefer powerline from
-" bling/vim-airline instead
+" vim-airline/vim-airline instead
 " set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c-%v\ %)%P
 
-" Enable symbol usage with powerline (bling/vim-airline)
-let g:airline_powerline_fonts = 1
+" Enable symbol usage with powerline (vim-airline/vim-airline)
+" let g:airline_powerline_fonts = 1
 let g:airline_theme = 'powerlineish'
 " let g:airline_theme = 'tomorrow'
 " let g:airline_theme = 'papercolor'
 " let g:airline_theme = 'bubblegum'
+" let g:airline_theme = 'simple'
 
 " Use tab key for tab completion - conflicts with markdown autocomplete and tab completion using <c-p>
 " imap <Tab> <C-P>

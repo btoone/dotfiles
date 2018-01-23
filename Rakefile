@@ -38,6 +38,7 @@ task :install do
   
   puts "... linking .vimrc\n\n"
   system %Q{ln -s "$PWD/vim/vimrc" "$HOME/.vimrc"}
+  system %Q{ln -s "$PWD/vim/vimrc.bundles" "$HOME/.vimrc.bundles"}
   
   puts "... linking .gvimrc\n\n"
   system %Q{ln -s "$PWD/gvimrc" "$HOME/.gvimrc"}

@@ -102,6 +102,7 @@ alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'
 alias path='echo $PATH | tr -s ":" "\n"'
 
 # cd
+alias cdc='cd ~/code'
 alias cdd='cd ~/code/dotfiles'
 alias cdl='cd -'
 alias s='cd ..'

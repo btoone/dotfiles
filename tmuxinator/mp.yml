@@ -40,5 +40,7 @@ windows:
       panes:
         - vim
         - 
-  - log: cd ~/Sites/caspyin.dev/wp-content && tail -f debug.log
-  - ultra: ultrahook stripe http://caspyin.dev:80/mepr/notify/ojvtde-3fp/whk 
+  - log: cd ~/Sites/local.dev/wp-content && tail -f debug.log
+  - ultra: ultrahook stripe http://local.dev:80/mepr/notify/ojvtde-3fp/whk 
+  - mysql: mysql localDBeax2x -h 127.0.0.1 -u root
+  - wpshell: cd ~/Sites/local.dev && wp shell

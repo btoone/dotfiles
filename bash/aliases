@@ -59,6 +59,9 @@ alias grm='git rm $(git ls-files --deleted)'  # stage deleted files - or just us
 # alias gnp="git-notpushed"
 # alias gui='open -a sourcetree .'
 
+# git flow
+alias gf='git flow'
+
 # bundler
 alias b='bundle exec'
 alias be='bundle exec'

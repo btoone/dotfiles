@@ -5,10 +5,12 @@ alias ls="ls -pG"
 alias ll="ls -lph"
 alias hl="hl -i"
 
-alias grp="grep --color=always -i"                                            # use colors; change to auto if causing problems
+alias gr="grep --color=always -i"                                            # use colors; change to auto if causing problems
+alias grr="grep -r --color=always -i"                                            # use colors; change to auto if causing problems
 alias grep="grep --color=always -i"                                            # use colors; change to auto if causing problems
 alias egrep="egrep --color=always -i"
-alias ge="egrep"
+alias ge="egrep --color=always -i"
+alias gee="egrep -r --color=always -i"
 alias less="less -R"                                                           # make less work with colors from grep
 alias gal="alias | grep"
 

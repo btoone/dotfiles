@@ -162,4 +162,5 @@ alias pgst="pg_ctl status -D /usr/local/var/postgres"
 
 # shortcuts
 alias vj="vim ~/Journals"
-alias mark="open -a Marked\ 2"
+alias marked="open -a Marked\ 2"
+

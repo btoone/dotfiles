@@ -49,6 +49,7 @@ Plugin 'claco/jasmine.vim'
 " Plugin 'suan/vim-instant-markdown'
 " Plugin 'gabrielelana/vim-markdown'
 Plugin 'tpope/vim-markdown'
+Plugin 'itspriddle/vim-marked'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

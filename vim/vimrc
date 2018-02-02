@@ -61,14 +61,6 @@ autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 " Force *.md files to be detected as markdown filetype
 autocmd BufReadPost,BufNewFile *.md set filetype=markdown
 
-" Preview markdown (,p) with Marked2.app
-function! s:setupMarkup()
-  nnoremap <leader>p :!open -a Marked\ 2.app '%:p'<cr>
-endfunction
-
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
-
-
 " Git
 " =================================
 
@@ -104,13 +96,13 @@ set modelines=10
 " Leader key remaps
 " =================================
 
-" Remap leader key to space
+" Remap leader key to be spacebar
 let mapleader = " "
 
 " Quickly switch to previous file
 map <leader>e :edit#<CR>
 
-" Toggle the nerdtree window with leader + d (,d)
+" Toggle the nerdtree window with leader + d
 nmap <leader>d :NERDTreeToggle<CR>
 
 " Remap leader + a (,a) to Ack
@@ -149,6 +141,10 @@ imap <C-u> <C-w>
 
 " ,sp to open a new horizontal split and switch to it
 " nnoremap <leader>sp <C-w>s<C-w>j
+
+" Open  markdown preview in background using Marked 2.app - Requires
+" itspriddle/vim-markdown plugin
+nmap <leader>p :MarkedOpen!<CR>
 
 
 " Searching

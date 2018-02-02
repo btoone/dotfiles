@@ -109,8 +109,8 @@ alias path='echo $PATH | tr -s ":" "\n"'
 # cd
 alias cdc='cd ~/code'
 alias cdd='cd ~/code/dotfiles'
-alias cdl='cd -'
 alias s='cd ..'
+alias cdl='cd ~/Local\ Sites'
 
 # common
 alias a='ls -A' # -A all except literal . ..
@@ -162,3 +162,4 @@ alias pgst="pg_ctl status -D /usr/local/var/postgres"
 
 # shortcuts
 alias vj="vim ~/Journals"
+alias mark="open -a Marked\ 2"

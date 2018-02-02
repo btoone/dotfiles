@@ -1,4 +1,3 @@
-
 # Overview #
 
 My dotfiles to configure OS X

@@ -5,8 +5,8 @@ alias ls="ls -pG"
 alias ll="ls -lph"
 alias hl="hl -i"
 
-alias gr="grep --color=always -i"                                            # use colors; change to auto if causing problems
-alias grr="grep -r --color=always -i"                                            # use colors; change to auto if causing problems
+alias gr="grep --color=always -i"                                              # use colors; change to auto if causing problems
+alias grr="grep -r --color=always -i"                                          # use colors; change to auto if causing problems
 alias grep="grep --color=always -i"                                            # use colors; change to auto if causing problems
 alias egrep="egrep --color=always -i"
 alias ge="egrep --color=always -i"

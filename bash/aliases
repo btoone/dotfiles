@@ -24,6 +24,7 @@ alias tmm="tmux attach || tmux"
 alias tmn="tmux new -s"
 alias tml="tmux ls"
 alias tmls="tmux ls"
+alias tmi="tmux info"
 alias tmk="tmux kill-session -t"
 alias tm="tmuxinator"
 

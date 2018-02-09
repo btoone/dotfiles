@@ -72,17 +72,16 @@ autocmd FileType gitcommit setlocal spell
 " Prevent backup behavior
 " =================================
 
-" Dont make a backup before overwriting a file
+" Dont make a backup before before editing a file - disable default behavior
 set nobackup
-
-" And again
 set nowritebackup
 
-set noswapfile
+" Turn off using swap files
+" set noswapfile
 
-" Keep swap files in one location - doesnt appear to work
+" Keep backup and swap files in one location
+" set backupdir=$HOME/.vim/tmp//,.
 " set directory=$HOME/.vim/tmp//,.
-
 
 " Mode lines
 " =================================

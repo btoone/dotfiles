@@ -9,7 +9,7 @@
   interactive = auto
   ui = always
 [core]
-	excludesfile = ~/.gitignore_global
+	excludesfile = /Users/brandon/.gitignore_global
   editor = vim
 [push]
 	default = current

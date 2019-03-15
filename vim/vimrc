@@ -145,6 +145,9 @@ imap <C-u> <C-w>
 " itspriddle/vim-markdown plugin
 nmap <leader>p :MarkedOpen!<CR>
 
+" Shortcut to rapidly toggle `set list`
+nmap <leader>l :set list!<CR>
+set listchars=eol:¬
 
 " Searching
 " =================================

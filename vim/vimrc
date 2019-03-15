@@ -77,7 +77,7 @@ set nobackup
 set nowritebackup
 
 " Turn off using swap files
-" set noswapfile
+set noswapfile
 
 " Keep backup and swap files in one location
 " set backupdir=$HOME/.vim/tmp//,.

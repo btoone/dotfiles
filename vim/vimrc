@@ -148,6 +148,11 @@ nmap <leader>p :MarkedOpen!<CR>
 nmap <leader>l :set list!<CR>
 set listchars=eol:¬
 
+" Quickly edit and source to reload the vimrc file. To reload your config 
+" manually run the command `:source ~/.vimrc`
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
 " Searching
 " =================================
 
@@ -359,8 +364,4 @@ let g:airline_theme = 'powerlineish'
 
 " Automatically source/reload vimrc after saving. Disabled since it doesnt
 " appear to work. To reload your config manually run the command `:source ~/.vimrc`
-" if has("autocmd")
-"   autocmd bufwritepost .vimrc source $MYVIMRC
-"   autocmd FileType ruby,eruby :let g:AutoCloseExpandEnterOn=""
-" endif
 

@@ -158,7 +158,7 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " =================================
 
 " Press enter after seach to clear highlight
-nnoremap <CR> :noh<CR><CR>
+nnoremap <CR> :nohlsearch<CR>
 
 " Default to regex search
 nnoremap / /\v

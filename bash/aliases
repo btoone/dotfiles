@@ -42,6 +42,7 @@ alias gcmn='git commit --author="Nikola Novakovic <nikola.novakovic9@gmail.com>"
 alias gco='git checkout'
 alias gcob='git checkout -b'
 alias gd='git diff'
+alias gds='git diff --stat'
 alias gdt='git difftool'
 alias gexport='git archive --format zip --output'
 alias gl="git log"

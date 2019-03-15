@@ -363,6 +363,3 @@ let g:airline_theme = 'powerlineish'
 " when its in the .git folder
 " set tags=.git/tags
 
-" Automatically source/reload vimrc after saving. Disabled since it doesnt
-" appear to work. To reload your config manually run the command `:source ~/.vimrc`
-

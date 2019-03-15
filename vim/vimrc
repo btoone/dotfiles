@@ -103,6 +103,7 @@ map <leader>e :edit#<CR>
 
 " Toggle the nerdtree window with leader + d
 nmap <leader>d :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1    "Show hidden files by default; toggle with Shift+i
 
 " Remap leader + a (,a) to Ack
 nnoremap <leader>a :Ack

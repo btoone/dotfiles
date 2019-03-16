@@ -21,9 +21,9 @@ windows:
       # layout: f4e3,227x55,0,0[227x22,0,0{113x22,0,0,52,113x22,114,0,56},227x33,0,23,57]          # 3 pane custom layout (2 up, 1 down)
       panes:
         - # bash
-        - foreman start -f Procfile
+        - echo "foreman start -f Procfile"
+        - echo "padrino start"
   - editor: vim
   - heroku: 
-    - export DATABASE_URL="postgres://root@localhost:5432/mothership_dev"                          # set database_url for use with pgbackups:transfer plugin
     - heroku ps
     - heroku config --app caseproof-mothership

@@ -5,7 +5,7 @@ root: ~/code/dotfiles
 
 windows:
   - editor:
-      layout: 1667,202x53,0,0[202x39,0,0,24,202x13,0,40,25]
+      layout: even-vertical
       panes:
         - vim -O vim/vimrc tmux.conf
         - # open a bash prompt

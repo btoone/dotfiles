@@ -5,8 +5,7 @@ root: ~/code/dotfiles
 
 windows:
   - editor:
-      layout: even-vertical
+      layout: even-horizontal
       panes:
-        - vim -O vim/vimrc tmux.conf
-        - # open a bash prompt
-
+        - vim vim/vimrc 
+        - git log --stat -3 && git status

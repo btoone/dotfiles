@@ -1,7 +1,7 @@
 # ~/.tmuxinator/bnp.yml
 
 name: buy-now-plus
-root: ~/code/buy-now-plus
+root: ~/Code/_clients/caseproof/buy-now-plus
 
 # Optional tmux socket
 # socket_name: foo

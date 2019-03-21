@@ -22,7 +22,6 @@ windows:
       panes:
         - # bash
         - echo "foreman start -f Procfile"
-        - echo "padrino start"
   - editor: vim
   - heroku: 
     - heroku ps

@@ -1,7 +1,7 @@
 # ~/.tmuxinator/mpa.yml
 
 name: memberpress-analytics
-root: ~/code/memberpress-analytics
+root: ~/Code/_clients/caseproof/memberpress-analytics
 
 # Optional tmux socket
 # socket_name: foo

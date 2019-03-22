@@ -1,20 +1,65 @@
-# Overview #
+Dotfiles
+========
 
-My dotfiles to configure OS X
+Collection of personal dotfiles to configure developer environments.
 
-# Installation #
+Conventions
+-----------
 
-    mkdir ~/Code
-    cd !$
-    git clone git@github.com:btoone/dotfiles.git
+All files are named without the "dot". The install will symlink with the proper
+dotted name.
+
+Several configurations borrowed from https://github.com/thoughtbot/dotfiles.
+
+Getting Started
+---------------
+
+Clone the directory.
+
+    git clone git@github.com:caspyin/dotfiles.git
+
+Change into the project directory and run the setup.
+
     cd dotfiles
-    rake
+    bin/setup
 
-The rake task will create symlinks in your home directory (~) for the dotfiles
-and back up any existing files with the same name.
+Features
+--------
 
-# TODO #
+### Git
 
-* set dir_color based on the unix env you're installing to in aliases
-* fix vcprompt when on linux
-* create a linux branch or a linux specific repo
+* Configuration
+* Aliases
+* Completion
+
+### Vim
+
+* Configuration
+* Plugins
+
+### Tmux
+
+* Configuration
+
+### Bash
+
+* Useful aliases
+
+Contributing (optional for OSS)
+-------------------------------
+
+Pull requests are welcome.
+
+License
+-------
+
+This project is licensed under the terms specified in the [`LICENSE.txt`] file.
+
+[`LICENSE.txt`]: /LICENSE.txt
+
+About
+-----
+
+This README was crafted with love and by following README best practices from
+https://github.com/jehna/readme-best-practices
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="../MANIFEST"
+file="MANIFEST"
 project_dir=$(echo $PWD | sed -e "s%/bin%%")
 
 while read -r dotfile

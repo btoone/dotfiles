@@ -1,0 +1,9 @@
+#!/bin/bash
+
+file="../MANIFEST"
+project_dir=$(echo $PWD | sed -e "s%/bin%%")
+
+while read -r dotfile
+do
+  ln -s $project_dir/$dotfile ~/".$dotfile"
+done < "$file"

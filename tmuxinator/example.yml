@@ -1,0 +1,31 @@
+# ~/.tmuxinator/example.yml
+
+name: example
+root: ~/example
+
+# Optional tmux socket
+# socket_name: foo
+
+# Runs before everything. Use it to start daemons etc.
+# pre: pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/local/var/postgres/server.log
+# pre: brew services restart mongodb
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 1.9.3-p194
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+# tmux_options: -f ~/.tmux.mac.conf
+
+windows:
+  - editor: 
+      # layout: main-horizontal
+      layout: c13c,204x47,0,0[204x38,0,0,4,204x8,0,39,8]                                           # 2 pane custom layout (top 75%, bottom 25%)
+      # layout: f4e3,227x55,0,0[227x22,0,0{113x22,0,0,52,113x22,114,0,56},227x33,0,23,57]          # 3 pane custom layout (2 up, 1 down)
+      panes:
+        - vim
+        - # bash
+  - app: heroku local -f Procfile.dev
+  - tests: npm test
+  - heroku: 
+    - heroku ps
+    - heroku config --app example

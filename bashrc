@@ -1,11 +1,7 @@
-source ~/code/dotfiles/bash/env
-source ~/code/dotfiles/bash/config
-source ~/code/dotfiles/bash/aliases
-source ~/code/dotfiles/bash/functions
-source ~/code/dotfiles/bash/cdhistory
-source ~/code/dotfiles/bash/prompt
+source ~/.bash/env
+source ~/.bash/config
+source ~/.bash/aliases
+source ~/.bash/functions
+source ~/.bash/cdhistory
+source ~/.bash/prompt
 
-# Activate Autoenv
-# Per-project shell environments - https://github.com/kennethreitz/autoenv
-# source /usr/local/opt/autoenv/activate.sh
-# source ~/.autoenv/activate.sh

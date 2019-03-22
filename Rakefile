@@ -6,7 +6,7 @@ task :default => "install"
 desc "Installs dotfiles to user's home directory"
 task :install do
   Dir['*'].each do |file|
-    next if %w[bash Rakefile README.md zsh vendor].include?(file)
+    next if %w[Rakefile README.md zsh vendor].include?(file)
     
     original = File.join(ENV['HOME'], ".#{file}")
     

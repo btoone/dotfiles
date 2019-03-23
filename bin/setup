@@ -6,7 +6,7 @@ Results:
 "
 
 # Determine if we need to switch to the linux branch
-read -p "What environment? ([l]inux/[m]ac/[a]bort)? " answer
+read -p "Which environment? ([l]inux/[m]ac/[a]bort)? " answer
 case ${answer:0:1} in
     l|L|linux )
         echo "Checking out branch: linux"
@@ -41,9 +41,8 @@ if [ ! -d ~/.dotfiles-local ]; then
 fi
 __results+="\n* Copied dir \"local/\" as \".dotfiles-local/\""
 
-# Load new environment
-source ~/.bashrc
-__results+="\n* Sourced file \".bashrc\""
+# Prompt user to load new environment
+__results+="\n\n ---> ACTION REQUIRED: Reload your env by runing \"source ~/.bashrc\" to complete the install."
 
 echo -e "$__results"
 exit 0

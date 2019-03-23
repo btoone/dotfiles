@@ -1,5 +1,32 @@
 #!/bin/bash
 
+# Setup results output
+__results="
+Results:
+"
+
+# Determine if we need to switch to the linux branch
+read -p "What environment? ([l]inux/[m]ac/[a]bort)? " answer
+case ${answer:0:1} in
+    l|L|linux )
+        echo "Checking out branch: linux"
+        git checkout --track origin/linux
+        git branch -a
+        __results+="\n* Switched to linux branch"
+    ;;
+    m|M|mac )
+        echo "Continuing with branch: master"
+    ;;
+    a|A|abort )
+        echo "Aborting setup"
+        exit 0
+    ;;
+    * )
+        echo "Continuing with normal setup"
+    ;;
+esac
+    
+# Read from manifest and link dotfiles
 file="MANIFEST"
 project_dir=$(echo $PWD | sed -e "s%/bin%%")
 
@@ -7,11 +34,17 @@ while read -r dotfile
 do
   ln -s $project_dir/$dotfile ~/".$dotfile"
 done < "$file"
+__results+="\n* Setup symlinks to dotfiles in MANIFEST"
 
 # Enable local customizations
 if [ ! -d ~/.dotfiles-local ]; then 
   cp -R local ~/.dotfiles-local
 fi
+__results+="\n* Copied dir \"local/\" as \".dotfiles-local/\""
 
 # Load new environment
 source ~/.bashrc
+__results+="\n* Sourced file \".bashrc\""
+
+echo -e "$__results"
+exit 0

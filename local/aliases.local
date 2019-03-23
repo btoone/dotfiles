@@ -1,0 +1,2 @@
+alias ls="ls -pG"     # mac dir colors
+# alias ls="ls -p --color=auto"     # linux dir colors

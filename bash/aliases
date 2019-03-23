@@ -146,3 +146,6 @@ alias pgst="pg_ctl status -D /usr/local/var/postgres"
 alias h='heroku'
 alias marked="open -a Marked\ 2"
 alias o='open . &'
+
+# Include custom aliases
+[[ -f ~/.aliases.local ]] && source ~/.aliases.local ]

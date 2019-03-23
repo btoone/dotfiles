@@ -7,3 +7,11 @@ while read -r dotfile
 do
   ln -s $project_dir/$dotfile ~/".$dotfile"
 done < "$file"
+
+# Enable local customizations
+if [ ! -d ~/.dotfiles-local ]; then 
+  cp -R local ~/.dotfiles-local
+fi
+
+# Load new environment
+source ~/.bashrc

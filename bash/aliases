@@ -1,10 +1,27 @@
+# Unix
+alias c='clear'
+alias cls='clear; l'
 alias ht="history | tail -25"
 alias hst="history | grep"
-alias ls="ls -pG"
-# alias ls='ls -p --color=auto'                                                # dir colors on linux
-alias ll="ls -lph"
 alias hl="hl -i"
+alias k9="killall -9"
+alias ln="ln -v"
+alias mkdir='mkdir -p'
+# ls
+alias ll="ls -al"
+alias la="ls -A -l -G"
+alias l.='ls -d .[^.]*'
+alias ll.='ls -ld .[^.]*'
+alias l='ls -lhGt'  # -l long listing, most recent first with color
+alias lh="ls -lh"
+alias lt='ls -lt' # sort with recently modified first
+# cd
+alias cdc='cd ~/code'
+alias cdd='cd ~/code/dotfiles'
+alias s='cd ..'
+alias cdl='cd ~/Local\ Sites'
 
+# Grep
 alias gr="grep --color=always -i"                                              # use colors; change to auto if causing problems
 alias grr="grep -r --color=always -i"                                          # use colors; change to auto if causing problems
 alias grep="grep --color=always -i"                                            # use colors; change to auto if causing problems
@@ -14,11 +31,13 @@ alias gee="egrep -r --color=always -i"
 alias less="less -R"                                                           # make less work with colors from grep
 alias gal="alias | grep"
 
-# process management
+# Process Management
 alias pgrep='pgrep -fil'
 alias pg='pgrep -fil'
+alias tou='top -o cpu' # cpu
+alias tom='top -o vsize' # memory
 
-# tmux
+# Tmux
 alias tma="tmux attach -t"
 alias tmm="tmux attach || tmux"
 alias tmn="tmux new -s"
@@ -28,7 +47,7 @@ alias tmi="tmux info"
 alias tmk="tmux kill-session -t"
 alias tm="tmuxinator"
 
-# git
+# Git
 alias g='git'
 alias ga='git add'
 alias gaa='git add -A'
@@ -63,24 +82,19 @@ alias grm='git rm $(git ls-files --deleted)'  # stage deleted files - or just us
 # alias gnp="git-notpushed"
 # alias gui='open -a sourcetree .'
 
-# git flow
+# Git Flow
 alias gf='git flow'
 
-# bundler
-alias b='bundle exec'
+# Bundler
+alias b='bundle'
+alias bu='bundle update'
 alias be='bundle exec'
 alias bi='bundle install --path vendor'
-alias binit='bundle init'
-alias bu='bundle update'
 alias biv='bundle install --path vendor'
 alias bil='bundle install --path vendor --local'
 alias bip="bundle install --path vendor && bundle package && echo 'vendor/ruby' >> .gitignore"
 
-# rake
-alias rkr='bin/rake routes | $EDITOR'
-alias rkm='bin/rake db:migrate && bin/rake db:test:prepare'
-
-# rails
+# Rails
 alias tdl='tail -f log/development.log'
 alias ttl='tail -f log/test.log'
 alias scaffold='script/generate scaffold'
@@ -92,8 +106,11 @@ alias rg='bin/rails g'
 alias rs='bin/rails s'
 alias fs='bin/foreman start'
 alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rails/console/helpers'
+alias s='rspc'
+alias rkr='rake routes | $EDITOR'
+alias migrate='rake db:migrate && rake db:test:prepare'
 
-# vagrant
+# Vagrant
 alias vg='vagrant'
 alias vgs='vagrant status'
 alias vgsh='vagrant ssh'
@@ -102,45 +119,11 @@ alias vgh='vagrant halt'
 alias vgp='vagrant provision'
 alias vgr='vagrant reload'
 
-# utility
-alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'
+# Utility
+alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'    # reload env
+alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path
 
-# Pretty print the path
-alias path='echo $PATH | tr -s ":" "\n"'
-
-# cd
-alias cdc='cd ~/code'
-alias cdd='cd ~/code/dotfiles'
-alias s='cd ..'
-alias cdl='cd ~/Local\ Sites'
-
-# common
-alias a='ls -A' # -A all except literal . ..
-alias la="ls -A -l -G"
-alias c='clear'
-alias cls='clear; l'
-alias h='heroku'
-alias l.='ls -d .[^.]*'
-alias ll.='ls -ld .[^.]*'
-alias l='ls -lhGt'  # -l long listing, most recent first
-                    # -G color
-alias lh="ls -lh"
-alias lt='ls -lt' # sort with recently modified first
-alias md='mkdir -p'
-
-alias e='exit'
-alias k9="killall -9"
-
-# finder
-alias o='open . &'
-alias ff='open -a Firefox'
-alias evernote='open -a Evernote'
-
-# processes
-alias tou='top -o cpu' # cpu
-alias tom='top -o vsize' # memory
-
-# editor
+# Editor
 alias e="$EDITOR"
 alias ee="$EDITOR ."
 alias eg='$EDITOR ~/.gitconfig'
@@ -152,17 +135,14 @@ alias es="$EDITOR ~/code/dotfiles/vim/snippets/* vim/bundle/vim-snippets/snippet
 alias v="$VISUAL"
 alias vv="$VISUAL ."
 
-# vim
-alias vi="vim"
-
-# postgres
+# Postgres
 alias pgon="pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log"
 alias pgoff="pg_ctl stop -D /usr/local/var/postgres -s -m fast"
 alias pgrestart="pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/local/var/postgres/server.log"
 alias pgstatus="pg_ctl status -D /usr/local/var/postgres"
 alias pgst="pg_ctl status -D /usr/local/var/postgres"
 
-# shortcuts
-alias vj="vim ~/Journals"
+# Apps
+alias h='heroku'
 alias marked="open -a Marked\ 2"
-
+alias o='open . &'

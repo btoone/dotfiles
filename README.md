@@ -22,6 +22,9 @@ Change into the project directory and run the setup.
 
     cd dotfiles
     bin/setup
+    
+    # After successful setup, reload your shell env
+    source ~/.bashrc
 
 Features
 --------

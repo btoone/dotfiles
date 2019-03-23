@@ -14,7 +14,8 @@
 [diff]
   colorMoved = zebra
 [merge]
-  ff = only
+  # Enable if you have a fast-forward only merge startegy
+  # ff = only
 [alias]
   co = checkout
   cob = checkout -b

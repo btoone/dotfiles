@@ -11,7 +11,6 @@ case ${answer:0:1} in
     l|L|linux )
         echo "Checking out branch: linux"
         git checkout --track origin/linux
-        git branch -a
         __results+="\n* Switched to linux branch"
     ;;
     m|M|mac )

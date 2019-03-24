@@ -180,17 +180,20 @@ set hlsearch
 " Color shemes
 " =================================
 
-" colorscheme vividchalk
-" colorscheme github
-" colorscheme topfunky-light
-" colorscheme railscasts
-" colorscheme twilight
-" colorscheme codeschool
-" colorscheme grb256
 " colorscheme base16-default          " requires background=dark to be set
-" colorscheme tomorrow
-colorscheme tomorrow-night
-" colorscheme tomorrow-night-bright
+" colorscheme codeschool
+" colorscheme default
+" colorscheme emacs
+" colorscheme github
+" colorscheme grb256
+" colorscheme pink
+" colorscheme railscasts
+" colorscheme Tomorrow-Night-Bright
+colorscheme Tomorrow-Night
+" colorscheme Tomorrow
+" colorscheme topfunky-light
+" colorscheme twilight
+" colorscheme vividchalk
 
 set background=dark
 " set background=light

@@ -24,10 +24,12 @@ case ${answer:0:1} in
         echo "Continuing with normal setup"
     ;;
 esac
-    
+
+
 # Read from manifest and link dotfiles
 file="MANIFEST"
 project_dir=$(echo $PWD | sed -e "s%/bin%%")
+local_dir=$project_dir/local
 
 while read -r dotfile
 do
@@ -35,11 +37,13 @@ do
 done < "$file"
 __results+="\n* Setup symlinks to dotfiles in MANIFEST"
 
-# Enable local customizations
-if [ ! -d ~/.dotfiles-local ]; then 
-  cp -R local ~/.dotfiles-local
-fi
-__results+="\n* Copied dir \"local/\" as \".dotfiles-local/\""
+
+for file in $local_dir/*; do
+  filename=$(basename $file)
+  ln -s $file ~/".$filename"
+done
+__results+="\n* Copied local config files from dir \"local/\" to $HOME"
+
 
 # Prompt user to load new environment
 __results+="\n\n ---> ACTION REQUIRED: Reload your env by runing \"source ~/.bashrc\" to complete the install."

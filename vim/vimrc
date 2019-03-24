@@ -375,3 +375,7 @@ let g:airline_theme = 'powerlineish'
 " when its in the .git folder
 " set tags=.git/tags
 
+" Local config
+if filereadable($HOME . "/.vimrc.local")
+  source ~/.vimrc.local
+endif

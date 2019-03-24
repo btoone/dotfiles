@@ -267,13 +267,13 @@ nnoremap <C-l> <C-w>l
 " Find
 " =================================
 
-" ,f to launch find
-nnoremap <leader>ff :find *
+" Launch find
+nnoremap <leader>f :find *
 
-" ,fs to launch find in a horizontally split window
+" Launch find in a horizontally split window
 nnoremap <leader>fs :sfind *
 
-" ,fv to launch find in a vertically split window
+" Launch find in a vertically split window
 nnoremap <leader>fv :vert sfind *
 
 " Command-line window

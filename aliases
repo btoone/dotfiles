@@ -19,7 +19,6 @@ alias lt='ls -lt' # sort with recently modified first
 alias cdc='cd ~/code'
 alias cdd='cd ~/code/dotfiles'
 alias s='cd ..'
-alias cdl='cd ~/Local\ Sites'
 
 # Grep
 alias gr="grep --color=always -i"                                              # use colors; change to auto if causing problems
@@ -127,11 +126,9 @@ alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path
 alias e="$EDITOR"
 alias ee="$EDITOR ."
 alias eg='$EDITOR ~/.gitconfig'
-alias ea="$EDITOR ~/code/dotfiles/bash/aliases && reload"
-alias ee="$EDITOR ~/code/dotfiles/bash/env && reload"
-alias ev="$EDITOR ~/code/dotfiles/vim/vimrc && reload"
-alias et="$EDITOR ~/code/dotfiles/tmux.conf && reload"
-alias es="$EDITOR ~/code/dotfiles/vim/snippets/* vim/bundle/vim-snippets/snippets/* +CtrlPBuffer && reload"
+alias ea="$EDITOR ~/.aliases.local && reload"
+alias ev="$EDITOR ~/.vim/vimrc.local && reload"
+alias et="$EDITOR ~/.tmux.conf.local && reload"
 alias v="$VISUAL"
 alias vv="$VISUAL ."
 

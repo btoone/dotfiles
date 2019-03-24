@@ -14,7 +14,7 @@
 [diff]
   colorMoved = zebra
 [merge]
-  # Enable if you have a fast-forward only merge startegy
+  # Enable if you have a fast-forward only merge strategy
   # ff = only
 [alias]
   co = checkout

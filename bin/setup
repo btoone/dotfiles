@@ -40,7 +40,7 @@ __results+="\n* Setup symlinks to dotfiles in MANIFEST"
 
 for file in $local_dir/*; do
   filename=$(basename $file)
-  ln -s $file ~/".$filename"
+  cp $file ~/".$filename"
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME"
 

@@ -1,0 +1,3 @@
+# Allow multiple prefixes
+# set -g prefix C-a
+# set -g prefix2 C-b

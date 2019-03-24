@@ -37,12 +37,17 @@ do
 done < "$file"
 __results+="\n* Setup symlinks to dotfiles in MANIFEST"
 
-
 for file in $local_dir/*; do
   filename=$(basename $file)
   cp $file ~/".$filename"
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME"
+
+
+# Install Vundle
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall
+__results+="\n* Installed Vundle and packages listed in \"vim/vimrc.bundles\""
 
 
 # Prompt user to load new environment

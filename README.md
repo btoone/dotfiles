@@ -63,6 +63,6 @@ This project is licensed under the terms specified in the [`LICENSE.txt`] file.
 About
 -----
 
-This README was crafted with love and by following README best practices from
+This README was crafted with love and inspired by the README best practices of
 https://github.com/jehna/readme-best-practices
 

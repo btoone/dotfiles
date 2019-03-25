@@ -5,8 +5,13 @@ __results="
 Results:
 "
 
+# Test directory location
+if [[ ! ${PWD} =~ "dotfiles" ]]; then
+    echo "--- ERROR: Must be in the project root to install." ; exit 0
+fi
+
 # Determine if we need to switch to the linux branch
-read -p "Which environment? ([l]inux/[m]ac/[a]bort)? " answer
+read -rp "Which environment? ([l]inux/[m]ac/[a]bort)? " answer
 case ${answer:0:1} in
     l|L|linux )
         echo "Checking out branch: linux"
@@ -26,20 +31,20 @@ case ${answer:0:1} in
 esac
 
 
-# Read from manifest and link dotfiles
+# Install dotfiles
 file="MANIFEST"
-project_dir=$(echo $PWD | sed -e "s%/bin%%")
+project_dir=${PWD}
 local_dir=$project_dir/local
 
 while read -r dotfile
 do
-  ln -s $project_dir/$dotfile ~/".$dotfile"
+  ln -s "$project_dir"/"$dotfile" ~/".$dotfile"
 done < "$file"
 __results+="\n* Setup symlinks to dotfiles in MANIFEST"
 
-for file in $local_dir/*; do
-  filename=$(basename $file)
-  cp $file ~/".$filename"
+for file in "$local_dir"/*; do
+  filename=$(basename "$file")
+  cp "$file" ~/".$filename"
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME"
 

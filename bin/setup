@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
+BASE_DIR="$(basename $PWD)"
+
 # Setup results output
 __results="
 Results:
 "
 
-# Test directory location
-if [[ ! ${PWD} =~ "dotfiles" ]]; then
-    echo "--- ERROR: Must be in the project root to install." ; exit 0
+# Confirm we're installing from the project root
+if [[ $BASE_DIR != 'dotfiles' ]]; then
+  echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
 fi
+
 
 # Determine if we need to switch to the linux branch
 read -rp "Which environment? ([l]inux/[m]ac/[a]bort)? " answer
@@ -32,18 +35,18 @@ esac
 
 
 # Install dotfiles
-file="MANIFEST"
-project_dir=${PWD}
-local_dir=$project_dir/local
+readonly MANIFEST='MANIFEST'
+readonly LOCAL_DIR="$PWD/local"
 
-while read -r dotfile
+while read -r f
 do
-  ln -s "$project_dir"/"$dotfile" ~/".$dotfile"
-done < "$file"
+  # ln -s "$PWD"/"$f" ~/".$f"
+  echo "$PWD"/"$f" ~/".$f"
+done < $MANIFEST
 __results+="\n* Setup symlinks to dotfiles in MANIFEST"
 
-for file in "$local_dir"/*; do
-  filename=$(basename "$file")
+for file in "$LOCAL_DIR"/*; do
+  filename="$(basename $file)"
   cp "$file" ~/".$filename"
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME"

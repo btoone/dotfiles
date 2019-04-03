@@ -135,12 +135,6 @@ nnoremap <leader>sc :ScratchPreview<cr>
 imap <C-u> <C-w>
 " imap <C-]> <C-w>
 
-" ,vs to open a new vertical split and switch to it
-" nnoremap <leader>vs <C-w>v<C-w>l
-
-" ,sp to open a new horizontal split and switch to it
-" nnoremap <leader>sp <C-w>s<C-w>j
-
 " Open  markdown preview in background using Marked 2.app - Requires
 " itspriddle/vim-markdown plugin
 nmap <leader>p :MarkedOpen!<CR>

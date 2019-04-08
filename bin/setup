@@ -56,7 +56,7 @@ __results+="\n* Copied local config files from dir \"local/\" to $HOME"
 if [ ! -d "$HOME/.tmux/plugins" ]; then
   git clone https://github.com/tmux-plugins/tpm ~/tmux/plugins/tpm
   __results+="\n* Installed Tmux Plugin Manager \"tmux/plugins/tpm\""
-end
+fi
 
 # Install Vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim

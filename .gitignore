@@ -3,3 +3,5 @@ vim/.netrwhist
 vim/bundle
 bundle/cache
 vim/spell
+tmux/plugins
+tmux/resurrect

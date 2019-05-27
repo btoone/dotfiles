@@ -27,7 +27,9 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 set wildignore+=*/node_modules/*
 
 " Enable copy/paste integration with pbcopy/pbpaste
-set clipboard=unnamed
+if $TMUX == ''
+  set clipboard+=unnamed
+endif
 
 " Navigation
 " =================================

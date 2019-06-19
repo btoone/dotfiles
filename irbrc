@@ -14,3 +14,6 @@ else # MacRuby
     end
   end.new
 end
+
+# Enable auto-indenting
+IRB.conf[:AUTO_INDENT] = true

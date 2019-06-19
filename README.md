@@ -39,6 +39,7 @@ Features
 
 * Configuration
 * Plugins
+* Tetris (`<leader>te`)
 
 ### Tmux
 

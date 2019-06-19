@@ -42,6 +42,9 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'pangloss/vim-javascript'
 Plugin 'claco/jasmine.vim'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'leshill/vim-json'
+Plugin 'joukevandermaas/vim-ember-hbs'
 
 " Markdown support
 " Plugin 'godlygeek/tabular'

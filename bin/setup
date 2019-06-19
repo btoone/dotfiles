@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASE_DIR="$(basename $PWD)"
+BASE_DIR=$(basename "$PWD")
 
 # Setup results output
 __results="
@@ -45,7 +45,7 @@ done < $MANIFEST
 __results+="\n* Setup symlinks to dotfiles in MANIFEST"
 
 for file in "$LOCAL_DIR"/*; do
-  filename="$(basename $file)"
+  filename=$(basename "$file")
   cp "$file" ~/".$filename"
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME"

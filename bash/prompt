@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Colors from http://wiki.archlinux.org/index.php/Color_Bash_Prompt
 # Usage: "\[$bldwht\]\W\[$txtrst\]$ "
 

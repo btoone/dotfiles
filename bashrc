@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+# shellcheck source=/dev/null
 source ~/.bash/env
 source ~/.bash/config
 source ~/.bash/functions

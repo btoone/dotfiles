@@ -1,3 +1,6 @@
+# shellcheck shell=bash
+# shellcheck source=/dev/null
+
 # Unix
 alias c='clear'
 alias cls='clear; l'

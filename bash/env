@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Environment variables. Note the the position of each line in this file that 
 # effects PATH matters.
 

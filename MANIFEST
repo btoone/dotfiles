@@ -14,5 +14,4 @@ sqliterc
 tmux.conf
 bash
 tmux
-tmuxinator
 vim

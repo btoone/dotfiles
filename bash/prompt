@@ -75,16 +75,19 @@ function bash_prompt_cmd() {
   vcprompt_length=${#vcprompt}
   
   # rbenv
-  ruby_prompt_path=`which rbenv`
-  ruby_prompt=`$ruby_prompt_path version-name`
-  ruby_prompt_length=${#ruby_prompt}
-  padding=$(( COLUMNS - username_length - basedir_length - vcprompt_length - ruby_prompt_length + 30))
+  # ruby_prompt_path=`which rbenv`
+  # ruby_prompt=`$ruby_prompt_path version-name`
+  # ruby_prompt_length=${#ruby_prompt}
+  # padding=$(( COLUMNS - username_length - basedir_length - vcprompt_length - ruby_prompt_length + 30))
   
   # rvm
   # ruby_prompt_path=`which rvm-prompt`
   # ruby_prompt=`$ruby_prompt_path v g`
   # ruby_prompt_length=${#ruby_prompt}
   # padding=$(( COLUMNS - histcmd_length - basedir_length - vcprompt_length - ruby_prompt_length + 25))
+
+  # Default padding
+  padding=$(( COLUMNS - username_length - basedir_length - vcprompt_length + 30))
 
   # various unicodes to fit my mood 
   # ✖ ★  ➽  ➲  ➔  ➤  ➥  →  ™  ‣ ♦  ✩  ✪  ❯ ❱ ❶  ✲ ✳ 

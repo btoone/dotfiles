@@ -128,14 +128,14 @@ alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'    # reload env
 alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path
 
 # Editor
-alias e="$EDITOR"
-alias ee="$EDITOR ."
-alias eg='$EDITOR ~/.gitconfig'
-alias ea="$EDITOR ~/.aliases.local && reload"
-alias ev="$EDITOR ~/.vim/vimrc.local && reload"
-alias et="$EDITOR ~/.tmux.conf.local && reload"
-alias v="$VISUAL"
-alias vv="$VISUAL ."
+alias e="\$EDITOR"
+alias ee="\$EDITOR ."
+alias eg='\$EDITOR ~/.gitconfig'
+alias ea="\$EDITOR ~/.aliases.local && reload"
+alias ev="\$EDITOR ~/.vim/vimrc.local && reload"
+alias et="\$EDITOR ~/.tmux.conf.local && reload"
+alias v="\$VISUAL"
+alias vv="\$VISUAL ."
 
 # Postgres
 alias pgon="pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log"
@@ -150,4 +150,4 @@ alias marked="open -a Marked\ 2"
 alias o='open . &'
 
 # Include custom aliases
-[[ -f ~/.aliases.local ]] && source ~/.aliases.local ]
+[[ -f ~/.aliases.local ]] && source ~/.aliases.local

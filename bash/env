@@ -2,14 +2,7 @@
 # Environment variables. Note the the position of each line in this file that 
 # effects PATH matters.
 
-## RBENV
-# 
-# Enable shims and autocomplete. FYI this will prepend rbenv path info to PATH 
-# each time `~/.bashrc` is reloaded.
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
 ## PATH
-#
 # Always prepend the value to $PATH. This means that the last export added takes
 # first precedence.
 # 

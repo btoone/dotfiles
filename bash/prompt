@@ -48,8 +48,10 @@ bakwht='\e[47m'   # White
 # Add padding to push ruby version to the left side of the prompt window
 #
 function padding {
+  printf "%${padding}s"
+
   # rbenv
-  printf "%${padding}s" "\$(`which rbenv` version-name)"     # this string of 25 chars taking away more padding
+  # printf "%${padding}s" "\$(`which rbenv` version-name)"     # this string of 25 chars taking away more padding
   
   # rvm
   # printf "%${padding}s" "\$(~/.rvm/bin/rvm-prompt v g)"

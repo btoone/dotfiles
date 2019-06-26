@@ -71,6 +71,8 @@ __results+="
 
 1. Reload your env by runing \"source ~/.bashrc\" to complete the install.
 2. Source your preferred ruby manager in `.bashrc.local`
+3. Source your tmux config with `tmux source ~/.tmux.conf`
+	 a. Install tmux plugins with `prefix + I` (capital I)
 "
 
 echo -e "$__results"

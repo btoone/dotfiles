@@ -365,9 +365,6 @@ set expandtab
 " Set region to US
 set spelllang=en_us
 
-" Enable symbol usage with powerline (vim-airline/vim-airline)
-" let g:airline_powerline_fonts = 1
-
 " Set airline theme. Options are: powerlineish, 'tomorrow', 'papercolor', 'bubblegum', 'simple' 
 let g:airline_theme = 'powerlineish'
 

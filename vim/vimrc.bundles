@@ -28,6 +28,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'mtth/scratch.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'junegunn/vim-easy-align'
 
 " Snipmate and dependancies
 Plugin 'MarcWeber/vim-addon-mw-utils'

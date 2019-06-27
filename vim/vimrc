@@ -297,6 +297,15 @@ let g:netrw_banner = 0
 "   autocmd VimEnter * :Vexplore
 " augroup END
 
+" Easy Align Plugin
+" =================
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 
 " Miscellaneous
 " =================================

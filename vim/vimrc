@@ -145,17 +145,8 @@ nmap <leader>p :MarkedOpen!<CR>
 nmap <leader>l :set list!<CR>
 set listchars=eol:¬
 
-" Quickly edit and source to reload the vimrc file. To reload your config 
-" manually run the command `:source ~/.vimrc`
-" nmap <silent> <leader>ev :e $MYVIMRC<CR>    " Use bash alias instead - 'ev'; Having another leader with the same first character slows performance
-nmap <silent> <leader>sv :source $MYVIMRC<CR>
-
 " Searching
 " =================================
-
-" Clear search highlight
-" WARNING – Breaks quickfix and argslist jumping. Use :noh manually each time instead.
-" noremap <CR> :set hlsearch!<CR>
 
 " Default to regex search
 nnoremap / /\v

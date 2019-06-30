@@ -1,13 +1,14 @@
-# set vim to be the default editor for readline
-set editing-mode vi
+# Set vim to be the default editor for readline
+# set editing-mode vi
 
 $if mode=vi
-  # normal mode
+  # Normal mode
   set keymap vi-command
   "H": beginning-of-line
   "L": end-of-line
-  # insert mode
+
+  # Insert mode
   set keymap vi-insert
-  ";;": vi-movement-mode  # remap escape
+  # ...
 $endif
 

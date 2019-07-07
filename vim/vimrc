@@ -297,6 +297,10 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+" Easytags
+" ========
+let g:easytags_async=1
+let g:easytags_auto_highlight=0
 
 " Miscellaneous
 " =================================

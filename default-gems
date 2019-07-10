@@ -2,4 +2,5 @@ bundler
 pry
 byebug
 gem-ctags
+foreman
 

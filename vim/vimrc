@@ -145,6 +145,9 @@ nmap <leader>p :MarkedOpen!<CR>
 nmap <leader>l :set list!<CR>
 set listchars=eol:¬
 
+" Quicker Git Status (fugitive)
+nmap <leader>g :Gstatus<CR>
+
 " Searching
 " =================================
 

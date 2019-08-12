@@ -1,54 +1,54 @@
 # vim: ft=gitconfig
 [init]
-  templatedir = ~/.git_template
+    templatedir = ~/.git_template
 [push]
-  default = current
+    default = current
 [color]
-  ui = auto
+    ui = auto
 [core]
-  autocrlf = input
-  editor = vim
-  excludesfile = ~/.gitignore
+    autocrlf = input
+    editor = vim
+    excludesfile = ~/.gitignore
 [commit]
-  template = ~/.gitmessage
+    template = ~/.gitmessage
 [diff]
-  colorMoved = zebra
+    colorMoved = zebra
 [merge]
-  # Enable if you have a fast-forward only merge strategy
-  # ff = only
+    # Enable if you have a fast-forward only merge strategy
+    # ff = only
 [alias]
-  co = checkout
-  cob = checkout -b
-  ds = diff --staged
-  dlc = diff --staged HEAD~1
-  uncommit = reset --soft HEAD~1
-  unstage = reset HEAD
+    co = checkout
+    cob = checkout -b
+    ds = diff --staged
+    dlc = diff --staged HEAD~1
+    uncommit = reset --soft HEAD~1
+    unstage = reset HEAD
 
-  # Delete branch locally and on remote
-  rmb = !sh -c 'git branch -D $1 && git push origin --delete $1' -
+    # Delete branch locally and on remote
+    rmb = !sh -c 'git branch -D $1 && git push origin --delete $1' -
 
-  # Add all unstaged changes to previous commit
-  caa = commit -a --amend -C HEAD
+    # Add all unstaged changes to previous commit
+    caa = commit -a --amend -C HEAD
 
-  # Add only the staged changes to previous commit
-  csa = commit --amend -C HEAD
+    # Add only the staged changes to previous commit
+    csa = commit --amend -C HEAD
 
-  # List all git aliases
-  la = !git config -l | grep alias | cut -c 7-
+    # List all git aliases
+    la = !git config -l | grep alias | cut -c 7-
 
-  # List all remotes
-  rem = !git config -l | grep -e ^remote.*url
+    # List all remotes
+    rem = !git config -l | grep -e ^remote.*url
 
-  # Grep on filename. Usage: git f <pattern>
-  f = !git ls-files | grep -i
+    # Grep on filename. Usage: git f <pattern>
+    f = !git ls-files | grep -i
 
-  # Add files with long path. Usage: git long <pattern-in-full-path>
-  long = "!f() { git add $(git ls-files -m | grep -i $1;) && git status; }; f"
+    # Add files with long path. Usage: git long <pattern-in-full-path>
+    long = "!f() { git add $(git ls-files -m | grep -i $1;) && git status; }; f"
 
-  # Undo commit(s). Files will be unstaged
-  r = reset HEAD
-  rr = reset HEAD~1
-  rrr = reset HEAD~2
+    # Undo commit(s). Files will be unstaged
+    r = reset HEAD
+    rr = reset HEAD~1
+    rrr = reset HEAD~2
 [user]
-  name = Brandon Toone
-  email = brandon.toone@borboletabeauty.com
+    name = Brandon Toone
+    email = brandon.toone@borboletabeauty.com

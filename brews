@@ -1,0 +1,25 @@
+asdf \
+cowsay \
+ctags \
+curl \
+entr \
+git \
+mysql \
+node \
+php \
+postgresql \
+shellcheck \
+tmux \
+tree \
+unzip \
+vcprompt \
+vim \
+watch \
+wget
+
+
+# ASDF installs via setup page
+brew install \
+  coreutils automake autoconf openssl \
+  libyaml readline libxslt libtool unixodbc \
+  unzip curl

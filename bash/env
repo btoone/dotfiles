@@ -46,3 +46,6 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
 
 ## PostgreSQL
 # export DATABASE_URL=postgres://localhost/database-name
+
+## OpenSSL (mysql2 gem)
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/

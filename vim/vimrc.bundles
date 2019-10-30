@@ -47,6 +47,8 @@ Plugin 'claco/jasmine.vim'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'leshill/vim-json'
 Plugin 'joukevandermaas/vim-ember-hbs'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'cakebaker/scss-syntax.vim'
 
 " Markdown support
 " Plugin 'godlygeek/tabular'

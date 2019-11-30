@@ -128,9 +128,11 @@ alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'    # reload env
 alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path
 
 # Editor
+alias vi="\$EDITOR"
+alias vim="\$EDITOR"
 alias e="\$EDITOR"
 alias ee="\$EDITOR ."
-alias eg='\$EDITOR ~/.gitconfig'
+alias eg="\$EDITOR ~/.gitconfig"
 alias ea="\$EDITOR ~/.aliases.local && reload"
 alias ev="\$EDITOR ~/.vim/vimrc.local && reload"
 alias et="\$EDITOR ~/.tmux.conf.local && reload"

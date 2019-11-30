@@ -217,7 +217,7 @@ set number
 set numberwidth=5
 
 " Change line numberings for ease with writing commands
-" set relativenumber
+set relativenumber
 
 
 " Buffer handling

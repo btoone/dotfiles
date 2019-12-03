@@ -15,9 +15,9 @@
 #     /sbin
 #
 
-export PATH='/usr/local/sbin:$PATH'                                             # homebrew installs admin tools here
-export PATH='$HOME/bin:$PATH'                                                   # personal tools
-export PATH='./bin:$PATH'                                                       # project binstubs
+export PATH="/usr/local/sbin:$PATH"                                             # homebrew installs admin tools here
+export PATH="$HOME/bin:$PATH"                                                   # personal tools
+export PATH="./bin:$PATH"                                                       # project binstubs
 
 ## Rubygems
 export RUBYOPT=rubygems

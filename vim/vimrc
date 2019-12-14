@@ -20,6 +20,9 @@ filetype plugin indent on
 " Enable syntax highlighting
 syntax enable
 
+" Add subfolders to path for recursive search
+set path+=**
+
 " Plugins
 " =================================
 

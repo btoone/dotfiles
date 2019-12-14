@@ -1,23 +1,27 @@
-" Must come first because it changes other options
-set nocompatible
-filetype off
-
-" Plugins
+" Globals
 " =================================
 
-" Source the Vundle config
+" Support filetypes and enable modern features of vim
+set nocompatible
+
+" Source the Vundle config (turns off filetype) to manage plugins
 if filereadable(expand("~/.vim/vimrc.bundles"))
   source ~/.vim/vimrc.bundles
 endif
 
-filetype on
-filetype plugin on
+" Turn on filetype detection, load plugin files for specific file types and
+" enable the loading of indent files. See `:help filetype` for more info.
+" Same as:
+"   filetype on
+"   filetype plugin on
+"   filetype indent on
+filetype plugin indent on
 
-" Fixes vim-endwise indent problem
-filetype indent on
+" Enable syntax highlighting
+syntax enable
 
-" Turn on syntax highlighting
-syntax on
+" Plugins
+" =================================
 
 " Load the matchit plugin
 runtime macros/matchit.vim
@@ -46,7 +50,6 @@ nnoremap L $
 
 " Better default nav behavior
 " nnoremap k gk
-
 
 " Markdown
 " =================================

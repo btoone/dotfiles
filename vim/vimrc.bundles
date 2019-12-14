@@ -9,6 +9,9 @@
 "     $ vim +PluginInstall +qall
 " =============================================================================
 
+" required
+filetype off
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 
@@ -68,6 +71,5 @@ Plugin 'slim-template/vim-slim.git'
 Plugin 'tpope/vim-markdown'
 Plugin 'itspriddle/vim-marked'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-
+" All of your Plugins must be added before the following line; required
+call vundle#end()

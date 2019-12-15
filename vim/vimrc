@@ -195,6 +195,8 @@ colorscheme Tomorrow-Night
 set background=dark
 " set background=light
 
+" highlight current line of text
+set cursorline
 
 " Folding settings
 " =================================

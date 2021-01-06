@@ -19,12 +19,10 @@ export PATH="/usr/local/sbin:$PATH"                                             
 export PATH="$HOME/bin:$PATH"                                                   # personal tools
 export PATH="./bin:$PATH"                                                       # project binstubs
 
-## Rubygems
-export RUBYOPT=rubygems
-
 ## Editor
 export EDITOR='/usr/local/bin/vim'
 export VISUAL='atom'
+export BUNDLE_EDITOR="$EDITOR"
 
 ## History
 export HISTSIZE=10000

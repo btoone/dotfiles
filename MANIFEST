@@ -1,5 +1,8 @@
 aliases
+asdfrc
+bash
 bashrc
+default-gems
 gemrc
 git-completion
 gitconfig
@@ -12,9 +15,6 @@ pryrc
 rspec
 sqliterc
 tmux.conf
-bash
+tool-versions
 tmux
 vim
-asdfrc
-default-gems
-

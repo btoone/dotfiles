@@ -1,0 +1,34 @@
+# Plugins used for default install
+# Install location is: `~/.vim/pack/default/start/`
+git clone https://github.com/preservim/nerdtree.git vim/pack/default/start/nerdtree
+git clone https://github.com/preservim/tagbar.git vim/pack/default/start/tagbar
+
+git clone https://github.com/xolox/vim-easytags.git vim/pack/default/start/easytags
+git clone https://github.com/xolox/vim-misc.git vim/pack/default/start/misc
+
+git clone https://github.com/vim-airline/vim-airline.git vim/pack/default/start/airline
+git clone https://github.com/vim-airline/vim-airline-themes.git vim/pack/default/start/airline-themes
+
+git clone https://github.com/kien/ctrlp.vim.git vim/pack/default/start/ctrlp
+git clone https://github.com/junegunn/vim-easy-align.git vim/pack/default/start/easy-align
+git clone https://github.com/tmux-plugins/vim-tmux.git vim/pack/default/start/tmux
+git clone https://github.com/vim-ruby/vim-ruby.git vim/pack/default/start/ruby
+git clone https://github.com/pangloss/vim-javascript.git vim/pack/default/start/javascript
+git clone https://github.com/leshill/vim-json.git vim/pack/default/start/json
+git clone https://github.com/hail2u/vim-css3-syntax.git vim/pack/default/start/css3-syntax
+git clone https://github.com/cakebaker/scss-syntax.vim.git vim/pack/default/start/scss-syntax
+git clone https://github.com/slim-template/vim-slim.git vim/pack/default/start/slim
+git clone https://github.com/itspriddle/vim-marked.git vim/pack/default/start/marked
+
+# Plugins used for default install
+# Install location is: `~/.vim/pack/tpope/start/`
+git clone https://github.com/tpope/vim-bundler.git vim/pack/tpope/start/bundler
+git clone https://github.com/tpope/vim-commentary.git vim/pack/tpope/start/commentary
+git clone https://github.com/tpope/vim-endwise.git vim/pack/tpope/start/endwise
+git clone https://github.com/tpope/vim-fugitive.git vim/pack/tpope/start/fugitive
+git clone https://github.com/tpope/vim-jdaddy.git vim/pack/tpope/start/jdaddy
+git clone https://github.com/tpope/vim-markdown.git vim/pack/tpope/start/markdown
+git clone https://github.com/tpope/vim-rails.git vim/pack/tpope/start/rails
+git clone https://github.com/tpope/vim-surround.git vim/pack/tpope/start/surround
+git clone https://github.com/tpope/vim-unimpaired.git vim/pack/tpope/start/unimpaired
+

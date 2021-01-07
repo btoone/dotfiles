@@ -18,13 +18,22 @@ Clone the directory.
 
     git clone git@github.com:caspyin/dotfiles.git
 
-Change into the project directory and run the setup.
+Change into the project directory and run the setup. The setup script will do 
+the following:
 
-    cd dotfiles
-    bin/setup
-    
-    # After successful setup, reload your shell env
-    source ~/.bashrc
+1. Checkout the correct branch for mac or linux installs
+2. Create a symlink for each file listed in `MANIFEST` 
+3. Setup local configs
+4. Install `tpm` for TMUX
+5. Install Vim plugins to `~/.vim/pack/*`
+
+```
+cd dotfiles
+bin/setup
+
+# After successful setup, reload your shell env
+source ~/.bashrc
+```
 
 Features
 --------
@@ -39,7 +48,17 @@ Features
 
 * Configuration
 * Plugins
-* Tetris (`<leader>te`)
+
+#### Plugin Management
+
+Plugins (or packages) are installed using the built-in package support that
+comes with Vim 8. 
+
+Which means they are installed to `~/.vim/pack/`.
+
+Anything in an `opt/` dir can be loaded manually using `:packadd! packagename`.
+
+See `:help package` for more info.
 
 ### Tmux
 

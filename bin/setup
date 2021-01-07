@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Value of BASE_DIR is "dotfiles". The README instructs the user to run 
+# `bin/setup` and errors if called from another location.
 BASE_DIR=$(basename "$PWD")
 
 # Setup results output
@@ -11,7 +13,6 @@ Summary:
 if [[ $BASE_DIR != 'dotfiles' ]]; then
   echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
 fi
-
 
 # Determine if we need to switch to the linux branch
 read -rp "Which environment? ([l]inux/[m]ac/[a]bort)? " answer
@@ -33,7 +34,6 @@ case ${answer:0:1} in
     ;;
 esac
 
-
 # Install dotfiles
 readonly MANIFEST='MANIFEST'
 readonly LOCAL_DIR="$PWD/local"
@@ -42,7 +42,7 @@ while read -r f
 do
   ln -s "$PWD"/"$f" ~/".$f"
 done < $MANIFEST
-__results+="\n* Setup symlinks to dotfiles in MANIFEST"
+__results+="\n* Created symlink for each dotfiles listed in MANIFEST"
 
 for file in "$LOCAL_DIR"/*; do
   filename=$(basename "$file")
@@ -50,18 +50,16 @@ for file in "$LOCAL_DIR"/*; do
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME"
 
-
 # Install TMUX plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then
   git clone https://github.com/tmux-plugins/tpm tmux/plugins/tpm
   __results+="\n* Installed Tmux Plugin Manager \"tmux/plugins/tpm\""
 fi
 
-# Install Vundle
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
-__results+="\n* Installed Vundle and packages listed in \"vim/vimrc.bundles\""
+# Install Vim plugins from the plugin manifest
+source vim/vimrc.plugins
 
+__results+="\n* Installed plugins to \"~/.vim/pack/*\""
 
 # Prompt user to load new environment
 __results+=" 
@@ -73,6 +71,7 @@ __results+="
 2. Source your preferred ruby manager in `.bashrc.local`
 3. Source your tmux config with `tmux source ~/.tmux.conf`
 	 a. Install tmux plugins with `prefix + I` (capital I)
+4. Generate helptags for vim by doing `:helptags ALL`
 "
 
 echo -e "$__results"

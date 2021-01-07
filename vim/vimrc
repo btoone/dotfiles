@@ -4,11 +4,6 @@
 " Support filetypes and enable modern features of vim
 set nocompatible
 
-" Source the Vundle config (turns off filetype) to manage plugins
-if filereadable(expand("~/.vim/vimrc.bundles"))
-  source ~/.vim/vimrc.bundles
-endif
-
 " Turn on filetype detection, load plugin files for specific file types and
 " enable the loading of indent files. See `:help filetype` for more info.
 " Same as:
@@ -30,7 +25,6 @@ set path+=**
 runtime macros/matchit.vim
 
 " Configure ctrlp
-set runtimepath^=~/.vim/bundle/ctrlp.vim
 set wildignore+=*/node_modules/*
 
 " Enable copy/paste integration with pbcopy/pbpaste

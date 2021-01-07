@@ -1,7 +1,6 @@
 .DS_Store
 vim/.netrwhist
-vim/bundle
-bundle/cache
 vim/spell
 tmux/plugins
 tmux/resurrect
+vim/pack/*

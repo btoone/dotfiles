@@ -100,9 +100,6 @@ set modelines=10
 " Remap leader key to be spacebar
 let mapleader = " "
 
-" Quickly switch to previous file
-map <leader>e :edit#<CR>
-
 " Toggle the nerdtree window with leader + d
 nmap <leader>d :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1    "Show hidden files by default; toggle with Shift+i

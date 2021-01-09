@@ -58,3 +58,7 @@
 [mergetool "sourcetree"]
     cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
     trustExitCode = true
+[pull]
+	rebase = true
+[fetch]
+	prune = true

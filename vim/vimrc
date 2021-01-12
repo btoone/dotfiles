@@ -26,6 +26,7 @@ runtime macros/matchit.vim
 
 " Configure ctrlp
 set wildignore+=*/node_modules/*
+let g:ctrlp_custom_ignore = '\v[\/](doc|log)$'
 
 " Enable copy/paste integration with pbcopy/pbpaste
 if $TMUX == ''

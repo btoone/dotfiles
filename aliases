@@ -78,6 +78,7 @@ alias gs='git status --short'
 alias gss='git status'
 alias grem='git config -l | grep -e ^remote.*url'
 alias grm='git rm $(git ls-files --deleted)'  # stage deleted files - or just use `git add -u`
+alias gls='clear; gss'
 # alias gdm='git diff master'
 # alias gdn='git diff --name-status -r'
 # alias gds='git diff --stat -r

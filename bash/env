@@ -23,6 +23,7 @@ export PATH="./bin:$PATH"                                                       
 export EDITOR='/usr/local/bin/vim'
 export VISUAL='atom'
 export BUNDLE_EDITOR="$EDITOR"
+export VIMRC="$HOME/.vim/vimrc"
 
 ## History
 export HISTSIZE=10000

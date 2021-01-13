@@ -365,6 +365,7 @@ set spelllang=en_us
 
 " Set airline theme. Options are: powerlineish, 'tomorrow', 'papercolor', 'bubblegum', 'simple' 
 let g:airline_theme = 'powerlineish'
+let g:airline_powerline_fonts = 1
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")

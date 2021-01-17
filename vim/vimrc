@@ -168,6 +168,8 @@ set hlsearch
 
 " Color shemes
 " =================================
+"
+" Install color scheme files to vim/colors
 
 " colorscheme base16-default          " requires background=dark to be set
 " colorscheme codeschool
@@ -175,10 +177,11 @@ set hlsearch
 " colorscheme emacs
 " colorscheme github
 " colorscheme grb256
+colorscheme PaperColor
 " colorscheme pink
 " colorscheme railscasts
 " colorscheme Tomorrow-Night-Bright
-colorscheme Tomorrow-Night
+" colorscheme Tomorrow-Night
 " colorscheme Tomorrow
 " colorscheme topfunky-light
 " colorscheme twilight
@@ -364,7 +367,7 @@ set expandtab
 set spelllang=en_us
 
 " Set airline theme. Options are: powerlineish, 'tomorrow', 'papercolor', 'bubblegum', 'simple' 
-let g:airline_theme = 'powerlineish'
+let g:airline_theme = 'papercolor'
 let g:airline_powerline_fonts = 1
 
 " Local config

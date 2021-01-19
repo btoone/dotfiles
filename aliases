@@ -4,11 +4,11 @@
 # Unix
 alias c='clear'
 alias cls='clear; l'
-alias ht="history | tail -25"
-alias hst="history | grep"
-alias hl="hl -i"
-alias k9="killall -9"
-alias ln="ln -v"
+alias ht='history | tail -25'
+alias hst='history | grep'
+alias hl='hl -i'
+alias k9='killall -9'
+alias ln='ln -v'
 alias mkdir='mkdir -p'
 alias cwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 # ls

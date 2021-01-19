@@ -31,7 +31,7 @@ alias grep="grep --color=always -i"                                            #
 alias egrep="egrep --color=always -i"
 alias ge="egrep --color=always -i"
 alias gee="egrep -r --color=always -i"
-alias less="less -R -m -N -i -J"                                               # make less work with colors from grep
+alias less="less --RAW-CONTROL-CHARACTERS --long-prompt --LINE-NUMBERS --ignore-case --status-column"                                               # make less work with colors from grep
 alias gal="alias | grep"
 
 # Process Management

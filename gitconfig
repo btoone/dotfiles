@@ -61,6 +61,6 @@
     cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
     trustExitCode = true
 [pull]
-	rebase = true
+    rebase = true
 [fetch]
-	prune = true
+    prune = true

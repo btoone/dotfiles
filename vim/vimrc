@@ -1,15 +1,15 @@
 " Globals
-" =================================
-
+" =======
 " Support filetypes and enable modern features of vim
 set nocompatible
 
 " Turn on filetype detection, load plugin files for specific file types and
 " enable the loading of indent files. See `:help filetype` for more info.
-" Same as:
-"   filetype on
-"   filetype plugin on
-"   filetype indent on
+" Essentially the same as:
+"
+"     filetype on
+"     filetype plugin on
+"     filetype indent on
 filetype plugin indent on
 
 " Enable syntax highlighting
@@ -19,7 +19,7 @@ syntax enable
 set path+=**
 
 " Plugins
-" =================================
+" =======
 
 " Load the matchit plugin
 runtime macros/matchit.vim
@@ -34,23 +34,14 @@ if $TMUX == ''
 endif
 
 " Navigation
-" =================================
-
-" Use Tab to navigate between split windows - conflicts with snippets
-" noremap <tab> <C-w><C-w>
+" ==========
 
 " Remap shift-h and shift-l to jump to the beginning and end of the line
 nnoremap H ^
 nnoremap L $
 
-" Better default nav behavior
-" nnoremap j gj
-
-" Better default nav behavior
-" nnoremap k gk
-
 " Markdown
-" =================================
+" ========
 
 " Autocomplete with dictionary words when spell check is on using C-n and C-p
 set complete+=kspell
@@ -65,12 +56,11 @@ autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 autocmd BufReadPost,BufNewFile *.md set filetype=markdown
 
 " Git
-" =================================
+" ===
 
 " Automatically wrap at 72 characters and spell check git commit messages
 autocmd FileType gitcommit setlocal textwidth=72
 autocmd FileType gitcommit setlocal spell
-
 
 " Prevent backup behavior
 " =================================
@@ -82,28 +72,24 @@ set nowritebackup
 " Turn off using swap files
 set noswapfile
 
-" Keep backup and swap files in one location
-" set backupdir=$HOME/.vim/tmp//,.
-" set directory=$HOME/.vim/tmp//,.
-
-" Mode lines
-" =================================
+" Mode Lines
+" ==========
 
 " Overide OSX modelines=0; Enables modelines in files
 " http://unix.stackexchange.com/q/19875/30303
 set modeline
 set modelines=10
 
-
-" Leader key remaps
-" =================================
+" Leader Key Remaps
+" =================
 
 " Remap leader key to be spacebar
 let mapleader = " "
 
 " Toggle the nerdtree window with leader + d
 nmap <leader>d :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1    "Show hidden files by default; toggle with Shift+i
+" Show hidden files by default; toggle with Shift+i
+let NERDTreeShowHidden=1    
 
 " Remap leader + a (,a) to Ack
 nnoremap <leader>a :Ack
@@ -113,14 +99,14 @@ nmap <leader>q :q<CR>
 nmap <leader>w :w!<CR>
 
 " Index ctags from any project, including those outside Rails
-map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
+map <leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
 
 " Use ctrl+p to serach ctags
 nnoremap <leader>. :CtrlPTag<CR>
 nnoremap <leader>b :CtrlPBuffer<CR>
 
 " Toggle the tagbar
-nnoremap <silent> <Leader>t :TagbarToggle<CR>
+nnoremap <silent> <leader>t :TagbarToggle<CR>
 
 " Toggle spell
 nmap <F5> :setlocal spell!<cr>
@@ -128,12 +114,8 @@ nmap <F5> :setlocal spell!<cr>
 " Open a new unnamed buffer using ctrl + n
 nnoremap <leader>n :enew<CR>
 
-" Toggle the scratch buffer - use <tab> to close buffer
-nnoremap <leader>sc :ScratchPreview<cr>
-
 " Make it easier to backspace while typing
 imap <C-u> <C-w>
-" imap <C-]> <C-w>
 
 " Open  markdown preview in background using Marked 2.app - Requires
 " itspriddle/vim-markdown plugin
@@ -147,7 +129,7 @@ set listchars=eol:¬
 nmap <leader>g :Gstatus<CR>
 
 " Searching
-" =================================
+" =========
 
 " Default to regex search
 nnoremap / /\v
@@ -165,36 +147,17 @@ set incsearch
 " Highlight matches as you type
 set hlsearch
 
-
-" Color shemes
-" =================================
-"
-" Install color scheme files to vim/colors
-
-" colorscheme base16-default          " requires background=dark to be set
-" colorscheme codeschool
-" colorscheme default
-" colorscheme emacs
-" colorscheme github
-" colorscheme grb256
+" Color Schemes
+" =============
 colorscheme PaperColor
-" colorscheme pink
-" colorscheme railscasts
-" colorscheme Tomorrow-Night-Bright
-" colorscheme Tomorrow-Night
-" colorscheme Tomorrow
-" colorscheme topfunky-light
-" colorscheme twilight
-" colorscheme vividchalk
 
 set background=dark
-" set background=light
 
 " highlight current line of text
 set cursorline
 
 " Folding settings
-" =================================
+" ================
 
 " Fold based on indent
 set foldmethod=indent
@@ -211,9 +174,8 @@ set foldlevel=1
 autocmd FileType ruby setlocal foldmethod=syntax
 " autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 
-
 " Line numbering
-" =================================
+" ==============
 
 " Show line numbers
 set number
@@ -222,34 +184,16 @@ set numberwidth=5
 " Change line numberings for ease with writing commands
 set relativenumber
 
-
-" Buffer handling
-" =================================
-
-nnoremap <silent> [b :bprevious <CR>
-nnoremap <silent> ]b :bnext <CR>
-
-
-" Rotating results in an ack search
-" =================================
-
-map <C-n> :cn<CR>
-map <C-p> :cp<CR>
-
-
 " Disable the arrow keys
-" =================================
+" ======================
 
-" nnoremap <Up> <nop>
 nnoremap <Left>  :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up>    :echoe "Use k"<CR>
 nnoremap <Down>  :echoe "Use j"<CR>
-" inoremap <Left>  <ESC>:echoe 'Exit insert mode and use a movment instead'<CR>
-
 
 " Splits
-" =================================
+" ======
 
 " Normalize split behavior
 set splitbelow
@@ -261,59 +205,24 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Find
-" =================================
-
-" Launch find
-nnoremap <leader>f :find *
-
-" Launch find in a horizontally split window
-nnoremap <leader>fs :sfind *
-
-" Launch find in a vertically split window
-nnoremap <leader>fv :vert sfind *
-
-" Command-line window
-" =================================
-
-" Remap :: to open the command-line history window (q:)
-nnoremap :: q:
-
-" Remap // to open the command-line search window (q/)
-nnoremap // q/
-
 " Default Directory – Netrw
-" =================================
+" =========================
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
-" let g:netrw_browse_split = 4
-" let g:netrw_altv = 1
-" let g:netrw_winsize = 25
-" augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-" augroup END
-
-" Easy Align Plugin
-" =================
-
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
 
 " Easytags
 " ========
 let g:easytags_async=1
 let g:easytags_auto_highlight=0
 
-" Miscellaneous
-" =================================
+" Airline
+" =======
+" Set airline theme. Options are: powerlineish, 'tomorrow', 'papercolor', 'bubblegum', 'simple' 
+let g:airline_theme = 'papercolor'
+let g:airline_powerline_fonts = 1
 
-" Map ESC to ;;
-inoremap ;; <ESC>
-vnoremap ;; <ESC>
+" Miscellaneous
+" =============
 
 " Display incomplete commands
 set showcmd
@@ -360,15 +269,8 @@ set shiftwidth=2
 " Use spaces instead of tabs
 set expandtab
 
-" Show the status line all the time (overridden by vim-airline)
-" set laststatus=1
-
 " Set region to US
 set spelllang=en_us
-
-" Set airline theme. Options are: powerlineish, 'tomorrow', 'papercolor', 'bubblegum', 'simple' 
-let g:airline_theme = 'papercolor'
-let g:airline_powerline_fonts = 1
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")

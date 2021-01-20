@@ -11,6 +11,7 @@ alias k9='killall -9'
 alias ln='ln -v'
 alias mkdir='mkdir -p'
 alias cwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
+alias less="less --RAW-CONTROL-CHARACTERS --long-prompt --LINE-NUMBERS --ignore-case --status-column"                                               # make less work with colors from grep
 # ls
 alias ll="ls -al"
 alias la="ls -A -l -G"
@@ -31,7 +32,6 @@ alias grep="grep --color=always -i"                                            #
 alias egrep="egrep --color=always -i"
 alias ge="egrep --color=always -i"
 alias gee="egrep -r --color=always -i"
-alias less="less --RAW-CONTROL-CHARACTERS --long-prompt --LINE-NUMBERS --ignore-case --status-column"                                               # make less work with colors from grep
 alias gal="alias | grep"
 
 # Process Management
@@ -45,13 +45,10 @@ alias tma="tmux attach -t"
 alias tmm="tmux attach || tmux"
 alias tmn="tmux new -s"
 alias tml="tmux ls"
-alias tmls="tmux ls"
 alias tmi="tmux info"
 alias tmk="tmux kill-session -t"
-alias tm="tmuxinator"
 
 # Git
-alias g='git'
 alias ga='git add'
 alias gaa='git add -A'
 alias gb='git branch -v'
@@ -59,11 +56,8 @@ alias gbb='git branch -vv'
 alias gbr='git branch -r'
 alias gc='git commit'
 alias gca='git commit -a'
-alias gcam='git commit -a -m'
 alias gcm='git commit -m'
-alias gcmn='git commit --author="Nikola Novakovic <nikola.novakovic9@gmail.com>" -m'
 alias gco='git checkout'
-alias gcob='git checkout -b'
 alias gd='git diff'
 alias gds='git diff --stat'
 alias gdt='git difftool'
@@ -74,29 +68,10 @@ alias glg='git log --oneline --graph --decorate --all'
 alias gmt="git mergetool"
 alias gpl='git pull'
 alias gpu='git push'
+alias grm='git remote -v'
 alias gs='git status --short'
 alias gss='git status'
-alias grem='git config -l | grep -e ^remote.*url'
-alias grm='git rm $(git ls-files --deleted)'  # stage deleted files - or just use `git add -u`
 alias gls='clear; gss'
-# alias gdm='git diff master'
-# alias gdn='git diff --name-status -r'
-# alias gds='git diff --stat -r
-# alias gdv='git diff -w "$@" | vim -R -'
-# alias gnp="git-notpushed"
-# alias gui='open -a sourcetree .'
-
-# Git Flow
-alias gf='git flow'
-
-# Bundler
-alias b='bundle'
-alias bu='bundle update'
-alias be='bundle exec'
-alias bi='bundle install --path vendor'
-alias biv='bundle install --path vendor'
-alias bil='bundle install --path vendor --local'
-alias bip="bundle install --path vendor && bundle package && echo 'vendor/ruby' >> .gitignore"
 
 # Rails
 alias tdl='tail -f log/development.log'
@@ -114,15 +89,6 @@ alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rail
 alias s='rspc'
 alias rkr='rake routes | $EDITOR'
 alias migrate='rake db:migrate && rake db:test:prepare'
-
-# Vagrant
-alias vg='vagrant'
-alias vgs='vagrant status'
-alias vgsh='vagrant ssh'
-alias vgu='vagrant up'
-alias vgh='vagrant halt'
-alias vgp='vagrant provision'
-alias vgr='vagrant reload'
 
 # Utility
 alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'    # reload env

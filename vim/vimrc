@@ -86,7 +86,7 @@ set modelines=10
 " Remap Leader key to be spacebar
 let mapLeader = " "
 
-" Toggle the nerdtree window with Leader + d
+" Toggle the nerdtree window
 nmap <Leader>d :NERDTreeToggle<CR>
 " Show hidden files by default; toggle with Shift+i
 let NERDTreeShowHidden=1    
@@ -111,7 +111,7 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 " Toggle the tagbar
 nnoremap <silent> <Leader>t :TagbarToggle<CR>
 
-" Open a new unnamed buffer using ctrl + n
+" Open a new unnamed buffer
 nnoremap <Leader>n :enew<CR>
 
 " Open markdown preview using Marked 2.app
@@ -121,7 +121,7 @@ nmap <Leader>m :MarkedToggle!<CR>
 nmap <Leader>l :set list!<CR>
 set listchars=eol:¬
 
-" Quicker Git Status (fugitive)
+" Quicker Git Status
 nmap <Leader>g :Gstatus<CR>
 
 " Searching

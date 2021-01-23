@@ -83,53 +83,53 @@ set modelines=10
 " Leader Key Remaps
 " =================
 
-" Remap leader key to be spacebar
-let mapleader = " "
+" Remap Leader key to be spacebar
+let mapLeader = " "
 
-" Toggle the nerdtree window with leader + d
-nmap <leader>d :NERDTreeToggle<CR>
+" Toggle the nerdtree window with Leader + d
+nmap <Leader>d :NERDTreeToggle<CR>
 " Show hidden files by default; toggle with Shift+i
 let NERDTreeShowHidden=1    
 
 " Quickly switch to previous file
-nnoremap <leader>e <C-^><CR>
+nnoremap <Leader>e <C-^><CR>
 
-" Remap leader + a (,a) to Ack
-nnoremap <leader>a :Ack
+" Remap Leader + a (,a) to Ack
+nnoremap <Leader>a :Ack
 
 " Easier quitting
-nmap <leader>q :q<CR>
-nmap <leader>w :w!<CR>
+nmap <Leader>q :q<CR>
+nmap <Leader>w :w!<CR>
 
 " Index ctags from any project, including those outside Rails
-map <leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
+map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
 
 " Use ctrl+p to serach ctags
-nnoremap <leader>. :CtrlPTag<CR>
-nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>. :CtrlPTag<CR>
+nnoremap <Leader>b :CtrlPBuffer<CR>
 
 " Toggle the tagbar
-nnoremap <silent> <leader>t :TagbarToggle<CR>
+nnoremap <silent> <Leader>t :TagbarToggle<CR>
 
 " Toggle spell
 nmap <F5> :setlocal spell!<cr>
 
 " Open a new unnamed buffer using ctrl + n
-nnoremap <leader>n :enew<CR>
+nnoremap <Leader>n :enew<CR>
 
 " Make it easier to backspace while typing
 imap <C-u> <C-w>
 
 " Open  markdown preview in background using Marked 2.app - Requires
 " itspriddle/vim-markdown plugin
-nmap <leader>p :MarkedOpen!<CR>
+nmap <Leader>p :MarkedOpen!<CR>
 
 " Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
+nmap <Leader>l :set list!<CR>
 set listchars=eol:¬
 
 " Quicker Git Status (fugitive)
-nmap <leader>g :Gstatus<CR>
+nmap <Leader>g :Gstatus<CR>
 
 " Searching
 " =========

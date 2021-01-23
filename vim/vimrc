@@ -123,6 +123,9 @@ set listchars=eol:¬
 " Quicker Git Status
 nmap <Leader>g :Gstatus<CR>
 
+" Run the current ruby script
+autocmd BufRead, *.rb nmap <Leader>r :!ruby %<CR>
+
 " Searching
 " =========
 

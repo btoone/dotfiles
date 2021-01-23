@@ -83,13 +83,15 @@ set modelines=10
 " Leader Key Remaps
 " =================
 
-" Remap Leader key to be spacebar
+" Use spacebar as the leader key
 let mapLeader = " "
 
 " Toggle the nerdtree window
-nmap <Leader>d :NERDTreeToggle<CR>
-" Show hidden files by default; toggle with Shift+i
-let NERDTreeShowHidden=1    
+nnoremap <Leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <Leader>d :echoe "Use CTRL-t"<CR>
 
 " Quickly switch to previous file
 nnoremap <Leader>e <C-^><CR>
@@ -110,9 +112,6 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 
 " Toggle the tagbar
 nnoremap <silent> <Leader>t :TagbarToggle<CR>
-
-" Open a new unnamed buffer
-nnoremap <Leader>n :enew<CR>
 
 " Open markdown preview using Marked 2.app
 nmap <Leader>m :MarkedToggle!<CR>
@@ -205,6 +204,11 @@ nnoremap <C-l> <C-w>l
 " =========================
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
+
+" NERDTree
+" ========
+" Show hidden files by default; toggle with Shift+i
+let NERDTreeShowHidden=1    
 
 " Easytags
 " ========

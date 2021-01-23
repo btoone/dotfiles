@@ -113,6 +113,11 @@ alias pgrestart="pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/lo
 alias pgstatus="pg_ctl status -D /usr/local/var/postgres"
 alias pgst="pg_ctl status -D /usr/local/var/postgres"
 
+# Vagrant
+alias vh='vagrant halt'
+alias vs='vagrant suspend'
+alias vup='vagrant up'
+
 # Apps
 alias h='heroku'
 alias marked="open -a Marked\ 2"

@@ -114,9 +114,8 @@ nnoremap <silent> <Leader>t :TagbarToggle<CR>
 " Open a new unnamed buffer using ctrl + n
 nnoremap <Leader>n :enew<CR>
 
-" Open markdown preview in background using Marked 2.app - Requires
-" itspriddle/vim-markdown plugin
-nmap <Leader>p :MarkedOpen!<CR>
+" Open markdown preview using Marked 2.app
+nmap <Leader>m :MarkedToggle!<CR>
 
 " Shortcut to rapidly toggle `set list`
 nmap <Leader>l :set list!<CR>

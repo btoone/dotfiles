@@ -84,7 +84,7 @@ set modelines=10
 " =================
 
 " Use spacebar as the leader key
-let mapLeader = " "
+let mapleader = " "
 
 " Toggle the nerdtree window
 nnoremap <Leader>n :NERDTreeFocus<CR>

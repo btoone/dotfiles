@@ -19,6 +19,8 @@ git clone https://github.com/hail2u/vim-css3-syntax.git vim/pack/default/start/c
 git clone https://github.com/cakebaker/scss-syntax.vim.git vim/pack/default/start/scss-syntax
 git clone https://github.com/slim-template/vim-slim.git vim/pack/default/start/slim
 git clone https://github.com/itspriddle/vim-marked.git vim/pack/default/start/marked
+git clone https://github.com/vim-test/vim-test.git vim/pack/default/start/vim-test
+git clone https://github.com/mileszs/ack.vim.git vim/pack/default/start/ack.vim
 
 # Plugins used for default install
 # Install location is: `~/.vim/pack/tpope/start/`

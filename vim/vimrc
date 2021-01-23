@@ -94,7 +94,7 @@ let NERDTreeShowHidden=1
 " Quickly switch to previous file
 nnoremap <Leader>e <C-^><CR>
 
-" Remap Leader + a (,a) to Ack
+" Quicker access to Ack
 nnoremap <Leader>a :Ack
 
 " Easier quitting
@@ -111,16 +111,10 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 " Toggle the tagbar
 nnoremap <silent> <Leader>t :TagbarToggle<CR>
 
-" Toggle spell
-nmap <F5> :setlocal spell!<cr>
-
 " Open a new unnamed buffer using ctrl + n
 nnoremap <Leader>n :enew<CR>
 
-" Make it easier to backspace while typing
-imap <C-u> <C-w>
-
-" Open  markdown preview in background using Marked 2.app - Requires
+" Open markdown preview in background using Marked 2.app - Requires
 " itspriddle/vim-markdown plugin
 nmap <Leader>p :MarkedOpen!<CR>
 
@@ -274,6 +268,12 @@ set expandtab
 
 " Set region to US
 set spelllang=en_us
+
+" Make it easier to backspace while typing
+imap <C-u> <C-w>
+
+" Toggle spell
+nmap <F5> :setlocal spell!<cr>
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")

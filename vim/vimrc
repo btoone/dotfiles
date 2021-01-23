@@ -91,6 +91,9 @@ nmap <leader>d :NERDTreeToggle<CR>
 " Show hidden files by default; toggle with Shift+i
 let NERDTreeShowHidden=1    
 
+" Quickly switch to previous file
+nnoremap <leader>e <C-^><CR>
+
 " Remap leader + a (,a) to Ack
 nnoremap <leader>a :Ack
 

@@ -1,13 +1,7 @@
 require "rubygems"
-# require "awesome_print"
 
 # Use vim for the `edit` command
 Pry.config.editor = "vim"
-
-# Pry.print = proc { |output, value| output.puts value.ai }
-# Pry.commands.alias_command 'c', 'continue'
-# Pry.commands.alias_command 's', 'step'
-# Pry.commands.alias_command 'n', 'next'
 
 if defined?(PryByebug)
   Pry.commands.alias_command 'c', 'continue'

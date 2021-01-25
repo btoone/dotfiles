@@ -9,6 +9,7 @@ git-completion
 gitconfig
 gitignore
 gitmessage
+gvimrc
 inputrc
 irbrc
 profile

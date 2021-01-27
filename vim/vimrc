@@ -121,7 +121,7 @@ nmap <Leader>l :set list!<CR>
 set listchars=eol:¬
 
 " Quicker Git Status
-nmap <Leader>g :Gstatus<CR>
+nnoremap <Leader>g :GstatusToggle<CR>
 
 " Run the current ruby script
 autocmd BufRead, *.rb nmap <Leader>r :!ruby %<CR>
@@ -285,4 +285,27 @@ nmap <F5> :setlocal spell!<cr>
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
+" Functions
+" =========
+
+" Test function 
+function! s:Meow()
+  echom "Meow!"
+endfunction
+command Meow call <SID>Meow()
+
+" Toggle for Fugitive's Gstatus
+" Credit @gerardbm https://github.com/tpope/vim-fugitive/issues/1274#issuecomment-648703052
+function! s:GstatusToggle() abort
+	for l:winnr in range(1, winnr('$'))
+		if !empty(getwinvar(l:winnr, 'fugitive_status'))
+			execute l:winnr.'close'
+		else
+			Gstatus
+		endif
+	endfor
+endfunction
+command GstatusToggle call <SID>GstatusToggle()   " Register as a command
+nnoremap <C-s> :call <SID>GstatusToggle()<CR>     " Run using CTRL-s
 

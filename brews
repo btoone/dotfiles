@@ -10,6 +10,7 @@ git \
 gnu-sed \
 grep \
 heroku \
+imagemagick \
 markdown \
 mysql \
 ngrok \

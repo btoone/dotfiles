@@ -73,6 +73,13 @@ Contributing (optional for OSS)
 
 Pull requests are welcome.
 
+### Publishing Local Changes
+
+You can make changes to, and publish from, the `local` branch that was created 
+during setup. Use the following command:
+
+git push origin local:master
+
 License
 -------
 

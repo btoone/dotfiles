@@ -25,6 +25,9 @@ export VISUAL='atom'
 export BUNDLE_EDITOR="$EDITOR"
 export VIMRC="$HOME/.vim/vimrc"
 
+## Pager
+export PAGER='less -RMN --ignore-case --status-column'
+
 ## History
 export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '

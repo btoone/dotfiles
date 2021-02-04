@@ -86,12 +86,11 @@ set modelines=10
 " Use spacebar as the leader key
 let mapleader = " "
 
-" Toggle the nerdtree window
+" Toggle the NERDTree window
 nnoremap <Leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
-nnoremap <Leader>d :echoe "Use CTRL-t"<CR>
+nnoremap <Leader>d :NERDTreeToggle<CR>
 
 " Quickly switch to previous file
 nnoremap <Leader>e <C-^><CR>

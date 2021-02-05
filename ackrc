@@ -1,4 +1,3 @@
 --ignore-file=ext:log
 --ignore-file=is:tags
---pager=$PAGER
 --smart-case

@@ -26,7 +26,7 @@ export BUNDLE_EDITOR="$EDITOR"
 export VIMRC="$HOME/.vim/vimrc"
 
 ## Pager
-export PAGER='less -RMN --ignore-case --status-column'
+export PAGER='less -RM'
 
 ## History
 export HISTSIZE=10000

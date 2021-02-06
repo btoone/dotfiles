@@ -1,5 +1,6 @@
 # Plugins used for default install
 # Install location is: `~/.vim/pack/default/start/`
+# git clone CLONE_URL vim/pack/default/start/REPO
 git clone https://github.com/preservim/nerdtree.git vim/pack/default/start/nerdtree
 git clone https://github.com/preservim/tagbar.git vim/pack/default/start/tagbar
 
@@ -22,6 +23,7 @@ git clone https://github.com/itspriddle/vim-marked.git vim/pack/default/start/ma
 git clone https://github.com/vim-test/vim-test.git vim/pack/default/start/vim-test
 git clone https://github.com/mileszs/ack.vim.git vim/pack/default/start/ack.vim
 git clone https://github.com/p0deje/vim-ruby-interpolation.git vim/pack/default/start/vim-ruby-interpolation
+git clone https://github.com/sodapopcan/vim-rubocop.git vim/pack/default/start/vim-rubocop
 
 # Plugins used for default install
 # Install location is: `~/.vim/pack/tpope/start/`

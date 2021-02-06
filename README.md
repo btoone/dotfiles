@@ -78,7 +78,9 @@ Pull requests are welcome.
 You can make changes to, and publish from, the `local` branch that was created 
 during setup. Use the following command:
 
+```sh
 git push origin local:master
+```
 
 License
 -------

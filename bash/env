@@ -21,7 +21,7 @@ export PATH="./bin:$PATH"                                                       
 
 ## Editor
 export EDITOR='/usr/local/bin/vim'
-export VISUAL='atom'
+export VISUAL="$EDITOR"
 export BUNDLE_EDITOR="$EDITOR"
 export VIMRC="$HOME/.vim/vimrc"
 

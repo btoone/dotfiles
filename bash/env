@@ -32,7 +32,7 @@ export PAGER='less -RM'
 export HISTSIZE=10000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups
-export HISTIGNORE="ls:ls -al::ls -altr:ll:cls:cdd:pwd:gls:gss:reload"
+export HISTIGNORE="ls:ls -al::ls -altr:ll:cls:cdd:pwd:gls:gss:reload:vi"
 
 ## Directory listing colors
 export CLICOLOR=1

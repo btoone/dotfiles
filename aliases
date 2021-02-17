@@ -2,8 +2,8 @@
 # shellcheck source=/dev/null
 
 # Unix
-alias c='clear'
-alias cls='clear; history 5'
+alias c='clear; history 5'
+alias cls='clear; ls -altr'
 alias ht='history | tail -25'
 alias hst='history | grep'
 alias k9='killall -9'

@@ -3,7 +3,7 @@
 
 # Unix
 alias c='clear'
-alias cls='clear; l'
+alias cls='clear; history 5'
 alias ht='history | tail -25'
 alias hst='history | grep'
 alias hl='hl -i'

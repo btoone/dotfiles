@@ -223,6 +223,21 @@ let g:easytags_auto_highlight=0
 let g:airline_theme = 'papercolor'
 let g:airline_powerline_fonts = 1
 
+
+" Vim Test
+" ========
+
+" Mappings
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+
+" Make test commands execute using dispatch.vim
+" let test#strategy = "dispatch"
+let test#strategy = "vimterminal"
+
 " Miscellaneous
 " =============
 

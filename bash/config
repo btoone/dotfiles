@@ -13,3 +13,7 @@ source ~/.git-completion
 
 # Enable vi mode for better command-line navigation
 set -o vi 
+
+# Enable ASDF
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash

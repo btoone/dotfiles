@@ -13,5 +13,4 @@ db/*.sqlite3
 log/*.log
 tags
 tmp/**/*
-tmuxinator/*.yml
 .yardoc

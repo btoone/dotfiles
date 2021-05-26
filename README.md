@@ -58,6 +58,14 @@ Which means they are installed to `~/.vim/pack/`.
 
 Anything in an `opt/` dir can be loaded manually using `:packadd! packagename`.
 
+To install a new plugin, simply clone the repo into the directory 
+`~/.vim/pack/default/start`. Be sure to update `vimrc.plugins` with the new
+plugin.
+
+The file `vimrc.plugins` serves as a manifest of commands of what is installed.
+To reinstall any of the plugins listed in this file, simply copy the command and
+run from the root of your dotfiles install location.
+
 See `:help package` for more info.
 
 ### Tmux

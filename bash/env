@@ -49,3 +49,6 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
 
 ## OpenSSL (mysql2 gem)
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+
+## Rails
+export DISABLE_SPRING=true

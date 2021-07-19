@@ -75,18 +75,12 @@ alias gls='clear; gss'
 # Rails
 alias tdl='tail -f log/development.log'
 alias ttl='tail -f log/test.log'
-alias rst='touch tmp/restart.txt'
 alias rc='bin/rails console'
 alias rd='bin/rails dbconsole'
-alias rg='bin/rails generate'
+alias rr='bin/rails routes'
 alias rs='bin/rails server'
-alias rs='bin/rails test'
-alias rs='bin/setup'
-alias ru='bin/update'
-alias pryr='bundle exec pry -r ./config/environment -r rails/console/app -r rails/console/helpers'
-alias s='rspc'
-alias rkr='rake routes | $EDITOR'
-alias migrate='rake db:migrate && rake db:test:prepare'
+alias rt='bin/rails test'
+alias migrate='bin/rails db:migrate'
 
 # Utility
 alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'    # reload env

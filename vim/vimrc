@@ -96,7 +96,7 @@ nnoremap <Leader>d :NERDTreeToggle<CR>
 nnoremap <Leader>e <C-^><CR>
 
 " Quicker access to Ack
-nnoremap <Leader>a :Ack
+nnoremap <Leader>a :Ack!
 
 " Easier quitting
 nmap <Leader>q :q<CR>

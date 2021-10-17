@@ -1,3 +1,8 @@
 --ignore-file=ext:log
 --ignore-file=is:tags
 --smart-case
+
+# minified Javascript
+--ignore-file=match:/[.-]min[.]js$/
+--ignore-file=match:/[.]js[.]min$
+--ignore-file=match:/application-[a-z\d]+[.]js$/

@@ -20,7 +20,7 @@ export PATH="$HOME/bin:$PATH"                                                   
 export PATH="./bin:$PATH"                                                       # project binstubs
 
 ## Editor
-export EDITOR='/usr/local/bin/vim'
+export EDITOR=$(which vim)
 export VISUAL="$EDITOR"
 export BUNDLE_EDITOR="$EDITOR"
 export VIMRC="$HOME/.vim/vimrc"

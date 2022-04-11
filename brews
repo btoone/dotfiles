@@ -7,6 +7,8 @@ brew install curl
 brew install entr
 brew install git
 brew install gnu-sed
+brew install gpg
+brew install gawk
 brew install grep
 brew install heroku
 brew install imagemagick

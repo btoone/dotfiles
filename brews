@@ -1,5 +1,4 @@
 ack \
-asdf \
 bat \
 coreutils \
 cowsay \
@@ -28,9 +27,5 @@ vim \
 watch \
 wget
 
-
-# ASDF installs via setup page
-brew install \
-  coreutils automake autoconf openssl \
-  libyaml readline libxslt libtool unixodbc \
-  unzip curl
+automake autoconf openssl \
+libyaml readline libxslt libtool unixodbc \

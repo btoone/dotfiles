@@ -1,6 +1,7 @@
 --ignore-file=ext:log
 --ignore-file=is:tags
 --smart-case
+--ignore-dir=.angular/cache
 
 # minified Javascript
 --ignore-file=match:/[.-]min[.]js$/

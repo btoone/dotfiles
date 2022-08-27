@@ -28,6 +28,8 @@ git clone https://github.com/mileszs/ack.vim.git vim/pack/default/start/ack.vim
 git clone https://github.com/p0deje/vim-ruby-interpolation.git vim/pack/default/start/vim-ruby-interpolation
 git clone https://github.com/sodapopcan/vim-rubocop.git vim/pack/default/start/vim-rubocop
 git clone https://github.com/MaxMEllon/vim-jsx-pretty.git vim/pack/default/start/vim-jsx-pretty
+git clone https://github.com/prettier/vim-prettier.git vim/pack/default/start/vim-prettier
+git clone https://github.com/leafgarland/typescript-vim.git vim/pack/default/start/typescript-vim
 
 # Test plugins
 git clone https://github.com/vim-test/vim-test.git vim/pack/default/start/vim-test

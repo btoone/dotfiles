@@ -1,38 +1,33 @@
-brew install ack
-brew install bat
-brew install coreutils
-brew install cowsay
-brew install ctags
-brew install curl
-brew install entr
-brew install git
-brew install gnu-sed
-brew install gpg
-brew install gawk
-brew install grep
-brew install heroku
-brew install imagemagick
-brew install markdown
-brew install mysql
-brew install ngrok
-brew install php
-brew install postgresql
-brew install python
-brew install redis
-brew install shellcheck
-brew install sqlite
-brew install tmux
-brew install tree
-brew install unzip
-brew install vcprompt
-brew install vim
-brew install watch
-brew install wget
-brew install automake
-brew install autoconf
-brew install openssl
-brew install libyaml
-brew install readline
-brew install libxslt
-brew install libtool
-brew install unixodbc
+ack
+bat
+coreutils
+cowsay
+ctags
+curl
+entr
+git
+gnu-sed
+gpg
+gawk
+grep
+imagemagick
+markdown
+ngrok
+redis
+shellcheck
+sqlite
+tmux
+tree
+unzip
+vcprompt
+vim
+watch
+wget
+automake
+autoconf
+openssl
+libyaml
+readline
+libxslt
+libtool
+unixodbc

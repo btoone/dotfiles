@@ -83,7 +83,7 @@ alias rt='bin/rails test'
 alias migrate='bin/rails db:migrate'
 
 # Utility
-alias reload='source ~/.bashrc && echo Reloaded ~/.bashrc'    # reload env
+alias reload='source ~/.zshrc && echo Reloaded ~/.zshrc'    # reload env
 alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path
 
 # Editor

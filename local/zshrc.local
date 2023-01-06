@@ -1,0 +1,4 @@
+# Add local config here
+
+# ClickFunnels secrets, generated during dev-setup
+source ~/.cf2_secrets

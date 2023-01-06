@@ -32,7 +32,7 @@ cd dotfiles
 bin/setup
 
 # After successful setup, reload your shell env
-source ~/.bashrc
+source ~/.zshrc
 ```
 
 Features
@@ -72,7 +72,7 @@ See `:help package` for more info.
 
 * Configuration
 
-### Bash
+### ZSH
 
 * Useful aliases
 

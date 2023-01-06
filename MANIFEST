@@ -1,8 +1,6 @@
 ackrc
 aliases
 asdfrc
-bash
-bashrc
 default-gems
 gemrc
 git-completion
@@ -12,7 +10,6 @@ gitmessage
 gvimrc
 inputrc
 irbrc
-profile
 pryrc
 rspec
 sqliterc
@@ -20,3 +17,6 @@ tmux.conf
 tool-versions
 tmux
 vim
+zsh/zshenv
+zsh/zprofile
+zsh/zshrc

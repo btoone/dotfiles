@@ -5,6 +5,20 @@
 BASE_DIR=$(basename "$PWD")
 
 # Setup results output
+__preinstall="
+=================
+   PRE INSTALL
+=================
+
+1. Install Homebrew
+2. Use the brews file to install brews from file
+
+    $ cat brews | xargs brew install
+"
+
+echo -e "$__preinstall"
+
+# Setup results output
 __results="
 Summary:
 "
@@ -67,8 +81,8 @@ __results+="
    NEXT STEPS
 =================
 
-1. Reload your env by runing \"source ~/.bashrc\" to complete the install.
-2. Source your preferred ruby manager in `.bashrc.local`
+1. Reload your env by runing \"source ~/.zshrc\" to complete the install.
+2. Source your preferred ruby manager in `.zshrc.local`
 3. Source your tmux config with `tmux source ~/.tmux.conf`
 	 a. Install tmux plugins with `prefix + I` (capital I)
 4. Generate helptags for vim by doing `:helptags ALL`

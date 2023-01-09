@@ -10,11 +10,12 @@
     editor = vim
 	excludesfile = /Users/bt/.gitignore_global
 [commit]
-    template = ~/.gitmessage
+	template = ~/.gitmessage
 [diff]
     colorMoved = zebra
+	tool = Kaleidoscope
 [merge]
-    tool = vimdiff
+	tool = Kaleidoscope
     # Enable if you have a fast-forward only merge strategy
     # ff = only
 [alias]
@@ -52,15 +53,25 @@
     rr = reset HEAD~1
     rrr = reset HEAD~2
 [user]
-    name = Brandon Toone
-    email = brandon@rdlk.co
+	name = Brandon Toone
+	email = brandon@rdlk.co
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-    path = 
+	path = 
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-    trustExitCode = true
+	trustExitCode = true
 [pull]
     rebase = true
 [fetch]
     prune = true
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[difftool]
+	prompt = false
+	trustExitCode = true
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustExitCode = true
+[mergetool]
+	prompt = false

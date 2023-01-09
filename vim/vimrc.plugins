@@ -46,4 +46,5 @@ git clone https://github.com/tpope/vim-markdown.git vim/pack/tpope/start/markdow
 git clone https://github.com/tpope/vim-rails.git vim/pack/tpope/start/rails
 git clone https://github.com/tpope/vim-surround.git vim/pack/tpope/start/surround
 git clone https://github.com/tpope/vim-unimpaired.git vim/pack/tpope/start/unimpaired
+git clone https://github.com/tpope/vim-rhubarb.git vim/pack/tpope/start/rhubarb
 

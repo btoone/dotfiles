@@ -288,7 +288,7 @@ set title
 set visualbell
 
 " Global tab width
-set tabstop=2
+set tabstop=4
 
 " And again, related
 set shiftwidth=2

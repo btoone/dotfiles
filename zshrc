@@ -1,8 +1,11 @@
 
 # Login configuration
 
-## Completion support for core Git
-# source ~/.git-completion.sh
+## Git completion support
+# See https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+fpath=(~/.zsh $fpath)
+autoload -Uz compinit && compinit
 
 ## Enable vi mode for better command-line navigation
 set -o vi 

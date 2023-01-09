@@ -217,13 +217,6 @@ let NERDTreeShowHidden=1
 let g:easytags_async=1
 let g:easytags_auto_highlight=0
 
-" Airline
-" =======
-" Set airline theme. Options are: powerlineish, 'tomorrow', 'papercolor', 'bubblegum', 'simple' 
-let g:airline_theme = 'papercolor'
-let g:airline_powerline_fonts = 1
-
-
 " Vim Test
 " ========
 

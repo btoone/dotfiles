@@ -3,7 +3,6 @@ aliases
 asdfrc
 default-gems
 gemrc
-git-completion
 gitconfig
 gitignore
 gitmessage

@@ -7,7 +7,7 @@ curl
 entr
 git
 gnu-sed
-gpg
+gnupg
 gawk
 grep
 imagemagick

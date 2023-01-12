@@ -3,7 +3,6 @@
 --smart-case
 --ignore-dir=.angular/cache
 
-# minified Javascript
---ignore-file=match:/[.-]min[.]js$/
---ignore-file=match:/[.]js[.]min$
---ignore-file=match:/application-[a-z\d]+[.]js$/
+# Ignore custom minified Javascript
+--ignore-file=match:/[.]mjs$/
+--ignore-file=match:/[.]mjs[.]map$/

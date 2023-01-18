@@ -49,4 +49,4 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
 # export DATABASE_URL=postgres://localhost/database-name
 
 ## Rails
-export DISABLE_SPRING=true
+# export DISABLE_SPRING=true

@@ -8,7 +8,13 @@ fpath=(~/.zsh $fpath)
 autoload -Uz compinit && compinit
 
 ## Enable vi mode for better command-line navigation
-set -o vi 
+bindkey -v
+
+# allow vv to edit the command line (standard behaviour)
+# Copied from https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'vv' edit-command-line
 
 ## Enable ASDF
 # . $HOME/.asdf/asdf.sh

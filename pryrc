@@ -1,8 +1,5 @@
 require "rubygems"
-require "awesome_print"
-
-# Use awesome_print as the default formatter
-AwesomePrint.irb!
+require "pry-doc"
 
 # Use vim for the `edit` command
 Pry.config.editor = "vim"

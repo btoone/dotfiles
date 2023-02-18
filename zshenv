@@ -6,6 +6,7 @@ export DOTFILES="~/code/dotfiles"
 ## PATH
 export PATH="$HOME/bin:$PATH"                                                   # personal tools
 export PATH="./bin:$PATH"                                                       # project binstubs
+export PATH="/Applications/MacVim.app/Contents/bin:$PATH"                       # enable mvim from terminal
 
 ## Editor
 export EDITOR=$(which vim)
@@ -34,3 +35,4 @@ export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl@1.1/lib/
 
 # Intel
 # export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+

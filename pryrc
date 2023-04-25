@@ -1,5 +1,4 @@
 require "rubygems"
-require "pry-doc"
 
 # Use vim for the `edit` command
 Pry.config.editor = "vim"

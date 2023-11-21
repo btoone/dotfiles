@@ -25,8 +25,11 @@ set path+=**
 runtime macros/matchit.vim
 
 " Configure ctrlp
-set wildignore+=*/node_modules/*
-let g:ctrlp_custom_ignore = '\v[\/](doc|log)$'
+" set wildignore+=*/node_modules/*
+" let g:ctrlp_custom_ignore = '\v[\/](doc|log)$'
+
+" Set path for FZF
+set rtp+=/opt/homebrew/opt/fzf
 
 " Enable copy/paste integration with pbcopy/pbpaste
 if $TMUX == ''
@@ -106,8 +109,9 @@ nmap <Leader>w :w!<CR>
 map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
 
 " Use ctrl+p to serach ctags
-nnoremap <Leader>. :CtrlPTag<CR>
-nnoremap <Leader>b :CtrlPBuffer<CR>
+" nnoremap <Leader>. :CtrlPTag<CR>
+" nnoremap <Leader>b :CtrlPBuffer<CR>
+nmap <C-P> :FZF<CR>
 
 " Toggle the tagbar
 nnoremap <silent> <Leader>t :TagbarToggle<CR>

@@ -32,3 +32,4 @@ libxslt
 libtool
 unixodbc
 ripgrep
+fzf

@@ -86,7 +86,7 @@ alias migrate='bin/rails db:migrate'
 alias ri='ri -f ansi'
 
 # Utility
-alias reload='source ~/.zshrc && echo Reloaded ~/.zshrc'    # reload env
+alias reload='source ~/.zshrc; source ~/.zshenv && echo Reloaded ~/.zshrc and ~/.zshenv'
 alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path
 
 # Editor

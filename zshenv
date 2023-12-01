@@ -38,3 +38,5 @@ export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl@1.1/lib/
 
 # Character encoding
 export LC_CTYPE=UTF-8
+
+export DISABLE_SPRING=true

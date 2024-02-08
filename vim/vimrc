@@ -100,6 +100,8 @@ nnoremap <Leader>e <C-^><CR>
 
 " Quicker access to Ack
 nnoremap <Leader>a :Ack!
+nnoremap <Leader>r :Rg
+nnoremap <Leader>b :Buffers
 
 " Easier quitting
 nmap <Leader>q :q<CR>
@@ -111,7 +113,9 @@ map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/b
 " Use ctrl+p to serach ctags
 " nnoremap <Leader>. :CtrlPTag<CR>
 " nnoremap <Leader>b :CtrlPBuffer<CR>
-nmap <C-P> :FZF<CR>
+
+" Use FZF to search currenct directory with a preview window
+nmap <C-P> :Files<CR>
 
 " Toggle the tagbar
 nnoremap <silent> <Leader>t :TagbarToggle<CR>

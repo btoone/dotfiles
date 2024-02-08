@@ -90,16 +90,16 @@ alias reload='source ~/.zshrc; source ~/.zshenv && echo Reloaded ~/.zshrc and ~/
 alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path
 
 # Editor
-alias vi="\$EDITOR"
-alias vim="\$EDITOR"
-alias e="\$EDITOR"
-alias ee="\$EDITOR ."
-alias eg="\$EDITOR ~/.gitconfig"
-alias ea="\$EDITOR ~/.aliases.local && reload"
-alias ev="\$EDITOR ~/.vim/vimrc.local && reload"
-alias et="\$EDITOR ~/.tmux.conf.local && reload"
-alias v="\$VISUAL"
-alias vv="\$VISUAL ."
+alias vi="$EDITOR"
+alias vim="$EDITOR"
+alias e="$EDITOR"
+alias ee="$EDITOR ."
+alias eg="$EDITOR ~/.gitconfig"
+alias ea="$EDITOR ~/.aliases.local && reload"
+alias ev="$EDITOR ~/.vim/vimrc.local && reload"
+alias et="$EDITOR ~/.tmux.conf.local && reload"
+alias v="$VISUAL"
+alias vv="$VISUAL ."
 
 # Postgres
 alias pgon="pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log"

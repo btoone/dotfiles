@@ -136,9 +136,12 @@ autocmd BufRead, *.rb nmap <Leader>r :!ruby %<CR>
 " Searching
 " =========
 
-" Default to regex search
-nnoremap / /\v
-vnoremap / /\v
+" Enable 'very nomagic' for search
+" 
+" To activate the regex functionality of a character (like $ end-of-line) you
+" will need to escape it when ver nomagic is enabled (ie \$) - see :help magic
+nnoremap / /\V
+vnoremap / /\V
 
 " Dont need /g after :s or :g
 set gdefault

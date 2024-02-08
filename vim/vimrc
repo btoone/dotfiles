@@ -103,7 +103,10 @@ nnoremap <Leader>a :Ack!
 
 " Quick access to ripgrep from FZF
 " <C-R><C-W> uses the current word under the cursor
-nnoremap <Leader>r :RG <C-R><C-W><CR>
+" nnoremap <Leader>r :RG <C-R><C-W><CR>
+" NOTE using the word under cursor is a little specific of a workflow. Rather
+" use the ctrl commands manually in the FZF window for Rg
+nnoremap <Leader>r :Rg<CR>
 
 " Open the buffers fuzzy search from FZF
 nnoremap <Leader>b :Buffers<CR>

@@ -98,9 +98,13 @@ nnoremap <Leader>d :NERDTreeToggle<CR>
 " Quickly switch to previous file
 nnoremap <Leader>e <C-^><CR>
 
-" Quicker access to Ack
+" Quick access to Ack
 nnoremap <Leader>a :Ack!
+
+" Quick access to ripgrep
 nnoremap <Leader>r :Rg
+
+" Open the buffers fuzzy search from FZF
 nnoremap <Leader>b :Buffers<CR>
 
 " Easier quitting
@@ -131,7 +135,8 @@ set listchars=eol:¬
 nnoremap <Leader>g :GstatusToggle<CR>
 
 " Run the current ruby script
-autocmd BufRead, *.rb nmap <Leader>r :!ruby %<CR>
+" TODO conflicts with leader usage for :Rg from FZF
+" autocmd BufRead, *.rb nmap <Leader>r :!ruby %<CR>
 
 " Searching
 " =========

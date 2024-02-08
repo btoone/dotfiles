@@ -31,7 +31,7 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
 ## MySQL
 
 # ARM64 (M1)
-export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl@1.1/lib/
+export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl@3/lib/
 
 # Intel
 # export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
@@ -39,4 +39,6 @@ export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl@1.1/lib/
 # Character encoding
 export LC_CTYPE=UTF-8
 
+# Fix some rails env issues that may occur
 export DISABLE_SPRING=true
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES

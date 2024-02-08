@@ -101,7 +101,7 @@ nnoremap <Leader>e <C-^><CR>
 " Quicker access to Ack
 nnoremap <Leader>a :Ack!
 nnoremap <Leader>r :Rg
-nnoremap <Leader>b :Buffers
+nnoremap <Leader>b :Buffers<CR>
 
 " Easier quitting
 nmap <Leader>q :q<CR>

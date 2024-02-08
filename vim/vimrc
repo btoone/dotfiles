@@ -101,8 +101,8 @@ nnoremap <Leader>e <C-^><CR>
 " Quick access to Ack
 nnoremap <Leader>a :Ack!
 
-" Quick access to ripgrep
-nnoremap <Leader>r :Rg
+" Quick access to ripgrep from FZF
+nnoremap <Leader>r :Rg<CR>
 
 " Open the buffers fuzzy search from FZF
 nnoremap <Leader>b :Buffers<CR>

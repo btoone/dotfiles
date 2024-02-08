@@ -11,6 +11,5 @@
 /vendor
 db/*.sqlite3
 log/*.log
-tags
 tmp/**/*
 .yardoc

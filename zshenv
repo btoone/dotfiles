@@ -42,3 +42,6 @@ export LC_CTYPE=UTF-8
 # Fix some rails env issues that may occur
 export DISABLE_SPRING=true
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# Enable ripgrep config
+export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc

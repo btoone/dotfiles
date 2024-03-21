@@ -318,6 +318,9 @@ set expandtab
 " Set region to US
 set spelllang=en_us
 
+" Disable round tripping to the top of the file when searching
+set nowrapscan
+
 " Make it easier to backspace while typing
 imap <C-u> <C-w>
 

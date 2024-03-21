@@ -1,5 +1,6 @@
-
-# Login configuration
+# Shell configuration
+setopt HIST_IGNORE_ALL_DUPS
+setopt SH_WORD_SPLIT
 
 ## Git completion support
 # See https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh

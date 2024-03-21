@@ -166,9 +166,8 @@ set hlsearch
 
 " Color Schemes
 " =============
-colorscheme PaperColor
-
 set background=dark
+colorscheme PaperColor
 
 " highlight current line of text
 set cursorline

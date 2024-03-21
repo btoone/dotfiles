@@ -44,3 +44,5 @@ git clone https://github.com/tpope/vim-surround.git vim/pack/tpope/start/surroun
 git clone https://github.com/tpope/vim-unimpaired.git vim/pack/tpope/start/unimpaired
 git clone https://github.com/tpope/vim-rhubarb.git vim/pack/tpope/start/rhubarb
 
+# Color schemes
+git clone http://github.com/NLKNguyen/papercolor-theme.git vim/pack/colors/start

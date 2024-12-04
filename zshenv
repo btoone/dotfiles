@@ -45,3 +45,6 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Enable ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+
+# FZF
+export FZF_DEFAULT_OPTS_FILE=~/.fzfrc

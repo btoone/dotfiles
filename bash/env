@@ -50,3 +50,6 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
 
 ## Rails
 # export DISABLE_SPRING=true
+
+# FZF
+export FZF_DEFAULT_OPTS_FILE=~/.fzfrc

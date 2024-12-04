@@ -17,3 +17,6 @@ set -o vi
 # Enable ASDF
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
+
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)" 

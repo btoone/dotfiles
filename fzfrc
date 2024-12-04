@@ -1,0 +1,6 @@
+--multi
+--tmux
+--preview 'less {}'
+--height 40% --layout reverse --border
+# --walker dir
+# --tmux bottom,40%

@@ -66,8 +66,8 @@ __results+="\n* Copied local config files from dir \"local/\" to $HOME"
 
 # Install TMUX plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then
-  git clone https://github.com/tmux-plugins/tpm tmux/plugins/tpm
-  __results+="\n* Installed Tmux Plugin Manager \"tmux/plugins/tpm\""
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  __results+="\n* Installed Tmux Plugin Manager \"~/.tmux/plugins/tpm\""
 fi
 
 # Install Vim plugins from the plugin manifest

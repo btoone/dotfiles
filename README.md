@@ -16,7 +16,7 @@ Getting Started
 
 Clone the directory.
 
-    git clone git@github.com:caspyin/dotfiles.git
+    git clone git@github.com:btoone/dotfiles.git
 
 Change into the project directory and run the setup. The setup script will do 
 the following:

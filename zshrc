@@ -18,8 +18,7 @@ zle -N edit-command-line
 bindkey -M vicmd 'vv' edit-command-line
 
 ## Enable ASDF
-# . $HOME/.asdf/asdf.sh
-# . $HOME/.asdf/completions/asdf.bash
+. $HOME/.asdf/asdf.sh
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
@@ -29,9 +28,6 @@ bindkey -M vicmd 'vv' edit-command-line
 
 # Set PATH, MANPATH, etc., for Homebrew.
 eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# Set env for rbenv
-eval "$(rbenv init - zsh)"
 
 # Set env for nodenv
 eval "$(nodenv init -)"

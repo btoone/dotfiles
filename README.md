@@ -14,9 +14,9 @@ Several configurations borrowed from https://github.com/thoughtbot/dotfiles.
 Getting Started
 ---------------
 
-Clone the directory.
+Clone the repo into your home directory.
 
-    git clone git@github.com:btoone/dotfiles.git
+    git clone git@github.com:btoone/dotfiles.git ~/dotfiles
 
 Change into the project directory and run the setup. The setup script will do 
 the following:

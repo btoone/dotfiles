@@ -9,7 +9,7 @@
 stty start undef stop undef
 
 # git-completion
-source ~/.git-completion
+source ~/.git-completion.bash
 
 # Enable vi mode for better command-line navigation
 set -o vi 

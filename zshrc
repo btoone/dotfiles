@@ -4,7 +4,7 @@ setopt SH_WORD_SPLIT
 
 ## Git completion support
 # See https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+zstyle ':completion:*:*:git:*' script ~/git-completion.zsh
 fpath=(~/.zsh $fpath)
 autoload -Uz compinit && compinit
 

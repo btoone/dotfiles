@@ -227,6 +227,16 @@ nnoremap <C-l> <C-w>l
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 
+" Airline
+" ========
+let g:airline_powerline_fonts = 1
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline_theme='dark'
+" let g:airline_theme='simple'
+" let g:airline_theme='papercolor'
+let g:airline_theme='supernova'
+
+
 " NERDTree
 " ========
 " Show hidden files by default; toggle with Shift+i

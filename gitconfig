@@ -54,7 +54,7 @@
 	rrr = reset HEAD~2
 [user]
 	name = Brandon Toone
-	email = brandon@rdlk.co
+	email = 780144+btoone@users.noreply.github.com
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 

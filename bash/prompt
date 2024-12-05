@@ -44,6 +44,17 @@ bakpur='\e[45m'   # Purple
 bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 
+# Prompt Colors
+#
+# Usage example:
+#   PS1="${RESET}${YELLOW}\h${NORMAL} \`${SELECT}\` ${YELLOW}>${NORMAL} "
+RESET="\[\017\]"
+NORMAL="\[\033[0m\]"
+RED="\[\033[31;1m\]"
+GREEN="\[\033[32;1m\]"
+YELLOW="\[\033[33;1m\]"
+WHITE="\[\033[37;1m\]"
+
 #
 # Add padding to push ruby version to the left side of the prompt window
 #
@@ -82,8 +93,10 @@ function bash_prompt_cmd() {
   # PS1="\n[\u] \W \$(vcprompt) `padding`\n➤ "
   # PS1="\n[\u] \W \$(vcprompt) `padding`\n★ "
   # PS1="\n[\u] \W \$(vcprompt) `padding`\n✲ "
-  PS1="\n[\u] \W \$(vcprompt) `padding`\n✖ "
-  
+  # PS1="\n[\u] \W \$(vcprompt) `padding`\n✖ "
+  #
+  # PS1="\n\t \[\033[32m\]\w\[\033[33m\] \$(vcprompt)\[\033[00m\]✖ "
+  PS1="\n\t ${GREEN}\w${YELLOW} \$(vcprompt)${NORMAL}❱ "
 }
 
 #

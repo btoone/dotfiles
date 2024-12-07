@@ -57,7 +57,7 @@ compact_path() {
   local simplified
   simplified=$(simplify_home "$path")
   echo "$simplified" | awk -F/ '{
-    if ($1 == "~") {
+    if ($1 == "~/") {
       base="~/"
       start=2
     } else {
@@ -75,7 +75,7 @@ compact_path() {
 simplify_home() {
   local path="$1"
   if [ "$path" = "$HOME" ]; then
-    echo "~"
+    echo "~/"
   else
     echo "${path/#$HOME/~}"
   fi

@@ -12,6 +12,9 @@ set nocompatible
 "     filetype indent on
 filetype plugin indent on
 
+" Enable Omni-completion
+" set omnifunc=syntaxcomplete#Complete
+
 " Enable syntax highlighting
 syntax enable
 
@@ -83,6 +86,13 @@ set rtp+=/usr/local/opt/fzf         "Brew install folder for Intel Mac
 if $TMUX == ''
   set clipboard+=unnamed
 endif
+
+" UltiSnips Config
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+
 
 " Navigation
 " ==========

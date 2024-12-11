@@ -4,3 +4,4 @@ vim/spell
 tmux/plugins
 tmux/resurrect
 vim/pack/*
+vim/plugged/*

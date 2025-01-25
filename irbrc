@@ -1,5 +1,8 @@
 require "rubygems"
 
+require "amazing_print"
+AmazingPrint.irb!
+
 # Enable auto-indenting
 IRB.conf[:AUTO_INDENT] = true
 

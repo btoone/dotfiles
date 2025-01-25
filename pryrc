@@ -1,5 +1,8 @@
 require "rubygems"
 
+require "amazing_print"
+AmazingPrint.pry!
+
 # Use vim for the `edit` command
 Pry.config.editor = "vim"
 

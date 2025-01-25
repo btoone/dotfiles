@@ -1,6 +1,7 @@
 # vim: ft=gitconfig
 [init]
 	templatedir = ~/.git_template
+	defaultBranch = main
 [push]
 	default = current
 [color]

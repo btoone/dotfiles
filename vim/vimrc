@@ -177,7 +177,8 @@ nmap <Leader>q :q<CR>
 nmap <Leader>w :w!<CR>
 
 " Index ctags from any project, including those outside Rails
-map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
+" map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
+nnoremap <Leader>ct :silent !ctags -R --exclude=.git --exclude=log --exclude=tmp --exclude=vendor/assets/bower_components --exclude=node_modules --exclude=coverage . &<CR>
 
 " Use ctrl+p to serach ctags
 " nnoremap <Leader>. :CtrlPTag<CR>

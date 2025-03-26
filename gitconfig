@@ -3,7 +3,7 @@
 	templatedir = ~/.git_template
 	defaultBranch = main
 [push]
-	default = current
+	autoSetupRemote = true
 [color]
 	ui = auto
 [core]

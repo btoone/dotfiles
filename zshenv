@@ -15,7 +15,7 @@ export BUNDLE_EDITOR="$EDITOR"
 export VIMRC="$HOME/.vim/vimrc"
 
 ## Pager
-export PAGER='less -RM'
+export PAGER='less -SIRMX'
 
 ## History
 export HISTSIZE=10000

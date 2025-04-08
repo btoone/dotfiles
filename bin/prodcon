@@ -1,0 +1,97 @@
+#!/bin/zsh
+
+# === Usage ===
+# Launches a dedicated Tmux session for the production Rails console. Save this
+# script as `~/bin/prodcon` and make it executable. You'll also need the 
+# production config file (`.tmux-prod.conf`) for Tmux. This provides a sanitary
+# Tmux config with basic defaults.
+# 
+#     pbpaste > ~/.tmux-prod.conf
+#     pbpaste > ~/bin/prodcon
+#     chmod +x ~/bin/prodcon`
+# 
+# To start up a new console, simpley run `prodcon` from the terminal. Rerunning
+# will simply attach to the existing Tmux session if one exists.
+# 
+# You can introspect and manage the session with commands:
+# tmux -S ~/.tmux-prod.sock ls
+# tmux -S ~/.tmux-prod.sock kill-session
+# tmux -S ~/.tmux-prod.sock attach -t prod_console
+
+
+# === Configuration ===
+project_path="path/to/project_dir"
+
+session="prod_console"
+tmux_socket="$HOME/.tmux-prod.sock"
+tmux_conf="$HOME/.tmux-prod.conf"
+
+source_rvm="source $HOME/.rvm/scripts/rvm"
+source_env="source some/path/api/.env && source some/path/api/.env.production"
+command_rails="bin/rails console -e production"
+
+# === Sanity check: config file ===
+if [[ ! -f "${tmux_conf}" ]]; then
+  echo "❌ Error: ${tmux_conf} not found."
+  exit 1
+fi
+
+# === Safety prompt ===
+echo
+echo -n "🚨 Are you sure you want to open a production console? (y/n) "
+read answer
+if [[ "${answer}" != [Yy] ]]; then
+  echo "Aborted."
+  exit 1
+fi
+
+# === Helper functions ===
+prod_tmux() {
+  tmux -S "${tmux_socket}" "$@"
+}
+
+boot_prod_environment() {
+  prod_tmux send-keys -t "$session" "cd ${project_path}" C-m
+  prod_tmux send-keys -t "$session" "${source_rvm}" C-m
+  prod_tmux send-keys -t "$session" "${source_env}" C-m
+  prod_tmux send-keys -t "$session" \
+    "clear && \
+    echo && echo && \
+    echo \"\033[1;31m🚨 Connected to DB_HOST=\$DB_HOST 🚨\033[0m\" && \
+    echo && echo" C-m
+
+  prod_tmux rename-window -t "${SESSION}" '🔥 PRODUCTION CONSOLE 🔥'
+}
+
+# wait_for_session() {
+#   echo "WAITING FOR SESSION: ${session}"
+#   while ! prod_tmux has-session -t "${session}"; do sleep 1; done
+# }
+
+# === Main ===
+# Ensure tmux server is running on prod socket
+if ! tmux -S "${tmux_socket}" ls &>/dev/null; then
+  echo "→ Starting isolated tmux server with prod config"
+
+  # Clean up stale socket if it exists but server isn't running
+  [[ -e "${tmux_socket}" ]] && rm -f "${tmux_socket}"
+
+  # Start a new isolated tmux server and session
+  tmux -f "${tmux_conf}" -S "${tmux_socket}" \
+    new-session -d -s "${session}" -n console "zsh"
+
+  boot_prod_environment
+
+  # Launch Rails production console
+  prod_tmux send-keys -t "${SESSION}" "${command_rails}" C-m
+else
+  echo "→ Prod tmux server already running"
+
+  # Ensure session exists within the running server
+  if ! prod_tmux has-session -t "${session}" 2>/dev/null; then
+    prod_tmux new-session -d -s "${session}" -n console "zsh"
+  fi
+fi
+
+# Attach to session and set project directory
+prod_tmux attach-session -t "${session}" -c "${project_path}"

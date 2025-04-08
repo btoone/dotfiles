@@ -47,6 +47,11 @@ alias tml="tmux ls"
 alias tmi="tmux info"
 alias tmk="tmux kill-session -t"
 
+# tmuxprod ls
+# tmuxprod attach -t prod_console
+# tmuxprod kill-server
+alias tmuxprod='tmux -S ~/.tmux-prod.sock'
+
 # Git
 alias ga='git add'
 alias gaa='git add -A'

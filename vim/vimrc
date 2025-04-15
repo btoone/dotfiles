@@ -399,6 +399,13 @@ imap <C-u> <C-w>
 " Toggle spell
 nmap <F5> :setlocal spell!<cr>
 
+" Fugitive Conflict Resolution
+" From https://medium.com/prodopsio/solving-git-merge-conflicts-with-vim-c8a8617e3633
+" Remember to use [n and ]n from vim-unimpaired to jump between SCM conflict markers.
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap gdh :diffget //2<CR>
+nnoremap gdl :diffget //3<CR>
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local

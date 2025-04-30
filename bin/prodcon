@@ -2,33 +2,55 @@
 
 # === Usage ===
 # Launches a dedicated Tmux session for the production Rails console. Save this
-# script as `~/bin/prodcon` and make it executable. You'll also need the 
-# production config file (`.tmux-prod.conf`) for Tmux. This provides a sanitary
-# Tmux config with basic defaults.
+# script as `~/bin/prodcon`. You'll also need the production config file
+# (`.tmux-prod.conf`) for Tmux. This provides a sanitary Tmux config with basic
+# defaults.
 # 
-#     pbpaste > ~/.tmux-prod.conf
-#     pbpaste > ~/bin/prodcon
-#     chmod +x ~/bin/prodcon`
+# To start up a new console, run `prodcon` from the terminal. Re-running will
+# simply attach to the existing Tmux session if one exists.
 # 
-# To start up a new console, simpley run `prodcon` from the terminal. Rerunning
-# will simply attach to the existing Tmux session if one exists.
-# 
-# You can introspect and manage the session with commands:
+# You can introspect and manage the session with commands prefixed with the
+# socket:
+#
 # tmux -S ~/.tmux-prod.sock ls
 # tmux -S ~/.tmux-prod.sock kill-session
 # tmux -S ~/.tmux-prod.sock attach -t prod_console
 
-
 # === Configuration ===
-project_path="path/to/project_dir"
+project_path="$WORK/v2-api"
+
+trap cleanup EXIT
 
 session="prod_console"
 tmux_socket="$HOME/.tmux-prod.sock"
 tmux_conf="$HOME/.tmux-prod.conf"
 
 source_rvm="source $HOME/.rvm/scripts/rvm"
-source_env="source some/path/api/.env && source some/path/api/.env.production"
+source_env="source $WORK/api/.env && source $WORK/api/.env.production"
 command_rails="bin/rails console -e production"
+
+# === Ensure production branch is checked out and up to date ===
+cd "${project_path}" || exit 1
+
+# Check for uncommitted changes
+if ! git diff --quiet || ! git diff --staged --quiet; then
+  echo "❌ You have uncommitted changes in ${project_path}."
+  echo "Please commit or stash them before running prodcon."
+  exit 1
+fi
+
+# Fetch latest updates
+git fetch origin
+
+# Check if we have a local production branch
+if git show-ref --verify --quiet refs/heads/production; then
+  git checkout production
+else
+  git checkout -b production origin/production
+fi
+
+# Reset local production to match remote
+git reset --hard origin/production
 
 # === Sanity check: config file ===
 if [[ ! -f "${tmux_conf}" ]]; then
@@ -63,10 +85,11 @@ boot_prod_environment() {
   prod_tmux rename-window -t "${SESSION}" '🔥 PRODUCTION CONSOLE 🔥'
 }
 
-# wait_for_session() {
-#   echo "WAITING FOR SESSION: ${session}"
-#   while ! prod_tmux has-session -t "${session}"; do sleep 1; done
-# }
+cleanup() {
+  echo "→ Cleaning up git state after prod console..."
+  cd "${project_path}" || return
+  git reset --hard origin/production
+}
 
 # === Main ===
 # Ensure tmux server is running on prod socket

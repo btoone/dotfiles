@@ -49,6 +49,9 @@
 	# Add files with long path. Usage: git long <pattern-in-full-path>
 	long = "!f() { git add $(git ls-files -m | grep -i $1;) && git status; }; f"
 
+    # Git log oneline with date and author (custom pretty format)
+    hist = log --graph --decorate --pretty=format:'%C(yellow)%h%Creset - %Cgreen%ad%Creset %C(cyan)%an%Creset %C(bold blue)%d%Creset %s' --date=short
+
 	# Undo commit(s). Files will be unstaged
 	r = reset HEAD
 	rr = reset HEAD~1

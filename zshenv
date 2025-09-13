@@ -1,3 +1,5 @@
+# Values set here will be available for all shells (including scripts and
+# system processes). But be cautious: ~/.zshenv is sourced by all Zsh instances
 export DOTFILES="~/code/dotfiles"
 
 ## ZSH

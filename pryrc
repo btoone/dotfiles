@@ -1,7 +1,11 @@
 require "rubygems"
 
-require "amazing_print"
-AmazingPrint.pry!
+# begin
+#   require "amazing_print"
+#   AmazingPrint.pry!
+# rescue LoadError => e
+#   puts "\n[~/.pryrc] amazing_print not loaded: #{e.message}\n\n"
+# end
 
 # Use vim for the `edit` command
 Pry.config.editor = "vim"
@@ -14,6 +18,6 @@ if defined?(PryByebug)
 end
 
 # Hit Enter to repeat last command
-Pry::Commands.command /^$/, "repeat last command" do
+Pry::Commands.command(/^$/, "repeat last command") do
   pry_instance.run_command Pry.history.to_a.last
 end

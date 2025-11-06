@@ -127,6 +127,12 @@ autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 " Force *.md files to be detected as markdown filetype
 autocmd BufReadPost,BufNewFile *.md set filetype=markdown
 
+" JavaScript / TypeScript
+" =======================
+
+" Use local tsc for :make so errors populate the quickfix list
+autocmd FileType typescript,typescriptreact,javascriptreact setlocal makeprg=npx\ tsc\ --noEmit\ -p\ tsconfig.app.json
+
 " Git
 " ===
 
@@ -442,4 +448,3 @@ function! s:GstatusToggle() abort
 endfunction
 command GstatusToggle call <SID>GstatusToggle()   " Register as a command
 nnoremap <C-s> :call <SID>GstatusToggle()<CR>     " Run using CTRL-s
-

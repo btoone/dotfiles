@@ -41,21 +41,23 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'vim-ruby/vim-ruby'
-Plug 'pangloss/vim-javascript'
 Plug 'leshill/vim-json'
 Plug 'slim-template/vim-slim'
 Plug 'itspriddle/vim-marked'
 Plug 'prettier/vim-prettier'
-Plug 'leafgarland/typescript-vim'
 Plug 'bfrg/vim-jq'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-" Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'MaxMEllon/vim-jsx-pretty'
 " Plug 'hail2u/vim-css3-syntax'
 " Plug 'cakebaker/scss-syntax.vim'
 " Plug 'p0deje/vim-ruby-interpolation'
 " Plug 'sodapopcan/vim-rubocop'
 " Plug 'vim-test/vim-test'
+" Plug 'pangloss/vim-javascript'
+" Plug 'leafgarland/typescript-vim'
+Plug 'yuezk/vim-js'
+Plug 'HerringtonDarkholme/yats.vim'
 
 " Tim Pope
 Plug 'tpope/vim-endwise'
@@ -202,6 +204,7 @@ nmap <Leader>m :MarkedToggle!<CR>
 " Shortcut to rapidly toggle `set list`
 nmap <Leader>l :set list!<CR>
 set listchars=eol:¬
+set listchars=trail:·
 
 " Quicker Git Status
 nnoremap <Leader>g :GstatusToggle<CR>

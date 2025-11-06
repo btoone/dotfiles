@@ -55,7 +55,28 @@
 	# Undo commit(s). Files will be unstaged
 	r = reset HEAD
 	rr = reset HEAD~1
-	rrr = reset HEAD~2
+	rrr = reset HEAD~2 
+
+	; lh = "!git log --pretty=format:'%s%d' --decorate=short --color=always | \
+	; 	sed -E \
+	; 		-e '/^\\*/ s/^(.*)$/\\x1b[1;37m\\1\\x1b[0m/' \
+	; 		-e '/^[+!]/ s/^(.*)$/\\x1b[1;31m\\1\\x1b[0m/' \
+	; 		-e '/^~/ s/^(.*)$/\\x1b[1;33m\\1\\x1b[0m/' \
+	; 		-e '/^\\./ s/^(.*)$/\\x1b[1;32m\\1\\x1b[0m/' \
+	; 		-e '/^\\^/ s/^(.*)$/\\x1b[36m\\1\\x1b[0m/' \
+	; 		-e '/^[+!~.^*]/! s/^(.*)$/\\x1b[90m\\1\\x1b[0m/'"
+
+	; heat = "!f() { \
+	; 	red='\\033[1;31m'; yellow='\\033[1;33m'; green='\\033[1;32m'; blue='\\033[1;34m'; reset='\\033[0m'; \
+	; 	echo; echo \"${red}🟥 Major Editorial Changes${reset}\"; \
+	; 		git log --oneline --decorate | GREP_COLOR='1;31' grep --color=always -E '[[:space:]]([+!])' || echo '  (none)'; \
+	; 		echo; echo \"${yellow}🟨 Refinements${reset}\"; \
+	; 		git log --oneline --decorate | GREP_COLOR='1;33' grep --color=always -E '[[:space:]]~' || echo '  (none)'; \
+	; 		echo; echo \"${green}🟩 Formatting / Meta${reset}\"; \
+	; 		git log --oneline --decorate | GREP_COLOR='1;32' grep --color=always -E '[[:space:]]([\\.^])' || echo '  (none)'; \
+	; 		echo; \
+	; 	}; f"
+
 [user]
 	name = Brandon Toone
 	email = 780144+btoone@users.noreply.github.com

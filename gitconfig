@@ -8,7 +8,7 @@
 [core]
 	autocrlf = input
 	editor = vim
-	excludesfile = /Users/bt/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [commit]
 	template = ~/.gitmessage
 [diff]

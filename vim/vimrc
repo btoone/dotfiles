@@ -90,8 +90,8 @@ runtime macros/matchit.vim
 " let g:ctrlp_custom_ignore = '\v[\/](doc|log)$'
 
 " Set path for FZF
-set rtp+=/usr/local/opt/fzf         "Brew install folder for Intel Mac
-" set rtp+=/opt/homebrew/opt/fzf      "Brew install folder for M1 Mac
+" set rtp+=/usr/local/opt/fzf         "Brew install folder for Intel Mac
+set rtp+=/opt/homebrew/opt/fzf      "Brew install folder for M1 Mac
 
 " Enable copy/paste integration with pbcopy/pbpaste
 if $TMUX == ''

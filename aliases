@@ -106,12 +106,12 @@ alias et="$EDITOR ~/.tmux.conf.local && reload"
 alias v="$VISUAL"
 alias vv="$VISUAL ."
 
-# Postgres
-alias pgon="pg_ctl start -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log"
-alias pgoff="pg_ctl stop -D /usr/local/var/postgres -s -m fast"
-alias pgrestart="pg_ctl restart -D /usr/local/var/postgres -s -m fast -l /usr/local/var/postgres/server.log"
-alias pgstatus="pg_ctl status -D /usr/local/var/postgres"
-alias pgst="pg_ctl status -D /usr/local/var/postgres"
+# Postgres (M1 Mac - Homebrew path: /opt/homebrew/var/postgresql@14)
+alias pgon="pg_ctl start -D /opt/homebrew/var/postgresql@14 -l /opt/homebrew/var/postgresql@14/server.log"
+alias pgoff="pg_ctl stop -D /opt/homebrew/var/postgresql@14 -s -m fast"
+alias pgrestart="pg_ctl restart -D /opt/homebrew/var/postgresql@14 -s -m fast -l /opt/homebrew/var/postgresql@14/server.log"
+alias pgstatus="pg_ctl status -D /opt/homebrew/var/postgresql@14"
+alias pgst="pg_ctl status -D /opt/homebrew/var/postgresql@14"
 
 # Vagrant
 alias vh='vagrant halt'

@@ -27,7 +27,7 @@ bindkey -M vicmd 'vv' edit-command-line
 [[ -f ~/.aliases ]] && source ~/.aliases
 
 # Set PATH, MANPATH, etc., for Homebrew.
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
 
 # Set env for nodenv
 eval "$(nodenv init -)"

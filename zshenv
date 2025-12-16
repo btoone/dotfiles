@@ -2,6 +2,14 @@
 # system processes). But be cautious: ~/.zshenv is sourced by all Zsh instances
 export DOTFILES="~/code/dotfiles"
 
+# Detect architecture and set Homebrew prefix
+# arm64 = Apple Silicon (M1/M2), x86_64 = Intel
+if [[ "$(uname -m)" == "arm64" ]]; then
+  export HOMEBREW_PREFIX="/opt/homebrew"
+else
+  export HOMEBREW_PREFIX="/usr/local"
+fi
+
 ## ZSH
 # export ZDOTDIR="$DOTFILES/zsh"
 
@@ -30,13 +38,8 @@ export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx    # dark backgrounds
 # export LSCOLORS=ExFxCxDxBxegedabagacad    # light backgrounds
 
-## MySQL
-
-# ARM64 (M1)
-export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl@3/lib/
-
-# Intel
-# export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+## OpenSSL (for compiling native extensions)
+export LIBRARY_PATH=$LIBRARY_PATH:$HOMEBREW_PREFIX/opt/openssl@3/lib/
 
 # Character encoding
 export LC_CTYPE=UTF-8

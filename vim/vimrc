@@ -89,9 +89,12 @@ runtime macros/matchit.vim
 " set wildignore+=*/node_modules/*
 " let g:ctrlp_custom_ignore = '\v[\/](doc|log)$'
 
-" Set path for FZF
-" set rtp+=/usr/local/opt/fzf         "Brew install folder for Intel Mac
-set rtp+=/opt/homebrew/opt/fzf      "Brew install folder for M1 Mac
+" Set path for FZF (detect architecture for M1/Intel compatibility)
+if system('uname -m') =~ 'arm64'
+  set rtp+=/opt/homebrew/opt/fzf
+else
+  set rtp+=/usr/local/opt/fzf
+endif
 
 " Enable copy/paste integration with pbcopy/pbpaste
 if $TMUX == ''

@@ -52,7 +52,7 @@ function myaliases() {
 
 # Lists the latest commit for each branch in the repo
 function gbl() {
-  for k in `/usr/local/bin/git branch|sed s/^..//`;do echo -e `git log -1 --pretty=format:"%Cgreen%ci %Cblue%cr%Creset" "$k"`\\t"$k";done|sort -r
+  for k in `git branch|sed s/^..//`;do echo -e `git log -1 --pretty=format:"%Cgreen%ci %Cblue%cr%Creset" "$k"`\\t"$k";done|sort -r
 }
 
 # opens desktop folder in time machine backups

@@ -17,9 +17,6 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd 'vv' edit-command-line
 
-## Enable ASDF
-. $HOME/.asdf/asdf.sh
-
 # Mise (runtime version manager)
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate zsh)"
@@ -33,8 +30,6 @@ eval "$(mise activate zsh)"
 # Set PATH, MANPATH, etc., for Homebrew.
 eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
 
-# Set env for nodenv
-eval "$(nodenv init -)"
 
 # case insensitive path-completion 
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 

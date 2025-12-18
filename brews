@@ -1,3 +1,4 @@
+# Install with: cat brews | xargs brew install
 ack
 bat
 coreutils
@@ -34,6 +35,7 @@ unixodbc
 ripgrep
 fzf
 gh
+mise
 overmind
 lnav
 jq

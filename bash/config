@@ -14,9 +14,9 @@ source ~/.git-completion.bash
 # Enable vi mode for better command-line navigation
 set -o vi 
 
-# Enable ASDF
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
+# Mise (runtime version manager)
+export PATH="$HOME/.local/bin:$PATH"
+eval "$(mise activate bash)"
 
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --bash)" 

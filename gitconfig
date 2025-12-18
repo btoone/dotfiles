@@ -13,9 +13,7 @@
 	template = ~/.gitmessage
 [diff]
 	colorMoved = zebra
-	tool = Kaleidoscope
 [merge]
-	tool = Kaleidoscope
 	# Enable if you have a fast-forward only merge strategy
 	# ff = only
 [alias]
@@ -89,13 +87,7 @@
 	rebase = true
 [fetch]
 	prune = true
-[difftool "Kaleidoscope"]
-	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [difftool]
 	prompt = false
-	trustExitCode = true
-[mergetool "Kaleidoscope"]
-	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustExitCode = true
 [mergetool]
 	prompt = false

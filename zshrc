@@ -2,10 +2,7 @@
 setopt HIST_IGNORE_ALL_DUPS
 setopt SH_WORD_SPLIT
 
-## Git completion support
-# See https://github.com/git/git/blob/master/contrib/completion/git-completion.zsh
-zstyle ':completion:*:*:git:*' script ~/git-completion.zsh
-fpath=(~/.zsh $fpath)
+# Completions (Homebrew provides git completions via site-functions)
 autoload -Uz compinit && compinit
 
 ## Enable vi mode for better command-line navigation

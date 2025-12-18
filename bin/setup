@@ -54,13 +54,13 @@ readonly LOCAL_DIR="$PWD/local"
 
 while read -r f
 do
-  ln -s "$PWD"/"$f" ~/".$f"
-done < $MANIFEST
+  ln -s "$PWD/$f" "$HOME/.$f"
+done < "$MANIFEST"
 __results+="\n* Created symlink for each dotfiles listed in MANIFEST"
 
 for file in "$LOCAL_DIR"/*; do
   filename=$(basename "$file")
-  cp "$file" ~/".$filename"
+  cp "$file" "$HOME/.$filename"
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME"
 

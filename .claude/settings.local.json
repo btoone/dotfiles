@@ -22,7 +22,9 @@
       "Bash(fi:*)",
       "Bash(done)",
       "Bash(grep:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(xargs cat:*)",
+      "Bash(git -C /Users/brandon/dotfiles log --oneline)"
     ]
   }
 }

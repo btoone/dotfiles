@@ -16,7 +16,7 @@ pryrc
 rspec
 sqliterc
 tmux.conf
-tool-versions
+mise.toml
 tmux
 vim
 zshenv

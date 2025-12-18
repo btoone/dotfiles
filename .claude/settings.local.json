@@ -24,7 +24,9 @@
       "Bash(grep:*)",
       "Bash(git add:*)",
       "Bash(xargs cat:*)",
-      "Bash(git -C /Users/brandon/dotfiles log --oneline)"
+      "Bash(git -C /Users/brandon/dotfiles log --oneline)",
+      "Bash(mise ls:*)",
+      "Bash(mise trust:*)"
     ]
   }
 }

@@ -1,5 +1,6 @@
 ackrc
 aliases
+shellcheckrc
 Brewfile
 default-gems
 fzfrc

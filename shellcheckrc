@@ -1,0 +1,10 @@
+# ShellCheck configuration
+# See: https://www.shellcheck.net/wiki/
+
+# Default shell dialect (bash)
+shell=bash
+
+# Disable warnings for:
+# SC1090 - Can't follow non-constant source
+# SC1091 - Not following sourced file (not specified as input)
+disable=SC1090,SC1091

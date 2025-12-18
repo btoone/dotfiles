@@ -11,9 +11,9 @@ __preinstall="
 =================
 
 1. Install Homebrew
-2. Use the brews file to install brews from file
+2. Install packages from Brewfile
 
-    $ cat brews | xargs brew install
+    $ brew bundle
 "
 
 echo -e "$__preinstall"

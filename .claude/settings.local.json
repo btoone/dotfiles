@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(ctags:*)",
+      "Bash(brew info:*)",
+      "Bash(brew install:*)",
+      "Bash(hash -r)"
     ]
   }
 }

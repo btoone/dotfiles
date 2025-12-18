@@ -16,6 +16,5 @@ tmux.conf
 tool-versions
 tmux
 vim
-zsh/zshenv
-zsh/zprofile
-zsh/zshrc
+zshenv
+zshrc

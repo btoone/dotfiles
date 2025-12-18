@@ -13,7 +13,7 @@ __preinstall="
 1. Install Homebrew
 2. Install packages from Brewfile
 
-    $ brew bundle
+    $ brew bundle --global
 "
 
 echo -e "$__preinstall"

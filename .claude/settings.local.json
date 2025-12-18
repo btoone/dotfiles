@@ -5,7 +5,10 @@
       "Bash(ctags:*)",
       "Bash(brew info:*)",
       "Bash(brew install:*)",
-      "Bash(hash -r)"
+      "Bash(hash -r)",
+      "Bash(git commit:*)",
+      "Bash(ln:*)",
+      "Bash(brew bundle:*)"
     ]
   }
 }

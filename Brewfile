@@ -1,4 +1,4 @@
-# Install with: brew bundle
+# Install with: brew bundle --global
 brew "ack"
 brew "bat"
 brew "coreutils"

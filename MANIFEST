@@ -2,6 +2,8 @@ ackrc
 aliases
 Brewfile
 default-gems
+fzfrc
+ripgreprc
 gemrc
 gitconfig
 gitignore

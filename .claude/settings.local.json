@@ -8,7 +8,8 @@
       "Bash(hash -r)",
       "Bash(git commit:*)",
       "Bash(ln:*)",
-      "Bash(brew bundle:*)"
+      "Bash(brew bundle:*)",
+      "Bash(git clone:*)"
     ]
   }
 }

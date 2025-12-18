@@ -72,6 +72,15 @@ fi
 
 # Vim plugins are managed by vim-plug and installed on first launch
 
+# Initialize mise and install runtimes from tool-versions
+if command -v mise &> /dev/null; then
+  echo "→ Installing mise runtimes from tool-versions..."
+  mise install
+  __results+="\n* Installed mise runtimes from tool-versions"
+else
+  __results+="\n* Skipped mise setup (not installed - run 'brew bundle --global' first)"
+fi
+
 # Prompt user to load new environment
 __results+="
 =================

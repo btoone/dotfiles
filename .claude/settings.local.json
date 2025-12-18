@@ -9,7 +9,10 @@
       "Bash(git commit:*)",
       "Bash(ln:*)",
       "Bash(brew bundle:*)",
-      "Bash(git clone:*)"
+      "Bash(git clone:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(brew search:*)"
     ]
   }
 }

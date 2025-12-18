@@ -71,6 +71,7 @@ See `:help package` for more info.
 ### Tmux
 
 * Configuration
+* Catppuccin theme (requires Nerd Font for icons)
 
 ### ZSH
 

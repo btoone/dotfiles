@@ -70,10 +70,7 @@ if [ ! -d "$HOME/.tmux/plugins" ]; then
   __results+="\n* Installed Tmux Plugin Manager \"~/.tmux/plugins/tpm\""
 fi
 
-# Install Vim plugins from the plugin manifest
-source vim/vimrc.plugins
-
-__results+="\n* Installed plugins to \"~/.vim/pack/*\""
+# Vim plugins are managed by vim-plug and installed on first launch
 
 # Prompt user to load new environment
 __results+="
@@ -85,7 +82,7 @@ __results+="
 2. Source your preferred ruby manager in \`.zshrc.local\`
 3. Source your tmux config with \`tmux source ~/.tmux.conf\`
    a. Install tmux plugins with \`prefix + I\` (capital I)
-4. Generate helptags for vim by doing \`:helptags ALL\`
+4. Install vim plugins by running \`:PlugInstall\` in vim
 5. Set your terminal font to \"Hack Nerd Font\" for tmux status bar icons
 "
 

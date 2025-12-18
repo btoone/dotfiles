@@ -12,7 +12,17 @@
       "Bash(git clone:*)",
       "Bash(ls:*)",
       "WebFetch(domain:github.com)",
-      "Bash(brew search:*)"
+      "Bash(brew search:*)",
+      "Bash(while read f)",
+      "Bash(do [ -z \"$f\" ])",
+      "Bash(continue)",
+      "Bash(if [ ! -f \"/Users/brandon/dotfiles/$f\" ])",
+      "Bash([ ! -d \"/Users/brandon/dotfiles/$f\" ])",
+      "Bash(then echo \"MISSING: $f\")",
+      "Bash(fi:*)",
+      "Bash(done)",
+      "Bash(grep:*)",
+      "Bash(git add:*)"
     ]
   }
 }

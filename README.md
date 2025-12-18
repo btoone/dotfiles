@@ -51,22 +51,11 @@ Features
 
 #### Plugin Management
 
-Plugins (or packages) are installed using the built-in package support that
-comes with Vim 8. 
+Plugins are managed using [vim-plug](https://github.com/junegunn/vim-plug).
 
-Which means they are installed to `~/.vim/pack/`.
+To install plugins, open vim and run `:PlugInstall`.
 
-Anything in an `opt/` dir can be loaded manually using `:packadd! packagename`.
-
-To install a new plugin, simply clone the repo into the directory 
-`~/.vim/pack/default/start`. Be sure to update `vimrc.plugins` with the new
-plugin.
-
-The file `vimrc.plugins` serves as a manifest of commands of what is installed.
-To reinstall any of the plugins listed in this file, simply copy the command and
-run from the root of your dotfiles install location.
-
-See `:help package` for more info.
+Plugins are defined in `vim/vimrc` within the `plug#begin()` and `plug#end()` block.
 
 ### Tmux
 

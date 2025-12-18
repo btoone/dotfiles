@@ -21,7 +21,7 @@ project_path="$WORK/v2-api"
 
 trap cleanup EXIT
 
-session="prod_console"
+prod_session="prod_console"
 tmux_socket="$HOME/.tmux-prod.sock"
 tmux_conf="$HOME/.tmux-prod.conf"
 
@@ -73,16 +73,16 @@ prod_tmux() {
 }
 
 boot_prod_environment() {
-  prod_tmux send-keys -t "$session" "cd ${project_path}" C-m
-  prod_tmux send-keys -t "$session" "${source_rvm}" C-m
-  prod_tmux send-keys -t "$session" "${source_env}" C-m
-  prod_tmux send-keys -t "$session" \
+  prod_tmux send-keys -t "$prod_session" "cd ${project_path}" C-m
+  prod_tmux send-keys -t "$prod_session" "${source_rvm}" C-m
+  prod_tmux send-keys -t "$prod_session" "${source_env}" C-m
+  prod_tmux send-keys -t "$prod_session" \
     "clear && \
     echo && echo && \
     echo \"\033[1;31m🚨 Connected to DB_HOST=\$DB_HOST 🚨\033[0m\" && \
     echo && echo" C-m
 
-  prod_tmux rename-window -t "${SESSION}" '🔥 PRODUCTION CONSOLE 🔥'
+  prod_tmux rename-window -t "${prod_session}" '🔥 PRODUCTION CONSOLE 🔥'
 }
 
 cleanup() {
@@ -101,20 +101,20 @@ if ! tmux -S "${tmux_socket}" ls &>/dev/null; then
 
   # Start a new isolated tmux server and session
   tmux -f "${tmux_conf}" -S "${tmux_socket}" \
-    new-session -d -s "${session}" -n console "zsh"
+    new-session -d -s "${prod_session}" -n console "zsh"
 
   boot_prod_environment
 
   # Launch Rails production console
-  prod_tmux send-keys -t "${SESSION}" "${command_rails}" C-m
+  prod_tmux send-keys -t "${prod_session}" "${command_rails}" C-m
 else
   echo "→ Prod tmux server already running"
 
   # Ensure session exists within the running server
-  if ! prod_tmux has-session -t "${session}" 2>/dev/null; then
-    prod_tmux new-session -d -s "${session}" -n console "zsh"
+  if ! prod_tmux has-session -t "${prod_session}" 2>/dev/null; then
+    prod_tmux new-session -d -s "${prod_session}" -n console "zsh"
   fi
 fi
 
 # Attach to session and set project directory
-prod_tmux attach-session -t "${session}" -c "${project_path}"
+prod_tmux attach-session -t "${prod_session}" -c "${project_path}"

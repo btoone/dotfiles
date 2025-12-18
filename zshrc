@@ -20,6 +20,10 @@ bindkey -M vicmd 'vv' edit-command-line
 ## Enable ASDF
 . $HOME/.asdf/asdf.sh
 
+# Mise (runtime version manager)
+export PATH="$HOME/.local/bin:$PATH"
+eval "$(mise activate zsh)"
+
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 

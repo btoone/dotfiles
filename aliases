@@ -118,6 +118,10 @@ alias vh='vagrant halt'
 alias vs='vagrant suspend'
 alias vup='vagrant up'
 
+# Claude Code (use CLAUDE_CONFIG_DIR for separate account configs)
+alias claude-personal='CLAUDE_CONFIG_DIR=~/.claude-personal claude'
+alias claude-work='CLAUDE_CONFIG_DIR=~/.claude-work claude'
+
 # Apps
 alias h='heroku'
 alias hl='heroku local -f Procfile.dev'

@@ -1,7 +1,7 @@
 Dotfiles
 ========
 
-Collection of personal dotfiles to configure developer environments.
+Personal dotfiles for macOS developer environments.
 
 Conventions
 -----------
@@ -29,11 +29,10 @@ Run the setup script:
 
 The setup script will:
 
-1. Checkout the correct branch for mac or linux
-2. Create symlinks for each file in `MANIFEST`
-3. Copy local config templates (only if they don't exist)
-4. Install `tpm` for tmux
-5. Run `mise install` for runtime versions
+1. Create symlinks for each file in `MANIFEST`
+2. Copy local config templates (only if they don't exist)
+3. Install `tpm` for tmux
+4. Run `mise install` for runtime versions
 
 After setup, start a new terminal session or run `exec zsh`.
 

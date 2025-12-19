@@ -1,52 +1,26 @@
 #!/usr/bin/env bash
 
-# Value of BASE_DIR is "dotfiles". The README instructs the user to run 
+# Value of BASE_DIR is "dotfiles". The README instructs the user to run
 # `bin/setup` and errors if called from another location.
 BASE_DIR=$(basename "$PWD")
-
-# Setup results output
-__preinstall="
-=================
-   PRE INSTALL
-=================
-
-1. Install Homebrew
-2. Install packages from Brewfile
-
-    $ brew bundle --global
-"
-
-echo -e "$__preinstall"
-
-# Setup results output
-__results="
-Summary:
-"
 
 # Confirm we're installing from the project root
 if [[ $BASE_DIR != 'dotfiles' ]]; then
   echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
 fi
 
-# Determine if we need to switch to the linux branch
-read -rp "Which environment? ([l]inux/[m]ac/[a]bort)? " answer
-case ${answer:0:1} in
-    l|L|linux )
-        echo "Checking out branch: linux"
-        git checkout --track origin/linux
-        __results+="\n* Switched to linux branch"
-    ;;
-    m|M|mac )
-        echo "Continuing with branch: master"
-    ;;
-    a|A|abort )
-        echo "Aborting setup"
-        exit 0
-    ;;
-    * )
-        echo "Continuing with normal setup"
-    ;;
-esac
+echo "
+=================
+   PRE INSTALL
+=================
+
+1. Install Homebrew
+2. Install packages: brew bundle --global
+"
+
+__results="
+Summary:
+"
 
 # Install dotfiles
 readonly MANIFEST='MANIFEST'

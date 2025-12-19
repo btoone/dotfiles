@@ -18,22 +18,24 @@ Clone the repo into your home directory.
 
     git clone git@github.com:btoone/dotfiles.git ~/dotfiles
 
-Change into the project directory and run the setup. The setup script will do 
-the following:
+Install Homebrew packages (includes mise for runtime management):
 
-1. Checkout the correct branch for mac or linux installs
-2. Create a symlink for each file listed in `MANIFEST` 
-3. Setup local configs
-4. Install `tpm` for TMUX
-5. Install Vim plugins to `~/.vim/pack/*`
+    brew bundle --global
 
-```
-cd dotfiles
-bin/setup
+Run the setup script:
 
-# After successful setup, reload your shell env
-source ~/.zshrc
-```
+    cd ~/dotfiles
+    bin/setup
+
+The setup script will:
+
+1. Checkout the correct branch for mac or linux
+2. Create symlinks for each file in `MANIFEST`
+3. Copy local config templates (only if they don't exist)
+4. Install `tpm` for tmux
+5. Run `mise install` for runtime versions
+
+After setup, start a new terminal session or run `exec zsh`.
 
 Features
 --------
@@ -42,7 +44,6 @@ Features
 
 * Configuration
 * Aliases
-* Completion
 
 ### Vim
 
@@ -64,7 +65,15 @@ Plugins are defined in `vim/vimrc` within the `plug#begin()` and `plug#end()` bl
 
 ### ZSH
 
+* Vi mode keybindings
+* Git-aware prompt with compact path display
 * Useful aliases
+* Local config support (`~/.zshrc.local`)
+
+### Mise
+
+Runtime version management (Ruby, Node, Python, etc.) via [mise](https://mise.jdx.dev/).
+Versions defined in `mise.toml`.
 
 Contributing (optional for OSS)
 -------------------------------

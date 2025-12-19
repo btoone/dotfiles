@@ -37,7 +37,24 @@
       "Bash(git -C /Users/brandon/dotfiles/vim/pack/default/start/vim-prettier log --oneline -3)",
       "Bash(git -C /Users/brandon/dotfiles/vim/pack/default/start/vim-easytags log --oneline -1)",
       "Bash(vim:*)",
-      "Bash(git -C /Users/brandon/dotfiles log --all --grep=\"update\" --oneline)"
+      "Bash(git -C /Users/brandon/dotfiles log --all --grep=\"update\" --oneline)",
+      "Bash(echo:*)",
+      "Bash(dscl:*)",
+      "Bash(chsh:*)",
+      "Bash(git -C /Users/brandon/dotfiles status)",
+      "Bash(git -C /Users/brandon/dotfiles diff bin/setup)",
+      "Bash(git -C /Users/brandon/dotfiles log --oneline -3)",
+      "Bash(git -C /Users/brandon/dotfiles add CLAUDE.md bash/ bashrc bin/setup git-completion.bash local/bashrc.local profile)",
+      "Bash(git -C /Users/brandon/dotfiles commit -m \"$(cat <<''EOF''\nRemove bash config, standardize on zsh\n\n- Remove bash/, bashrc, profile, git-completion.bash\n- Remove local/bashrc.local template\n- Update bin/setup: use ln -sf for idempotent symlinks\n- Simplify next steps messaging in setup script\n- Update CLAUDE.md to remove bash directory reference\n\nBoth home (Intel) and work (M1) machines now use zsh.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git -C /Users/brandon/dotfiles show HEAD~1:bash/prompt)",
+      "Bash(git -C /Users/brandon/dotfiles diff)",
+      "Bash(git -C /Users/brandon/dotfiles add bin/setup zshrc)",
+      "Bash(git -C /Users/brandon/dotfiles commit -m \"$(cat <<''EOF''\nImprove setup idempotency and zsh prompt\n\nSetup script:\n- Skip copying local files if they already exist (preserves customizations)\n\nzshrc:\n- Guard mise activation with command check (no error if not installed)\n- Update prompt to match bash style: time, compact path, git info, ❱\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git -C /Users/brandon/dotfiles add README.md)",
+      "Bash(git -C /Users/brandon/dotfiles commit -m \"$(cat <<''EOF''\nUpdate README to reflect current project state\n\n- Add brew bundle step before running setup\n- Update setup script description (local files skip if exist)\n- Remove Git completion (no longer using git-completion.bash)\n- Expand ZSH features (vi mode, git prompt, local config)\n- Add Mise section for runtime management\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git -C /Users/brandon/dotfiles branch -a)",
+      "Bash(git -C /Users/brandon/dotfiles add bin/setup README.md)",
+      "Bash(git -C /Users/brandon/dotfiles commit -m \"$(cat <<''EOF''\nRemove Linux support, macOS only\n\n- Remove linux/mac environment prompt from setup script\n- Simplify setup script flow (no branch switching)\n- Update README: macOS only, remove linux branch reference\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
     ]
   }
 }

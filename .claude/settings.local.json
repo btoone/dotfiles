@@ -54,7 +54,11 @@
       "Bash(git -C /Users/brandon/dotfiles commit -m \"$(cat <<''EOF''\nUpdate README to reflect current project state\n\n- Add brew bundle step before running setup\n- Update setup script description (local files skip if exist)\n- Remove Git completion (no longer using git-completion.bash)\n- Expand ZSH features (vi mode, git prompt, local config)\n- Add Mise section for runtime management\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git -C /Users/brandon/dotfiles branch -a)",
       "Bash(git -C /Users/brandon/dotfiles add bin/setup README.md)",
-      "Bash(git -C /Users/brandon/dotfiles commit -m \"$(cat <<''EOF''\nRemove Linux support, macOS only\n\n- Remove linux/mac environment prompt from setup script\n- Simplify setup script flow (no branch switching)\n- Update README: macOS only, remove linux branch reference\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git -C /Users/brandon/dotfiles commit -m \"$(cat <<''EOF''\nRemove Linux support, macOS only\n\n- Remove linux/mac environment prompt from setup script\n- Simplify setup script flow (no branch switching)\n- Update README: macOS only, remove linux branch reference\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(brew list:*)",
+      "Bash(zsh:*)",
+      "Bash(/Users/brandon/.local/bin/mise hook-not-found -s zsh -- awk)",
+      "Bash(printf:*)"
     ]
   }
 }

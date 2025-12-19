@@ -54,7 +54,7 @@ readonly LOCAL_DIR="$PWD/local"
 
 while read -r f
 do
-  ln -s "$PWD/$f" "$HOME/.$f"
+  ln -sf "$PWD/$f" "$HOME/.$f"
 done < "$MANIFEST"
 __results+="\n* Created symlink for each dotfiles listed in MANIFEST"
 
@@ -87,12 +87,10 @@ __results+="
    NEXT STEPS
 =================
 
-1. Reload your env by runing \"source ~/.zshrc\" to complete the install.
-2. Source your preferred ruby manager in \`.zshrc.local\`
-3. Source your tmux config with \`tmux source ~/.tmux.conf\`
-   a. Install tmux plugins with \`prefix + I\` (capital I)
-4. Install vim plugins by running \`:PlugInstall\` in vim
-5. Set your terminal font to \"Hack Nerd Font\" for tmux status bar icons
+1. Start a new terminal session (or run 'exec zsh' to reload)
+2. In tmux: prefix + I to install plugins
+3. In vim: :PlugInstall to install plugins
+4. Set terminal font to \"Hack Nerd Font\" for status bar icons
 "
 
 echo -e "$__results"

@@ -36,7 +36,6 @@ prefix + I
 - `bin/` - Executable scripts (setup, prodcon, eval_gist.rb)
 - `vim/` - Vim configuration with vim-plug managed plugins
 - `tmux/` - Tmux config and plugins (tpm, catppuccin, resurrect)
-- `bash/` - Bash-specific configs (env, functions, prompt, completion)
 - `local/` - Machine-specific override templates
 
 ### Plugin Management

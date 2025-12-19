@@ -16,7 +16,9 @@ bindkey -M vicmd 'vv' edit-command-line
 
 # Mise (runtime version manager)
 export PATH="$HOME/.local/bin:$PATH"
-eval "$(mise activate zsh)"
+if command -v mise &> /dev/null; then
+  eval "$(mise activate zsh)"
+fi
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
@@ -34,14 +36,27 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}
 # partial completion suggestions
 zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
-# git prompt
+# Prompt with git info (matches previous bash prompt style)
+# Format: 06:07:00 ~/d/v/pack [git:master] ❱
 autoload -Uz vcs_info
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
 setopt prompt_subst
-RPROMPT=\$vcs_info_msg_0_
-zstyle ':vcs_info:git:*' formats '%F{240}(%b) %r%f'
+zstyle ':vcs_info:git:*' formats '[git:%b]'
 zstyle ':vcs_info:*' enable git
+
+# Compact path: ~/dotfiles/vim/pack -> ~/d/v/pack
+compact_path() {
+  local path="${PWD/#$HOME/~}"
+  echo "$path" | awk -F/ '{
+    result=""
+    for (i=1; i<NF; i++) result=result substr($i, 1, 1) "/"
+    result=result $NF
+    print result
+  }'
+}
+
+PROMPT=$'\n''%F{white}%*%f %F{green}$(compact_path)%f %F{yellow}${vcs_info_msg_0_}%f❱ '
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)

@@ -60,9 +60,11 @@ __results+="\n* Created symlink for each dotfiles listed in MANIFEST"
 
 for file in "$LOCAL_DIR"/*; do
   filename=$(basename "$file")
-  cp "$file" "$HOME/.$filename"
+  if [ ! -f "$HOME/.$filename" ]; then
+    cp "$file" "$HOME/.$filename"
+  fi
 done
-__results+="\n* Copied local config files from dir \"local/\" to $HOME"
+__results+="\n* Copied local config files from dir \"local/\" to $HOME (skipped existing)"
 
 # Install TMUX plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then

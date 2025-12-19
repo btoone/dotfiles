@@ -47,8 +47,8 @@ zstyle ':vcs_info:*' enable git
 
 # Compact path: ~/dotfiles/vim/pack -> ~/d/v/pack
 compact_path() {
-  local path="${PWD/#$HOME/~}"
-  echo "$path" | awk -F/ '{
+  local p="${PWD/#$HOME/~}"
+  echo "$p" | awk -F/ '{
     result=""
     for (i=1; i<NF; i++) result=result substr($i, 1, 1) "/"
     result=result $NF

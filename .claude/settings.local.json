@@ -58,7 +58,8 @@
       "Bash(brew list:*)",
       "Bash(zsh:*)",
       "Bash(/Users/brandon/.local/bin/mise hook-not-found -s zsh -- awk)",
-      "Bash(printf:*)"
+      "Bash(printf:*)",
+      "Bash(chmod:*)"
     ]
   }
 }

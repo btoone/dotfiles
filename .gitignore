@@ -1,4 +1,5 @@
 .DS_Store
+.claude/
 vim/.netrwhist
 vim/spell
 tmux/plugins

@@ -42,7 +42,20 @@ alias tom='top -o vsize' # memory
 # Tmux
 alias tma="tmux attach -t"
 alias tmm="tmux attach || tmux"
-alias tmn="tmux new -s"
+# tmn - create new tmux session with working directory
+# Usage: tmn foo       -> ~/code/foo
+#        tmn ~/bar     -> ~/bar
+#        tmn /abs/path -> /abs/path
+tmn() {
+  local name="${1:?Session name required}"
+  local dir
+  case "$name" in
+    /*|~*) dir="${name/#\~/$HOME}" ;;
+    *)     dir="$HOME/code/$name" ;;
+  esac
+  mkdir -p "$dir"
+  tmux new-session -s "$name" -c "$dir"
+}
 alias tml="tmux ls"
 alias tmi="tmux info"
 alias tmk="tmux kill-session -t"

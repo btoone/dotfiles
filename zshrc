@@ -36,8 +36,8 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}
 # partial completion suggestions
 zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
-# Prompt with git info (matches previous bash prompt style)
-# Format: 06:07:00 ~/d/v/pack [git:master] ❱
+# Prompt with git info
+# Format: ~/d/v/pack [git:master] ❱
 autoload -Uz vcs_info
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
@@ -56,7 +56,7 @@ compact_path() {
   }'
 }
 
-PROMPT=$'\n''%F{white}%*%f %F{green}$(compact_path)%f %F{yellow}${vcs_info_msg_0_}%f❱ '
+PROMPT=$'\n''%F{green}$(compact_path)%f %F{yellow}${vcs_info_msg_0_}%f❱ '
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)

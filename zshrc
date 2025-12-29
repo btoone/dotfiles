@@ -56,7 +56,7 @@ compact_path() {
   }'
 }
 
-PROMPT=$'\n''%F{green}$(compact_path)%f %F{yellow}${vcs_info_msg_0_}%f❱ '
+PROMPT='%F{green}$(compact_path)%f %F{yellow}${vcs_info_msg_0_}%f❱ '
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)

@@ -40,6 +40,11 @@ for file in "$LOCAL_DIR"/*; do
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME (skipped existing)"
 
+# Claude Code config (special case: ~/.claude has runtime data, so we symlink individual files)
+mkdir -p "$HOME/.claude"
+ln -sf "$PWD/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
+__results+="\n* Linked Claude Code statusline script"
+
 # Install TMUX plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm

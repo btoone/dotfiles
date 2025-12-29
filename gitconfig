@@ -8,7 +8,7 @@
 [core]
 	autocrlf = input
 	editor = vim
-	excludesfile = /Users/brandon/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [commit]
 	template = ~/.gitmessage
 [diff]
@@ -74,9 +74,13 @@
 	; 		echo; \
 	; 	}; f"
 
-[user]
-	name = Brandon Toone
-	email = 780144+btoone@users.noreply.github.com
+# [user]
+# Set name and email in ~/.gitconfig.local:
+#   [user]
+#   name = Your Name
+#   email = your-email@example.com
+[include]
+	path = ~/.gitconfig.local
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 

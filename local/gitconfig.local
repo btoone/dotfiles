@@ -1,0 +1,6 @@
+# Local git configuration - not committed to repo
+# Copy to ~/.gitconfig.local and customize
+
+[user]
+	name = Your Name
+	email = your-email@users.noreply.github.com

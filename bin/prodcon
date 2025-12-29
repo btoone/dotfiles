@@ -17,7 +17,11 @@
 # tmux -S ~/.tmux-prod.sock attach -t prod_console
 
 # === Configuration ===
-project_path="$WORK/v2-api"
+# Set these in your shell config or override below
+# PROJECT_PATH: Path to the Rails project
+# PROJECT_ENV_FILE: Path to .env file (optional)
+# PROJECT_ENV_PROD_FILE: Path to .env.production file (optional)
+project_path="${PROJECT_PATH:?'PROJECT_PATH must be set'}"
 
 trap cleanup EXIT
 
@@ -26,7 +30,10 @@ tmux_socket="$HOME/.tmux-prod.sock"
 tmux_conf="$HOME/.tmux-prod.conf"
 
 source_rvm="source $HOME/.rvm/scripts/rvm"
-source_env="source $WORK/api/.env && source $WORK/api/.env.production"
+# Build source_env from optional environment variables
+source_env=""
+[[ -n "$PROJECT_ENV_FILE" ]] && source_env="source $PROJECT_ENV_FILE"
+[[ -n "$PROJECT_ENV_PROD_FILE" ]] && source_env="$source_env && source $PROJECT_ENV_PROD_FILE"
 command_rails="bin/rails console -e production"
 
 # === Ensure production branch is checked out and up to date ===
@@ -75,7 +82,7 @@ prod_tmux() {
 boot_prod_environment() {
   prod_tmux send-keys -t "$prod_session" "cd ${project_path}" C-m
   prod_tmux send-keys -t "$prod_session" "${source_rvm}" C-m
-  prod_tmux send-keys -t "$prod_session" "${source_env}" C-m
+  [[ -n "$source_env" ]] && prod_tmux send-keys -t "$prod_session" "${source_env}" C-m
   prod_tmux send-keys -t "$prod_session" \
     "clear && \
     echo && echo && \

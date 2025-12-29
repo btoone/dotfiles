@@ -16,7 +16,7 @@ Getting Started
 
 Clone the repo into your home directory.
 
-    git clone git@github.com:btoone/dotfiles.git ~/dotfiles
+    git clone git@github.com:<username>/dotfiles.git ~/dotfiles
 
 Install Homebrew packages (includes mise for runtime management):
 

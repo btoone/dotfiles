@@ -1,5 +1,4 @@
 # Usage:
-# https://gist.github.com/btoone/099da5fb29149bec881636d8c501c4a3
 #
 # Rails
 # Step 1: write a gist with a file named __script__.rb

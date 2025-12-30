@@ -1,4 +1,9 @@
 # Install with: brew bundle --global
+tap "kristoferlund/ostt"
+
+cask "gcloud-cli"
+cask "font-hack-nerd-font"
+
 brew "ack"
 brew "bat"
 brew "coreutils"
@@ -40,8 +45,8 @@ brew "lnav"
 brew "jq"
 brew "fd"
 brew "procs"
-cask "gcloud-cli"
-cask "font-hack-nerd-font"
 brew "watchexec"
 brew "git-lfs"
 brew "devcontainer"
+brew "ffmpeg"
+brew "kristoferlund/ostt/ostt"

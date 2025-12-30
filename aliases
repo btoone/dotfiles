@@ -47,11 +47,17 @@ alias tmm="tmux attach || tmux"
 #        tmn ~/bar     -> ~/bar
 #        tmn /abs/path -> /abs/path
 tmn() {
-  local name="${1:?Session name required}"
-  local dir
-  case "$name" in
-    /*|~*) dir="${name/#\~/$HOME}" ;;
-    *)     dir="$HOME/code/$name" ;;
+  local input="${1:?Session name required}"
+  local dir name
+  case "$input" in
+    /*|~*)
+      dir="${input/#\~/$HOME}"
+      name="${dir##*/}"
+      ;;
+    *)
+      dir="$HOME/code/$input"
+      name="$input"
+      ;;
   esac
   mkdir -p "$dir"
   tmux new-session -s "$name" -c "$dir"

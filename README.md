@@ -62,6 +62,25 @@ Plugins are defined in `vim/vimrc` within the `plug#begin()` and `plug#end()` bl
 * Configuration
 * Catppuccin theme (requires Nerd Font for icons)
 
+#### Creating Sessions
+
+Two workflows for creating named sessions with working directories:
+
+**Option 1: cd then tmux**
+
+```bash
+cd ~/code/myproject
+tmux                    # creates session named "myproject"
+```
+
+**Option 2: tmn with path**
+
+```bash
+tmn myproject           # creates session "myproject" in ~/code/myproject
+tmn ~/code/myproject    # creates session "myproject" in ~/code/myproject
+tmn /absolute/path      # creates session "path" in /absolute/path
+```
+
 ### ZSH
 
 * Vi mode keybindings

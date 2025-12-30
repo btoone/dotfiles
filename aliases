@@ -40,6 +40,15 @@ alias tou='top -o cpu' # cpu
 alias tom='top -o vsize' # memory
 
 # Tmux
+# tmux wrapper: auto-names session after current folder when called without args
+tmux() {
+  if [[ $# -eq 0 ]]; then
+    local name="${PWD##*/}"
+    command tmux new-session -s "$name"
+  else
+    command tmux "$@"
+  fi
+}
 alias tma="tmux attach -t"
 alias tmm="tmux attach || tmux"
 # tmn - create new tmux session with working directory

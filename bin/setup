@@ -43,7 +43,8 @@ __results+="\n* Copied local config files from dir \"local/\" to $HOME (skipped 
 # Claude Code config (special case: ~/.claude has runtime data, so we symlink individual files)
 mkdir -p "$HOME/.claude"
 ln -sf "$PWD/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
-__results+="\n* Linked Claude Code statusline script"
+ln -sfn "$PWD/claude/project-templates" "$HOME/.claude/project-templates"
+__results+="\n* Linked Claude Code config (statusline, project-templates)"
 
 # Install TMUX plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then

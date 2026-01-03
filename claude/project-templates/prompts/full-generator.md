@@ -67,6 +67,17 @@ A process guide covering:
 - Anti-patterns to avoid (feature factory, gold plating, etc.)
 - Definition of done checklist
 
+### 6. .claude/tdd_guidelines.md (TDD Patterns & Practices)
+A comprehensive TDD guide covering:
+- The Red-Green-Refactor cycle with code examples
+- What to test (behavior) vs what NOT to test (implementation)
+- Anti-patterns with BAD code examples
+- Correct patterns with GOOD code examples
+- Bug fix workflow (REPRODUCE → VERIFY → FIX → VERIFY)
+- Acceptance test requirements for user-facing pages
+- Test organization and smells
+- TDD workflow checklist
+
 ## My Development Philosophy
 
 **Test-Driven Development is Non-Negotiable**
@@ -83,6 +94,16 @@ Key testing principles to encode:
 - Avoid mocking internal collaborators
 - Focus on observable outcomes and state changes
 - Never test private methods directly
+
+**Critical Bug Fix Rule:**
+- Every bug fix MUST start with a failing test that reproduces the bug
+- Do NOT fix bugs by reading the error and fixing the code
+- The reproduction test prevents regressions and validates the fix
+
+**Acceptance Test Requirements:**
+- Every user-facing page MUST have at least one acceptance/E2E test
+- This catches route mismatches, missing templates, authorization issues
+- Minimum: user can visit and see expected content
 
 ## How to Proceed
 

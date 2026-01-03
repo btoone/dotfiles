@@ -55,7 +55,15 @@ I need you to create AI context documentation for this project. Please:
    - Anti-patterns to avoid
    - Definition of done
 
-**My philosophy**: TDD is non-negotiable. Red-Green-Refactor for everything. Test behavior not implementation.
+   **.claude/tdd_guidelines.md**:
+   - Red-Green-Refactor cycle with examples
+   - What to test (behavior) vs NOT test (implementation)
+   - Anti-patterns and correct patterns
+   - Bug fix workflow (REPRODUCE → VERIFY → FIX → VERIFY)
+   - Acceptance test requirements for pages
+   - TDD checklist
+
+**My philosophy**: TDD is non-negotiable. Red-Green-Refactor for everything. Test behavior not implementation. Every bug fix starts with a failing reproduction test. Every user-facing page needs an acceptance test.
 
 Please start by exploring and asking questions.
 ```

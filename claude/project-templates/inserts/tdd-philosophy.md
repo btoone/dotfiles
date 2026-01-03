@@ -99,6 +99,103 @@ in response to a failing test. No exceptions.
 🚩 Your test accesses internal state directly
 🚩 You need to change tests when refactoring
 
+---
+
+## Bug Fix Workflow
+
+**Every bug fix MUST start with a failing test that reproduces the bug.**
+
+This is non-negotiable. Do NOT fix bugs by:
+1. Reading the error message and fixing the code
+2. Writing a fix and then adding a test afterward
+3. Skipping tests because "it's just a small fix"
+
+### Bug Fix Process
+
+1. **REPRODUCE** - Write a test that fails with the same error
+2. **VERIFY** - Run the test, confirm it fails for the right reason
+3. **FIX** - Make the minimal change to pass the test
+4. **VERIFY** - Run the test, confirm it passes
+
+### Why This Matters
+
+If you skip the reproduction test:
+- You can't verify the fix actually works
+- The bug can regress later
+- You might fix the wrong thing
+- You don't understand the root cause
+
+---
+
+## Acceptance Test Requirements
+
+**Every user-facing page MUST have at least one high-level acceptance test.**
+
+Before a feature is considered "done", verify there's an E2E or integration test
+that proves a user can successfully use the feature. This catches:
+- Route/path mismatches
+- Missing templates or components
+- Authorization issues
+- Layout/rendering errors
+
+### Minimum Coverage Checklist
+
+For each route/page, ensure there's a test that:
+
+| Route Type | Minimum Test |
+|------------|--------------|
+| List pages | User can visit and see content |
+| Detail pages | User can view a specific record |
+| Create flows | User can submit form and see confirmation |
+| Update flows | User can edit and save changes |
+| Delete actions | User can delete and confirm removal |
+
+### Example: Page Smoke Test
+
+**Ruby/Rails (Capybara):**
+```ruby
+# test/system/marketplace_reps_test.rb
+describe "Marketplace Reps" do
+  it "allows provider admin to view the reps listing" do
+    sign_in_as(users(:provider_admin))
+    visit marketplace_reps_path
+
+    assert_text "Discover Reps"
+    assert_text "Active reps"
+  end
+end
+```
+
+**TypeScript/React (Playwright):**
+```typescript
+// e2e/feed.spec.ts
+describe('Feed Page', () => {
+  it('allows user to view the meme feed', async () => {
+    await page.goto('/feed')
+
+    await expect(page.getByText('Your Feed')).toBeVisible()
+    await expect(page.getByRole('img').first()).toBeVisible()
+  })
+})
+```
+
+**TypeScript/React (Testing Library):**
+```typescript
+// __tests__/FeedPage.test.tsx
+describe('GET /feed', () => {
+  it('renders the feed page with content', async () => {
+    render(<FeedPage />)
+
+    expect(screen.getByText('Your Feed')).toBeInTheDocument()
+    expect(screen.getByRole('img')).toBeInTheDocument()
+  })
+})
+```
+
+These simple tests catch routing errors, missing components, and broken layouts immediately.
+
+---
+
 ### TDD Workflow Checklist
 
 **Before Writing Any Production Code:**
@@ -118,9 +215,9 @@ in response to a failing test. No exceptions.
 - [ ] Are all tests still green?
 
 **Red Flags (Stop and Fix):**
-🚨 You wrote production code before writing a test → DELETE the code, write test first
-🚨 Your test passes immediately → The test might not be testing anything meaningful
-🚨 Tests are brittle and break with small changes → Rewrite to test behavior
+- You wrote production code before writing a test -> DELETE the code, write test first
+- Your test passes immediately -> The test might not be testing anything meaningful
+- Tests are brittle and break with small changes -> Rewrite to test behavior
 
 ---
 

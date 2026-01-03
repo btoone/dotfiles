@@ -40,7 +40,8 @@ clarifying questions first.
 ├── README.md                    # This file
 ├── prompts/
 │   ├── full-generator.md        # Comprehensive prompt with full instructions
-│   └── quick-start.md           # Shorter prompt for fast setup
+│   ├── quick-start.md           # Shorter prompt for fast setup
+│   └── update-context.md        # Sync existing projects with latest templates
 ├── structures/
 │   └── document-skeletons.md    # Section outlines for each document type
 └── inserts/
@@ -58,6 +59,7 @@ clarifying questions first.
 | **.claude/ux_guidelines.md** | UX principles, terminology, accessibility, anti-patterns |
 | **.claude/design_system.md** | Colors, typography, components, spacing |
 | **.claude/planning_guide.md** | How to plan features: workflow, story format, questions, done criteria |
+| **.claude/tdd_guidelines.md** | TDD workflow, bug fix process, acceptance test requirements |
 
 ---
 
@@ -70,6 +72,17 @@ clarifying questions first.
 3. Paste one of the prompts or reference the templates
 4. Answer the clarifying questions about your product
 5. Review generated docs, iterate as needed
+
+### Updating Existing Projects
+
+When you update these templates with new patterns (like adding Bug Fix Workflow):
+
+1. Navigate to the project: `cd ~/code/my-project`
+2. Start Claude Code: `claude`
+3. Paste the update prompt from `~/.claude/project-templates/prompts/update-context.md`
+4. Review and approve the changes
+
+This propagates learnings across all your projects without regenerating everything.
 
 ### For Different Tech Stacks
 

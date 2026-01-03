@@ -453,3 +453,190 @@ A feature is complete when:
 - [ ] Error states handled gracefully
 - [ ] No regressions in existing functionality
 ```
+
+---
+
+## .claude/tdd_guidelines.md Structure
+
+```markdown
+# Test-Driven Development Guidelines
+
+**AI Context**: TDD is non-negotiable for this codebase. Every line of production code must be
+written in response to a failing test. Reference this document for TDD workflow, patterns, and
+anti-patterns.
+
+---
+
+## The Red-Green-Refactor Cycle
+
+**ALWAYS follow this workflow**:
+
+1. **RED**: Write a failing test that describes the desired behavior
+2. **GREEN**: Write the minimum code to make the test pass
+3. **REFACTOR**: Clean up while keeping tests green
+
+[Code example in project's language]
+
+---
+
+## Test Behavior, Not Implementation
+
+**Core Principle**: Test behavior through public APIs. Never test implementation details.
+
+### What to Test (Behavior)
+
+| Component | Public API to Test |
+|-----------|-------------------|
+| [Component type] | [What to test] |
+
+### What NOT to Test (Implementation)
+
+- Private methods/functions
+- Internal data structures
+- Which collaborators get called
+- Order of internal operations
+
+---
+
+## Anti-Patterns (Never Do These)
+
+### Testing internal state
+[BAD code example]
+
+### Testing private methods
+[BAD code example]
+
+### Mocking internal collaborators
+[BAD code example]
+
+### Testing order of operations
+[BAD code example]
+
+---
+
+## Correct Patterns (Always Do These)
+
+### Test observable outcomes
+[GOOD code example]
+
+### Test state changes through public interface
+[GOOD code example]
+
+### Test HTTP response and side effects (for web apps)
+[GOOD code example]
+
+### Test error conditions through behavior
+[GOOD code example]
+
+---
+
+## Bug Fix Workflow
+
+**Every bug fix MUST start with a failing test that reproduces the bug.**
+
+This is non-negotiable. Do NOT fix bugs by:
+1. Reading the error message and fixing the code
+2. Writing a fix and then adding a test afterward
+3. Skipping tests because "it's just a small fix"
+
+### Bug Fix Process
+
+1. **REPRODUCE** - Write a test that fails with the same error
+2. **VERIFY** - Run the test, confirm it fails for the right reason
+3. **FIX** - Make the minimal change to pass the test
+4. **VERIFY** - Run the test, confirm it passes
+
+### Why This Matters
+
+If you skip the reproduction test:
+- You can't verify the fix actually works
+- The bug can regress later
+- You might fix the wrong thing
+- You don't understand the root cause
+
+---
+
+## Acceptance Test Requirements
+
+**Every user-facing page MUST have at least one high-level acceptance test.**
+
+Before a feature is considered "done", verify there's a system or integration test
+that proves a user can successfully use the feature. This catches:
+- Route/path mismatches
+- Missing templates or components
+- Authorization issues
+- Layout/rendering errors
+
+### Minimum Coverage Checklist
+
+For each route, ensure there's a test that:
+
+| Route Type | Minimum Test |
+|------------|--------------|
+| List pages | User can visit and see content |
+| Detail pages | User can view a specific record |
+| Create flows | User can submit form and see confirmation |
+| Update flows | User can edit and save changes |
+| Delete actions | User can delete and confirm removal |
+
+### Example: Page Smoke Test
+
+[Code example showing simple acceptance test]
+
+---
+
+## Test Organization
+
+**Prefer high-level behavior tests**:
+
+1. **E2E/System Tests** - Full user scenarios with browser
+2. **Integration Tests** - Request/response or component interactions
+3. **Unit Tests** - Pure functions and edge cases
+
+Start with high-level tests, add lower-level tests for edge cases.
+
+---
+
+## Test Smells
+
+Signs you're testing implementation:
+
+- Your test uses mocks/stubs for internal collaborators
+- Your test breaks when you refactor without changing behavior
+- Your test name describes HOW instead of WHAT
+- Your test accesses private methods/properties
+- You need to change tests when refactoring
+
+---
+
+## TDD Workflow Checklist
+
+### Before Writing Production Code
+
+- [ ] Written a failing test first?
+- [ ] Test describes **behavior**, not implementation?
+- [ ] Test uses the **public API**?
+- [ ] Test would still pass if you rewrote the implementation?
+- [ ] Test confirmed to **fail** for the right reason?
+
+### After Writing Production Code
+
+- [ ] Code makes the test **pass**?
+- [ ] Wrote **minimum** code needed?
+- [ ] All tests still pass?
+
+### Before Committing
+
+- [ ] All tests pass?
+- [ ] Linter/type checks pass?
+
+### Red Flags
+
+- You wrote production code before a test -> DELETE it, write test first
+- Test passes immediately -> Not testing anything meaningful
+- Tests break when refactoring -> Coupled to implementation
+
+---
+
+> **Every. Single. Line. Of. Production. Code. Must. Be. Written. In. Response. To. A. Failing. Test.**
+```

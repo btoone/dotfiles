@@ -60,3 +60,11 @@ PROMPT='%F{green}$(compact_path)%f %F{yellow}${vcs_info_msg_0_}%f❱ '
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+
+# pnpm
+export PNPM_HOME="/Users/brandon/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

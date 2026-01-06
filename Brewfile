@@ -2,6 +2,7 @@
 tap "kristoferlund/ostt"
 
 cask "gcloud-cli"
+cask "bruno"
 cask "font-hack-nerd-font"
 
 brew "ack"

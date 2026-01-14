@@ -1,5 +1,6 @@
 # Install with: brew bundle --global
 tap "kristoferlund/ostt"
+tap "supabase/tap"
 
 cask "gcloud-cli"
 cask "bruno"
@@ -51,4 +52,5 @@ brew "git-lfs"
 brew "devcontainer"
 brew "ffmpeg"
 brew "kristoferlund/ostt/ostt"
+brew "supabase"
 brew "glow"

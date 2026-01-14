@@ -1,1 +1,4 @@
 # Add local config here
+
+# export MACHINE_TYPE=work  # or "personal" on your personal machine
+# export CLAUDE_CONFIG_DIR=~/.claude-${MACHINE_TYPE

@@ -78,6 +78,26 @@ A comprehensive TDD guide covering:
 - Test organization and smells
 - TDD workflow checklist
 
+### 7. .claude/commands/ (Workflow Automation)
+Custom commands for common workflows:
+- `/test` - TDD red-green-refactor workflow with project's test runner
+- `/review` - Whitebox code review checklist with project-specific concerns
+- `/plan-feature` - Multi-phase feature planning (understand → validate → design → scope → plan)
+- Project-specific commands for repetitive tasks (e.g., `/new-migration`, `/deploy`)
+
+### 8. CHANGELOG.md (Change Tracking)
+A changelog using Keep a Changelog format:
+- [Unreleased] section for pending changes
+- Dated sections with Added/Changed/Fixed/Removed
+- Populated with recent history from git log
+
+### 9. .claude/settings.local.json (Permissions)
+Pre-approved commands for common operations:
+- Test runners (npm test, pytest, rspec, etc.)
+- Build commands
+- Git operations (status, log, diff, branch)
+- Project-specific CLI tools
+
 ## My Development Philosophy
 
 **Test-Driven Development is Non-Negotiable**

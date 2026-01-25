@@ -45,7 +45,8 @@ clarifying questions first.
 ├── structures/
 │   └── document-skeletons.md    # Section outlines for each document type
 └── inserts/
-    └── tdd-philosophy.md        # Reusable TDD section (multi-language)
+    ├── tdd-philosophy.md        # Reusable TDD section (multi-language)
+    └── workflow-commands.md     # Custom commands, changelog, permissions
 ```
 
 ---
@@ -60,6 +61,9 @@ clarifying questions first.
 | **.claude/design_system.md** | Colors, typography, components, spacing |
 | **.claude/planning_guide.md** | How to plan features: workflow, story format, questions, done criteria |
 | **.claude/tdd_guidelines.md** | TDD workflow, bug fix process, acceptance test requirements |
+| **.claude/commands/** | Workflow automation: /test, /review, /plan-feature |
+| **CHANGELOG.md** | Track changes using Keep a Changelog format |
+| **.claude/settings.local.json** | Pre-approved permissions for common commands |
 
 ---
 

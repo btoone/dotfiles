@@ -13,22 +13,46 @@ I need to update this project's AI context files (.claude/ folder) to incorporat
 
 Please read these template files for the latest patterns:
 - ~/.claude/project-templates/inserts/tdd-philosophy.md (TDD patterns, bug fix workflow, acceptance tests)
+- ~/.claude/project-templates/inserts/workflow-commands.md (custom commands, changelog, permissions)
 - ~/.claude/project-templates/structures/document-skeletons.md (document structures)
 
 ## Files to Review and Update
 
 Check these project files against the templates and update as needed:
 
+### Context Documents
+
 1. **.claude/tdd_guidelines.md** - Ensure it includes:
    - Bug Fix Workflow section (REPRODUCE → VERIFY → FIX → VERIFY)
    - Acceptance Test Requirements section with coverage checklist
    - Examples should use THIS project's tech stack
 
-2. **CLAUDE.md** - Ensure TDD section references tdd_guidelines.md
+2. **CLAUDE.md** - Ensure it includes:
+   - TDD section referencing tdd_guidelines.md
+   - Custom Commands section documenting available /commands
 
 3. **.claude/planning_guide.md** - Ensure Definition of Done includes:
    - Tests pass (written first, TDD)
    - Acceptance test exists for user-facing pages
+
+### Workflow Automation (New)
+
+4. **.claude/commands/** - Create if missing:
+   - `test.md` - TDD workflow with this project's test runner
+   - `review.md` - Code review checklist with project-specific concerns
+   - `plan-feature.md` - Multi-phase feature planning
+   - Project-specific commands for repetitive tasks
+
+5. **CHANGELOG.md** - Create if missing:
+   - Use Keep a Changelog format
+   - Populate [Unreleased] section
+   - Add recent history from git log
+
+6. **.claude/settings.local.json** - Update permissions:
+   - Pre-approve test runners
+   - Pre-approve build commands
+   - Pre-approve git operations (status, log, diff, branch)
+   - Pre-approve project-specific CLI tools
 
 ## How to Proceed
 
@@ -43,6 +67,7 @@ Important:
 - Only update structural patterns and missing sections
 - Adapt code examples to this project's tech stack (don't copy Ruby examples into a JS project)
 - Don't overwrite customizations - merge new patterns in
+- Commands should reference existing project docs, not duplicate them
 ```
 
 ---

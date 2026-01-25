@@ -640,3 +640,115 @@ Signs you're testing implementation:
 
 > **Every. Single. Line. Of. Production. Code. Must. Be. Written. In. Response. To. A. Failing. Test.**
 ```
+
+---
+
+## .claude/commands/ Structure
+
+Custom commands for workflow automation:
+
+```
+.claude/commands/
+├── test.md           # TDD workflow
+├── review.md         # Code review checklist
+├── plan-feature.md   # Feature planning
+└── <project-specific>.md  # e.g., new-migration.md, deploy.md
+```
+
+### Command File Template
+
+```markdown
+# [Command Name]
+
+[One-line description of what this command does]
+
+## Process
+
+### Phase 1: [Phase Name]
+[Steps for this phase]
+
+### Phase 2: [Phase Name]
+[Steps for this phase]
+
+## Rules
+
+- [Rule 1]
+- [Rule 2]
+
+## Checklist
+
+- [ ] [Check item]
+- [ ] [Check item]
+
+## Commands
+
+```bash
+[Relevant bash commands for this workflow]
+```
+```
+
+---
+
+## CHANGELOG.md Structure
+
+```markdown
+# Changelog
+
+All notable changes to [Project Name] are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+## [Unreleased]
+
+### Added
+- [New feature or file]
+
+### Changed
+- [Modified behavior]
+
+### Fixed
+- [Bug fix]
+
+### Removed
+- [Removed feature]
+
+## [YYYY-MM-DD]
+
+### Added
+- [Feature added in this release]
+
+### Changed
+- [Change in this release]
+
+### Fixed
+- [Bug fixed in this release]
+```
+
+---
+
+## .claude/settings.local.json Structure
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)"
+    ]
+  }
+}
+```
+
+Adapt permissions to project's tech stack:
+
+| Stack | Common Permissions |
+|-------|-------------------|
+| Node.js | `npm run *`, `npx *` |
+| Python | `pytest`, `python -m *` |
+| Ruby | `bundle exec *`, `rails *` |
+| Go | `go test *`, `go build *` |

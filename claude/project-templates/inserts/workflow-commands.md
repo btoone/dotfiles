@@ -45,6 +45,16 @@ Run the Test-Driven Development workflow for a feature or bug fix.
 - Tests must describe **behavior**, not implementation
 - Tests must use the **public API**
 
+## Context Clearing (Complex Features)
+
+For complex features (5+ user stories), consider separating test writing from implementation:
+
+1. **Session 1**: `/plan-feature` → create plan
+2. **Session 2**: `/test` → write all failing tests (stop here)
+3. **Session 3**: Implement to make tests pass
+
+A fresh context forces implementation to treat tests as a black-box specification.
+
 ## Bug Fix Mode
 
 For bug fixes:

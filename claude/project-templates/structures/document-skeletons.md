@@ -649,8 +649,9 @@ Custom commands for workflow automation:
 
 ```
 .claude/commands/
-├── test.md           # TDD workflow
-├── review.md         # Code review checklist
+├── tdd.md            # Full TDD red-green-refactor cycle
+├── write-tests.md    # Tests only (for context clearing)
+├── code-review.md    # Code review checklist
 ├── plan-feature.md   # Feature planning
 └── <project-specific>.md  # e.g., new-migration.md, deploy.md
 ```

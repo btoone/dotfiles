@@ -8,7 +8,7 @@ Reusable patterns for Claude Code custom commands. Reference this when creating 
 
 Every project should have these commands in `.claude/commands/`:
 
-### /test - TDD Workflow
+### /tdd - Full TDD Workflow
 
 ```markdown
 # TDD Workflow
@@ -55,6 +55,8 @@ For complex features (5+ user stories), consider separating test writing from im
 
 A fresh context forces implementation to treat tests as a black-box specification.
 
+For this workflow, use `/write-tests` instead of `/tdd`.
+
 ## Bug Fix Mode
 
 For bug fixes:
@@ -64,7 +66,35 @@ For bug fixes:
 4. **VERIFY**: Confirm the test passes
 ```
 
-### /review - Code Review Checklist
+### /write-tests - Tests Only (Context Clearing)
+
+```markdown
+# Write Tests
+
+Write failing tests for a planned feature. Do NOT implement any production code.
+
+## Process
+
+1. Read the plan from `.claude/plans/<feature-name>.md`
+2. Write tests based on user stories and acceptance criteria
+3. Run tests to confirm they **FAIL** for the right reasons
+4. **STOP** - do not write any production code
+
+## Rules
+
+- Tests must describe **behavior**, not implementation
+- Tests must use the **public API**
+- Do NOT create stubs or placeholder implementation code
+
+## Next Steps
+
+After this command:
+1. Commit the failing tests
+2. Start a new session
+3. Implement to make tests pass
+```
+
+### /code-review - Code Review Checklist
 
 ```markdown
 # Code Review

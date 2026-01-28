@@ -645,16 +645,16 @@ Signs you're testing implementation:
 
 ## .claude/commands/ Structure
 
-Custom commands for workflow automation:
+Custom commands as lightweight checklists (not multi-phase workflows):
 
 ```
 .claude/commands/
-├── tdd.md            # Full TDD red-green-refactor cycle
-├── write-tests.md    # Tests only (for context clearing)
+├── tdd.md            # TDD checklist with anti-patterns
 ├── code-review.md    # Code review checklist
-├── plan-feature.md   # Feature planning
-└── <project-specific>.md  # e.g., new-migration.md, deploy.md
+└── <project-specific>.md  # e.g., new-activity.md, new-migration.md
 ```
+
+**Note**: Avoid multi-session workflow commands (like "write tests, then start new session"). Context clearing loses codebase understanding. Use native plan mode for complex planning.
 
 ### Command File Template
 

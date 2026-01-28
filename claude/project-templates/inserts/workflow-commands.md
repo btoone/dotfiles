@@ -4,94 +4,114 @@ Reusable patterns for Claude Code custom commands. Reference this when creating 
 
 ---
 
+## Design Philosophy
+
+Commands should be **lightweight checklists that enhance natural workflow**, not structured workflows that replace exploration. The agent naturally:
+
+1. Explores the codebase first
+2. Finds similar existing implementations
+3. Copies patterns from working code
+4. Implements with TDD
+
+Commands exist as **reminders when you notice the agent isn't doing these things**.
+
+---
+
 ## Core Commands to Create
 
 Every project should have these commands in `.claude/commands/`:
 
-### /tdd - Full TDD Workflow
+### /tdd - TDD Checklist
 
 ```markdown
 # TDD Workflow
 
-Run the Test-Driven Development workflow for a feature or bug fix.
+A lightweight checklist for Test-Driven Development.
 
-## Process
+## Before Writing Any Tests
 
-### Phase 1: Write Failing Tests
+**Read `.claude/tdd_guidelines.md` first.** It contains critical guidance on:
 
-1. Read `.claude/tdd_guidelines.md` for patterns and anti-patterns
-2. Write tests that describe the desired behavior through the **public API**
-3. Run tests to confirm they **fail** for the right reason
-4. Do NOT write any production code yet
+- Testing behavior vs implementation
+- Mock anti-patterns to avoid
+- What makes a good test
 
-### Phase 2: Implement
+## The Cycle
 
-1. Write the **minimum code** to make tests pass
-2. Run tests after each change
-3. Do NOT modify the tests (they are the specification)
-4. Stop as soon as tests pass
+```
+RED    → Write a failing test
+GREEN  → Write minimum code to pass
+REFACTOR → Clean up while green
+```
 
-### Phase 3: Refactor
+Run tests after each step.
 
-1. Clean up the implementation while keeping tests green
-2. Run tests after each refactor step
-3. Apply patterns from existing codebase
-4. Remove duplication, improve naming
+## Before Writing Production Code
 
-## Rules
+- [ ] I have a failing test that describes the behavior I want
+- [ ] The test fails for the right reason (missing functionality, not syntax error)
+- [ ] The test name describes WHAT, not HOW
 
-- **NEVER** write production code before a failing test
-- **NEVER** modify tests to make them pass (fix the code instead)
-- Tests must describe **behavior**, not implementation
-- Tests must use the **public API**
+## While Implementing
 
-## Context Clearing (Complex Features)
+- [ ] I'm writing the minimum code to make the test pass
+- [ ] I'm not modifying tests to make them pass
+- [ ] I'm running tests frequently
 
-For complex features (5+ user stories), consider separating test writing from implementation:
+## After Tests Pass
 
-1. **Session 1**: `/plan-feature` → create plan
-2. **Session 2**: `/test` → write all failing tests (stop here)
-3. **Session 3**: Implement to make tests pass
+- [ ] I've removed any duplication
+- [ ] The code follows existing patterns in the codebase
+- [ ] Tests still pass after refactoring
 
-A fresh context forces implementation to treat tests as a black-box specification.
+## Mock Anti-Patterns (Don't Do These)
 
-For this workflow, use `/write-tests` instead of `/tdd`.
+**Don't mock internal collaborators:**
+```typescript
+// BAD - testing implementation
+const mockParser = vi.fn()
+const service = new Service({ parser: mockParser })
+expect(mockParser).toHaveBeenCalledWith(data)
+```
+
+**Don't test private state:**
+```typescript
+// BAD - accessing internals
+expect((service as any)._cache).toEqual(expectedData)
+```
+
+**Don't test order of operations:**
+```typescript
+// BAD - implementation detail
+expect(validateSpy.mock.invocationCallOrder[0])
+  .toBeLessThan(saveSpy.mock.invocationCallOrder[0])
+```
+
+**What TO mock:**
+
+- External APIs (database clients, third-party services)
+- Browser APIs when needed (localStorage, fetch)
+- That's mostly it
+
+## Test Smells (You're Doing It Wrong If...)
+
+- Test breaks when you refactor without changing behavior
+- Test name describes HOW instead of WHAT
+- You're mocking everything except the unit under test
+- You need `(obj as any).private` to test something
 
 ## Bug Fix Mode
 
-For bug fixes:
-1. **REPRODUCE**: Write a test that fails with the same error as the bug
-2. **VERIFY**: Confirm the test fails for the right reason
-3. **FIX**: Make minimal changes to pass the test
-4. **VERIFY**: Confirm the test passes
-```
+1. Write a test that reproduces the bug (should fail)
+2. Verify it fails for the right reason
+3. Fix the bug with minimal changes
+4. Verify the test passes
 
-### /write-tests - Tests Only (Context Clearing)
+## Remember
 
-```markdown
-# Write Tests
-
-Write failing tests for a planned feature. Do NOT implement any production code.
-
-## Process
-
-1. Read the plan from `.claude/plans/<feature-name>.md`
-2. Write tests based on user stories and acceptance criteria
-3. Run tests to confirm they **FAIL** for the right reasons
-4. **STOP** - do not write any production code
-
-## Rules
-
-- Tests must describe **behavior**, not implementation
-- Tests must use the **public API**
-- Do NOT create stubs or placeholder implementation code
-
-## Next Steps
-
-After this command:
-1. Commit the failing tests
-2. Start a new session
-3. Implement to make tests pass
+- Tests describe behavior through the public API
+- Study existing test files for patterns before writing new tests
+- When in doubt, check `tdd_guidelines.md`
 ```
 
 ### /code-review - Code Review Checklist
@@ -147,76 +167,24 @@ For each issue found:
 Severity: CRITICAL | HIGH | MEDIUM | LOW
 ```
 
-### /plan-feature - Feature Planning
+---
 
-```markdown
-# Plan Feature
+## What NOT to Create
 
-Structured feature planning with multi-phase validation.
+Based on experience, avoid these command patterns:
 
-## Planning Phases
+### Multi-session workflows
 
-### Phase 1: Understanding
-**Goal**: Clearly define what we're building and why.
+Commands like "write tests, then start a new session to implement" cause problems:
+- Context clearing loses valuable codebase understanding
+- Plans become "source of truth" instead of the codebase
+- Implementation doesn't follow existing patterns
 
-- What user problem does this solve?
-- Who is the user?
-- What does success look like from the user's perspective?
-- What's the minimum viable version?
+**Use native plan mode instead** for complex feature planning.
 
-Deliverable: One-paragraph problem statement
+### Heavyweight planning commands
 
-### Phase 2: Validation
-**Goal**: Ensure alignment with project constraints.
-
-Check against project_intent.md:
-- [ ] Aligns with "What We Are"
-- [ ] Doesn't conflict with "What We Are NOT"
-- [ ] Passes feature guardrail questions
-
-Deliverable: Pass/fail on each guardrail with reasoning
-
-### Phase 3: Design
-**Goal**: Define the user journey and technical approach.
-
-User journey:
-1. Entry point (how do they start?)
-2. Steps (what do they do?)
-3. Feedback (what do they see?)
-4. Success state
-5. Edge cases (errors, empty states)
-
-Technical approach:
-- What existing patterns apply?
-- What components can be reused?
-- What tests will prove this works?
-
-Deliverable: User flow diagram and component list
-
-### Phase 4: Scope
-**Goal**: Define boundaries and defer non-essentials.
-
-- What's in scope for v1?
-- What can be deferred?
-- What are the risks?
-- What assumptions are we making?
-
-Deliverable: Explicit scope statement with out-of-scope items
-
-### Phase 5: Plan
-**Goal**: Create actionable implementation steps.
-
-Create a plan file in `.claude/plans/` with:
-- Problem statement
-- User stories with acceptance criteria
-- Technical approach
-- Step-by-step implementation order (with TDD)
-- Out of scope items
-
-## Output
-
-Save the completed plan to `.claude/plans/<feature-name>.md`
-```
+The agent explores naturally. A command that says "do 5 phases of planning" creates isolation from the codebase. Native plan mode with back-and-forth refinement works better.
 
 ---
 
@@ -224,12 +192,52 @@ Save the completed plan to `.claude/plans/<feature-name>.md`
 
 Beyond the core commands, identify repetitive workflows that would benefit from automation:
 
-| Workflow | Command | Example |
-|----------|---------|---------|
-| Database migrations | `/migrate` | Rails migrations, Supabase migrations |
-| New feature scaffolding | `/new-<thing>` | `/new-activity`, `/new-api-endpoint` |
-| Deployment | `/deploy` | Vercel, Heroku, AWS |
-| Data sync/isolation | `/sync-check` | Profile isolation verification |
+| Workflow                | Command         | Example                                  |
+| ----------------------- | --------------- | ---------------------------------------- |
+| Database migrations     | `/migrate`      | Rails migrations, Supabase migrations    |
+| New feature scaffolding | `/new-<thing>`  | `/new-activity`, `/new-api-endpoint`     |
+| Data sync/isolation     | `/sync-check`   | Profile isolation verification           |
+
+### Example: /new-activity (from Glow project)
+
+```markdown
+# New Activity
+
+Scaffold a new activity with proper sync infrastructure. **Study existing activities first.**
+
+## Step 1: Study an Existing Activity (Required)
+
+Before creating any files, read a similar existing activity end-to-end:
+
+**Recommended to study:** [simplest well-structured example]
+
+- `path/to/activity/page.tsx` - Activity UI
+- `path/to/activity/page.test.tsx` - Component tests
+- `hooks/useActivitySync.ts` - Sync hook
+- `app/api/activity/sync/route.ts` - API route
+
+**Note the patterns:**
+
+- How the page uses hooks
+- How tests are structured and mocked
+- How sync infrastructure works
+
+## Step 2: Quick Design Check
+
+- [ ] Fits project guidelines?
+- [ ] What output does it produce?
+- [ ] What data needs to sync?
+
+## Step 3: Create Files (Following the Pattern)
+
+[File structure matching existing patterns]
+
+## Definition of Done
+
+- [ ] Tests written first (TDD)
+- [ ] Follows patterns from studied activity
+- [ ] Works on target platforms
+```
 
 ---
 
@@ -239,17 +247,17 @@ Commands are markdown files in `.claude/commands/`:
 
 ```
 .claude/commands/
-├── test.md           # TDD workflow
-├── review.md         # Code review checklist
-├── plan-feature.md   # Feature planning
-└── <project-specific>.md
+├── tdd.md            # TDD checklist
+├── code-review.md    # Code review checklist
+└── <project-specific>.md  # e.g., new-migration.md
 ```
 
 Key principles:
-- Reference existing project docs (don't duplicate)
-- Include project-specific checklists and patterns
-- Provide clear step-by-step processes
-- Include relevant bash commands
+
+- **Lightweight** - Checklists, not multi-phase workflows
+- **Reference existing code** - "Study X before creating Y"
+- **Don't replace exploration** - Enhance natural workflow
+- **Include anti-patterns** - What NOT to do, inline
 
 ---
 
@@ -257,20 +265,20 @@ Key principles:
 
 ### Test Commands by Stack
 
-| Stack | Test Command |
-|-------|--------------|
-| JavaScript/Vitest | `npm run test:run` |
-| JavaScript/Jest | `npm test` |
-| Python/pytest | `pytest` |
-| Ruby/RSpec | `bundle exec rspec` |
-| Ruby/Minitest | `rails test` |
-| Go | `go test ./...` |
+| Stack             | Test Command        |
+| ----------------- | ------------------- |
+| JavaScript/Vitest | `npm run test:run`  |
+| JavaScript/Jest   | `npm test`          |
+| Python/pytest     | `pytest`            |
+| Ruby/RSpec        | `bundle exec rspec` |
+| Ruby/Minitest     | `rails test`        |
+| Go                | `go test ./...`     |
 
 ### Review Focus by Stack
 
-| Stack | Additional Review Focus |
-|-------|------------------------|
-| React | Component re-renders, hook dependencies |
-| Rails | N+1 queries, strong params, authorization |
-| Next.js | Server vs Client components, data fetching |
-| API-only | Request validation, response formats |
+| Stack    | Additional Review Focus                       |
+| -------- | --------------------------------------------- |
+| React    | Component re-renders, hook dependencies       |
+| Rails    | N+1 queries, strong params, authorization     |
+| Next.js  | Server vs Client components, data fetching    |
+| API-only | Request validation, response formats          |

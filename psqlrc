@@ -5,6 +5,7 @@
 \set PROMPT2 ''
 \x auto
 \pset null '[null]'
+\pset format wrapped
 \timing
 \set VERBOSITY verbose
 \set COMP_KEYWORD_CASE upper

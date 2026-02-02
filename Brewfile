@@ -5,6 +5,7 @@ tap "supabase/tap"
 cask "gcloud-cli"
 cask "bruno"
 cask "font-hack-nerd-font"
+cask "soulver-cli"
 
 brew "ack"
 brew "bat"

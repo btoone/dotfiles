@@ -105,6 +105,20 @@ alias gs='git status --short'
 alias gss='git status'
 alias gls='clear; gss'
 
+# Edit files changed in git diff
+# Usage: vd           -> unstaged changes
+#        vd HEAD~1    -> last commit
+#        vd HEAD~2    -> last 2 commits
+#        vd develop.. -> changes since develop
+vd() {
+  local files=(${(f)"$(git diff --name-only "$@")"})
+  if (( ${#files} == 0 )); then
+    echo "No changed files."
+    return 1
+  fi
+  ${EDITOR:-vi} "${files[@]}"
+}
+
 # Rails
 alias tdl='tail -f log/development.log'
 alias ttl='tail -f log/test.log'

@@ -1,6 +1,7 @@
 # Install with: brew bundle --global
 tap "kristoferlund/ostt"
 tap "supabase/tap"
+tap "homeport/tap"
 
 cask "gcloud-cli"
 cask "bruno"
@@ -56,3 +57,4 @@ brew "kristoferlund/ostt/ostt"
 brew "supabase"
 brew "glow"
 brew "with-readline"
+brew "termshot"

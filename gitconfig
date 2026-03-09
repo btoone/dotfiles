@@ -100,3 +100,11 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[mergetool "encredible"]
+	cmd = /Users/brandon/.local/bin/encredible --merge-tool \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[difftool "encredible"]
+	cmd = /Users/brandon/.local/bin/encredible --diff-tool \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[diff "encredible"]
+	textconv = /Users/brandon/.local/bin/encredible --textconv
+	cachetextconv = true

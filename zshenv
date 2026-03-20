@@ -53,3 +53,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # FZF
 export FZF_DEFAULT_OPTS_FILE=~/.fzfrc
+
+# Gum
+# auto, dark, dracula, light, notty, pink, tokyo-night
+export GUM_FORMAT_THEME="dark"

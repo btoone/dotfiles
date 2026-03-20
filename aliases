@@ -165,6 +165,12 @@ alias vup='vagrant up'
 alias claude-personal='CLAUDE_CONFIG_DIR=~/.claude-personal command claude'
 alias claude-work='CLAUDE_CONFIG_DIR=~/.claude-work command claude'
 
+# Markdown
+# Suffix alias: typing ./README.md (or any .md path) runs it through gum for
+# formatted, paged markdown viewing in the terminal.
+gum-md-view() { gum format < "$1" | gum pager --border "double" --margin "1 2"; }
+alias -s md='gum-md-view'
+
 # Apps
 alias soulver="with-readline soulver"
 alias h='heroku'

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Syncs the Claude Code custom title to the current tmux window name.
+# Used as a Claude Code Stop hook.
+
+input=$(cat /dev/stdin)
+transcript=$(echo "$input" | jq -r '.transcript_path')
+
+[ -z "$transcript" ] || [ "$transcript" = "null" ] && exit 0
+[ -f "$transcript" ] || exit 0
+
+title=$(jq -r 'select(.type=="custom-title") | .customTitle' "$transcript" | tail -1)
+
+if [ -n "$title" ] && [ "$title" != "null" ]; then
+  tmux rename-window "$title" 2>/dev/null
+fi

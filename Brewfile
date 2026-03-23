@@ -10,6 +10,7 @@ cask "soulver-cli"
 
 brew "ack"
 brew "bat"
+brew "bats"
 brew "coreutils"
 brew "cowsay"
 brew "ctags"

@@ -104,6 +104,8 @@ alias grm='git remote -v'
 alias gs='git status --short'
 alias gss='git status'
 alias gls='clear; gss'
+git-url() { gh browse "${1:-HEAD}" -n; }
+alias gurl='git-url'
 
 # Edit files changed in git diff
 # Usage: vd           -> unstaged changes

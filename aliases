@@ -104,7 +104,7 @@ alias grm='git remote -v'
 alias gs='git status --short'
 alias gss='git status'
 alias gls='clear; gss'
-git-url() { echo "$(gh repo view --json url -q .url)/commit/$(git rev-parse "${1:-HEAD}")"; }
+git-url() { gh browse "$(git rev-parse "${1:-HEAD}")" -n; }
 alias gurl='git-url'
 
 # Edit files changed in git diff

@@ -134,6 +134,31 @@ alias migrate='bin/rails db:migrate'
 # Ruby
 alias ri='ri -f ansi'
 
+# Archive
+# Usage: archive-project <name> [-- extra tar flags]
+# Example: archive-project pbx -- --exclude='lib/ip2location'
+archive-project() {
+  local name=${1:?Usage: archive-project <project-name> [-- extra tar flags]}
+  shift
+  [[ "$1" == "--" ]] && shift
+  local src=~/code/$name
+  if [[ ! -d "$src" ]]; then
+    echo "Directory ~/code/$name not found" >&2
+    return 1
+  fi
+  local dest=~/${name}-$(date +%Y%m%d).tar.gz
+  tar czf "$dest" \
+    --no-xattrs \
+    --exclude='node_modules' \
+    --exclude='tmp' \
+    --exclude='log' \
+    --exclude='tags' \
+    --exclude='*.sock' \
+    "$@" \
+    -C ~/code "$name"
+  echo "Archived to $dest"
+}
+
 # Utility
 alias reload='source ~/.zshrc; source ~/.zshenv && echo Reloaded ~/.zshrc and ~/.zshenv'
 alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path

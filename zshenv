@@ -28,10 +28,9 @@ export VIMRC="$HOME/.vim/vimrc"
 export PAGER='less -SIRMX'
 
 ## History
-export HISTSIZE=10000
-export HISTTIMEFORMAT='%F %T '
-export HISTCONTROL=ignoredups
-export HISTIGNORE="ls:ls -l:ls -al:ls -altr:ll:c:cls:cdd:pwd:gls:gss:reload:vi"
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=50000
+export SAVEHIST=50000
 
 ## Directory listing colors
 export CLICOLOR=1

@@ -1,5 +1,6 @@
 # Shell configuration
 setopt HIST_IGNORE_ALL_DUPS
+setopt INC_APPEND_HISTORY
 setopt SH_WORD_SPLIT
 
 # Completions (Homebrew provides git completions via site-functions)

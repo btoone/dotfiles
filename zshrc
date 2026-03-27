@@ -30,12 +30,12 @@ fi
 # Set PATH, MANPATH, etc., for Homebrew.
 eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
 
-
-# case insensitive path-completion 
-zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 
+# case insensitive path-completion
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 
 # partial completion suggestions
-zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' expand prefix suffix
 
 # Prompt with git info
 # Format: ~/d/v/pack [git:master] ❱

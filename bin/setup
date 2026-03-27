@@ -41,10 +41,23 @@ done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME (skipped existing)"
 
 # Claude Code config (special case: ~/.claude has runtime data, so we symlink individual files)
-mkdir -p "$HOME/.claude"
-ln -sf "$PWD/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
-ln -sfn "$PWD/claude/project-templates" "$HOME/.claude/project-templates"
-__results+="\n* Linked Claude Code config (statusline, project-templates)"
+# Deploy into each profile dir that exists (~/.claude-personal, ~/.claude-work)
+# Falls back to ~/.claude if neither profile dir exists
+claude_dirs=()
+[ -d "$HOME/.claude-personal" ] && claude_dirs+=("$HOME/.claude-personal")
+[ -d "$HOME/.claude-work" ] && claude_dirs+=("$HOME/.claude-work")
+[ ${#claude_dirs[@]} -eq 0 ] && claude_dirs=("$HOME/.claude")
+
+for cdir in "${claude_dirs[@]}"; do
+  mkdir -p "$cdir"
+  ln -sf "$PWD/claude/statusline-command.sh" "$cdir/statusline-command.sh"
+  ln -sfn "$PWD/claude/project-templates" "$cdir/project-templates"
+  ln -sf "$PWD/claude/settings.json" "$cdir/settings.json"
+  if [ ! -f "$cdir/settings.local.json" ]; then
+    cp "$PWD/local/claude-settings.local.json" "$cdir/settings.local.json"
+  fi
+done
+__results+="\n* Linked Claude Code config (settings, statusline, project-templates) into ${claude_dirs[*]}"
 
 # Install TMUX plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then

@@ -14,7 +14,6 @@ fi
 # export ZDOTDIR="$DOTFILES/zsh"
 
 ## PATH
-export PATH="$HOME/bin:$PATH"                                                   # personal tools
 export PATH="./bin:$PATH"                                                       # project binstubs
 export PATH="/Applications/MacVim.app/Contents/bin:$PATH"                       # enable mvim from terminal
 

@@ -10,7 +10,7 @@ Personal dotfiles for configuring developer environments on macOS and Linux. Fil
 
 ```bash
 # Fresh install (run from ~/dotfiles)
-bin/setup
+script/setup
 
 # Install Homebrew packages
 brew bundle --global
@@ -26,17 +26,26 @@ prefix + I
 
 ### File Installation Flow
 
-1. `MANIFEST` lists all config files to symlink
-2. `bin/setup` creates `~/.<filename>` symlinks pointing to repo files
-3. `local/` directory files are **copied** (not symlinked) to allow machine-specific customization
+1. `MANIFEST` lists all config files to symlink as `~/.<filename>`
+2. `script/setup` creates the symlinks, deploys tools, and copies templates
+3. `templates/` files are **copied** (not symlinked) to allow machine-specific customization
 4. Each main config sources its `.local` variant if present (e.g., `~/.zshrc` sources `~/.zshrc.local`)
 
 ### Key Directories
 
-- `bin/` - Executable scripts (setup, prodcon, eval_gist.rb)
-- `vim/` - Vim configuration with vim-plug managed plugins
-- `tmux/` - Tmux config and plugins (tpm, catppuccin, resurrect)
-- `local/` - Machine-specific override templates
+- `script/` - Repo bootstrap (`script/setup`). Follows the [GitHub "Scripts to Rule Them All"](https://github.com/github/scripts-to-rule-them-all) convention
+- `tools/` - User tool scripts, symlinked into `~/.local/bin` during setup
+- `templates/` - Machine-specific config seeds (copied once, then customized per machine). Follows the [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) `.local` override pattern
+- `claude/` - Claude Code config (settings, statusline, project-templates), symlinked into `~/.claude-personal` and/or `~/.claude-work` profile dirs
+- `vim/` - Vim configuration with vim-plug managed plugins (symlinked as `~/.vim`)
+- `tmux/` - Tmux config and plugins: tpm, catppuccin, resurrect (symlinked as `~/.tmux`)
+
+### Conventions
+
+- **Dotfile configs** listed in `MANIFEST` are symlinked as `~/.<filename>` — editing the symlinked file in `$HOME` modifies the repo copy directly
+- **Tool scripts** in `tools/` are symlinked into `~/.local/bin` (on PATH via `zshrc`) — same edit-in-place behavior
+- **Templates** in `templates/` are copied, not symlinked — edits stay local to the machine
+- **`~/.local/bin`** is the standard (XDG) location for user scripts. Do NOT add `~/bin` or `~/dotfiles/tools` to PATH
 
 ### Plugin Management
 
@@ -45,7 +54,7 @@ prefix + I
 
 ### Runtime Management
 
-Uses `mise` (asdf replacement) with versions specified in `tool-versions`. Activated in `zshrc` via `eval "$(mise activate zsh)"`.
+Uses `mise` (asdf replacement) with versions specified in `mise.toml`. Activated in `zshrc` via `eval "$(mise activate zsh)"`.
 
 ### M1/Intel Compatibility
 
@@ -55,11 +64,14 @@ Homebrew prefix detection in `zshenv`:
 
 ## Key Scripts
 
-### bin/setup
-Main installation script. Prompts for mac/linux, creates symlinks from MANIFEST, copies local configs, installs tpm, and runs mise install.
+### script/setup
+Main installation script. Creates symlinks from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, deploys Claude Code config, installs tpm, and runs mise install.
 
-### bin/prodcon
+### tools/prodcon
 Production Rails console launcher. Creates isolated tmux session with separate socket (`~/.tmux-prod.sock`), checks out production branch, includes safety prompts.
+
+### tools/claude-tmux-sync
+Claude Code hook script that syncs the session title to the tmux window name. Runs on PostToolUse (mid-session), UserPromptSubmit (after /rename), and Stop (on exit).
 
 ## Configuration Patterns
 
@@ -73,4 +85,8 @@ All major configs support `.local` variants for machine-specific settings:
 ### Adding New Dotfiles
 1. Add the file to the repo (without leading dot)
 2. Add filename to `MANIFEST`
-3. Run `ln -s ~/dotfiles/<file> ~/.<file>` or re-run setup
+3. Run `ln -s ~/dotfiles/<file> ~/.<file>` or re-run `script/setup`
+
+### Adding New Tool Scripts
+1. Add the script to `tools/` (make it executable)
+2. Run `ln -s ~/dotfiles/tools/<script> ~/.local/bin/<script>` or re-run `script/setup`

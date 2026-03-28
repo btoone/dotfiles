@@ -11,6 +11,17 @@ dotted name.
 
 Several configurations borrowed from https://github.com/thoughtbot/dotfiles.
 
+### Directory Structure
+
+| Directory    | Purpose                                                     | Convention                  |
+|-------------|-------------------------------------------------------------|-----------------------------|
+| `script/`   | Repo bootstrap (`script/setup`)                             | [GitHub Scripts to Rule Them All](https://github.com/github/scripts-to-rule-them-all) |
+| `tools/`    | User tool scripts → symlinked into `~/.local/bin`           | [XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/) |
+| `templates/`| Machine-specific config seeds → copied once per machine      | [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) |
+| `claude/`   | Claude Code config → symlinked into profile dirs             | —                           |
+| `vim/`      | Vim config → symlinked as `~/.vim`                           | —                           |
+| `tmux/`     | Tmux config → symlinked as `~/.tmux`                         | —                           |
+
 Getting Started
 ---------------
 
@@ -25,14 +36,16 @@ Install Homebrew packages (includes mise for runtime management):
 Run the setup script:
 
     cd ~/dotfiles
-    bin/setup
+    script/setup
 
 The setup script will:
 
 1. Create symlinks for each file in `MANIFEST`
-2. Copy local config templates (only if they don't exist)
-3. Install `tpm` for tmux
-4. Run `mise install` for runtime versions
+2. Symlink tool scripts from `tools/` into `~/.local/bin`
+3. Copy config templates (only if they don't exist)
+4. Deploy Claude Code config into profile dirs
+5. Install `tpm` for tmux
+6. Run `mise install` for runtime versions
 
 After setup, start a new terminal session or run `exec zsh`.
 
@@ -110,4 +123,3 @@ About
 
 This README was crafted with love and inspired by the README best practices of
 https://github.com/jehna/readme-best-practices
-

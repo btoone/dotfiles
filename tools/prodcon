@@ -2,7 +2,7 @@
 
 # === Usage ===
 # Launches a dedicated Tmux session for the production Rails console. Save this
-# script as `~/bin/prodcon`. You'll also need the production config file
+# script (deployed to ~/.local/bin via setup). You'll also need the production config file
 # (`.tmux-prod.conf`) for Tmux. This provides a sanitary Tmux config with basic
 # defaults.
 # 

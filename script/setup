@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Value of BASE_DIR is "dotfiles". The README instructs the user to run
-# `bin/setup` and errors if called from another location.
+# `script/setup` and errors if called from another location.
 BASE_DIR=$(basename "$PWD")
 
 # Confirm we're installing from the project root
@@ -24,7 +24,7 @@ Summary:
 
 # Install dotfiles
 readonly MANIFEST='MANIFEST'
-readonly LOCAL_DIR="$PWD/local"
+readonly TEMPLATES_DIR="$PWD/templates"
 
 while read -r f
 do
@@ -32,21 +32,22 @@ do
 done < "$MANIFEST"
 __results+="\n* Created symlink for each dotfiles listed in MANIFEST"
 
-for file in "$LOCAL_DIR"/*; do
+for file in "$TEMPLATES_DIR"/*; do
   filename=$(basename "$file")
+  # Skip non-dotfile templates (e.g. claude-settings.local.json)
+  [[ "$filename" == claude-* ]] && continue
   if [ ! -f "$HOME/.$filename" ]; then
     cp "$file" "$HOME/.$filename"
   fi
 done
-__results+="\n* Copied local config files from dir \"local/\" to $HOME (skipped existing)"
+__results+="\n* Copied config templates from templates/ to $HOME (skipped existing)"
 
 # Symlink tool scripts into ~/.local/bin (already on PATH via zshrc)
 mkdir -p "$HOME/.local/bin"
-for script in "$PWD"/bin/*; do
-  [ "$(basename "$script")" = "setup" ] && continue
+for script in "$PWD"/tools/*; do
   ln -sf "$script" "$HOME/.local/bin/$(basename "$script")"
 done
-__results+="\n* Linked tool scripts from bin/ into ~/.local/bin"
+__results+="\n* Linked tool scripts from tools/ into ~/.local/bin"
 
 # Claude Code config (special case: ~/.claude has runtime data, so we symlink individual files)
 # Deploy into each profile dir that exists (~/.claude-personal, ~/.claude-work)
@@ -62,7 +63,7 @@ for cdir in "${claude_dirs[@]}"; do
   ln -sfn "$PWD/claude/project-templates" "$cdir/project-templates"
   ln -sf "$PWD/claude/settings.json" "$cdir/settings.json"
   if [ ! -f "$cdir/settings.local.json" ]; then
-    cp "$PWD/local/claude-settings.local.json" "$cdir/settings.local.json"
+    cp "$PWD/templates/claude-settings.local.json" "$cdir/settings.local.json"
   fi
 done
 __results+="\n* Linked Claude Code config (settings, statusline, project-templates) into ${claude_dirs[*]}"

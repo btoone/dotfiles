@@ -1,57 +1,45 @@
 #!/usr/bin/env bash
 
-# Value of BASE_DIR is "dotfiles". The README instructs the user to run
-# `script/setup` and errors if called from another location.
-BASE_DIR=$(basename "$PWD")
+# Configures the local environment by symlinking dotfiles, deploying tool
+# scripts, and copying config templates. Fast, idempotent, no network needed.
+#
+# Usage: script/setup
 
-# Confirm we're installing from the project root
+BASE_DIR=$(basename "$PWD")
 if [[ $BASE_DIR != 'dotfiles' ]]; then
   echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
 fi
-
-echo "
-=================
-   PRE INSTALL
-=================
-
-1. Install Homebrew
-2. Install packages: brew bundle --global
-"
 
 __results="
 Summary:
 "
 
-# Install dotfiles
+# Symlink dotfiles listed in MANIFEST
 readonly MANIFEST='MANIFEST'
-readonly TEMPLATES_DIR="$PWD/templates"
-
-while read -r f
-do
+while read -r f; do
   ln -sf "$PWD/$f" "$HOME/.$f"
 done < "$MANIFEST"
-__results+="\n* Created symlink for each dotfiles listed in MANIFEST"
+__results+="\n* Symlinked dotfiles from MANIFEST"
 
+# Copy config templates (only if they don't already exist)
+readonly TEMPLATES_DIR="$PWD/templates"
 for file in "$TEMPLATES_DIR"/*; do
   filename=$(basename "$file")
-  # Skip non-dotfile templates (e.g. claude-settings.local.json)
   [[ "$filename" == claude-* ]] && continue
   if [ ! -f "$HOME/.$filename" ]; then
     cp "$file" "$HOME/.$filename"
   fi
 done
-__results+="\n* Copied config templates from templates/ to $HOME (skipped existing)"
+__results+="\n* Copied config templates to \$HOME (skipped existing)"
 
-# Symlink tool scripts into ~/.local/bin (already on PATH via zshrc)
+# Symlink tool scripts into ~/.local/bin (on PATH via zshrc)
 mkdir -p "$HOME/.local/bin"
 for script in "$PWD"/tools/*; do
   ln -sf "$script" "$HOME/.local/bin/$(basename "$script")"
 done
-__results+="\n* Linked tool scripts from tools/ into ~/.local/bin"
+__results+="\n* Linked tool scripts into ~/.local/bin"
 
-# Claude Code config (special case: ~/.claude has runtime data, so we symlink individual files)
-# Deploy into each profile dir that exists (~/.claude-personal, ~/.claude-work)
-# Falls back to ~/.claude if neither profile dir exists
+# Claude Code config — symlink into each profile dir that exists
 claude_dirs=()
 [ -d "$HOME/.claude-personal" ] && claude_dirs+=("$HOME/.claude-personal")
 [ -d "$HOME/.claude-work" ] && claude_dirs+=("$HOME/.claude-work")
@@ -66,26 +54,14 @@ for cdir in "${claude_dirs[@]}"; do
     cp "$PWD/templates/claude-settings.local.json" "$cdir/settings.local.json"
   fi
 done
-__results+="\n* Linked Claude Code config (settings, statusline, project-templates) into ${claude_dirs[*]}"
+__results+="\n* Linked Claude Code config into ${claude_dirs[*]}"
 
-# Install TMUX plugin manager
+# Install tmux plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-  __results+="\n* Installed Tmux Plugin Manager \"~/.tmux/plugins/tpm\""
+  __results+="\n* Installed tpm"
 fi
 
-# Vim plugins are managed by vim-plug and installed on first launch
-
-# Initialize mise and install runtimes from tool-versions
-if command -v mise &> /dev/null; then
-  echo "→ Installing mise runtimes from tool-versions..."
-  mise install
-  __results+="\n* Installed mise runtimes from tool-versions"
-else
-  __results+="\n* Skipped mise setup (not installed - run 'brew bundle --global' first)"
-fi
-
-# Prompt user to load new environment
 __results+="
 =================
    NEXT STEPS
@@ -98,4 +74,3 @@ __results+="
 "
 
 echo -e "$__results"
-exit 0

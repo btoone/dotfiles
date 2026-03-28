@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Installs system dependencies (Homebrew packages, runtimes).
+# Run once on a fresh machine, or after adding new dependencies.
+#
+# Usage: script/bootstrap
+
+set -e
+
+BASE_DIR=$(basename "$PWD")
+if [[ $BASE_DIR != 'dotfiles' ]]; then
+  echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
+fi
+
+echo "==> Installing Homebrew packages..."
+if command -v brew &> /dev/null; then
+  brew bundle --global
+else
+  echo "    Homebrew not found. Install it first: https://brew.sh"
+  exit 1
+fi
+
+echo "==> Installing runtimes via mise..."
+if command -v mise &> /dev/null; then
+  mise install
+else
+  echo "    mise not found (should have been installed by brew bundle)"
+  exit 1
+fi
+
+echo ""
+echo "Done. Now run: script/setup"

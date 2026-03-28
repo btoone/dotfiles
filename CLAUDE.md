@@ -9,11 +9,12 @@ Personal dotfiles for configuring developer environments on macOS and Linux. Fil
 ## Setup Commands
 
 ```bash
-# Fresh install (run from ~/dotfiles)
-script/setup
+# Fresh machine (run from ~/dotfiles)
+script/bootstrap    # install Homebrew packages + mise runtimes
+script/setup        # symlink dotfiles, deploy tools, copy templates
 
-# Install Homebrew packages
-brew bundle --global
+# After pulling changes
+script/setup        # fast, idempotent, no network
 
 # Install vim plugins (from within vim)
 :PlugInstall
@@ -64,8 +65,11 @@ Homebrew prefix detection in `zshenv`:
 
 ## Key Scripts
 
+### script/bootstrap
+Installs system dependencies: runs `brew bundle --global` and `mise install`. Run once on a fresh machine or after adding new dependencies.
+
 ### script/setup
-Main installation script. Creates symlinks from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, deploys Claude Code config, installs tpm, and runs mise install.
+Configures the local environment: symlinks dotfiles from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, deploys Claude Code config, installs tpm. Fast, idempotent, no network needed.
 
 ### tools/prodcon
 Production Rails console launcher. Creates isolated tmux session with separate socket (`~/.tmux-prod.sock`), checks out production branch, includes safety prompts.

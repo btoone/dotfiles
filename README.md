@@ -29,23 +29,15 @@ Clone the repo into your home directory.
 
     git clone git@github.com:<username>/dotfiles.git ~/dotfiles
 
-Install Homebrew packages (includes mise for runtime management):
-
-    brew bundle --global
-
-Run the setup script:
+Bootstrap dependencies and configure the environment:
 
     cd ~/dotfiles
+    script/bootstrap    # install Homebrew packages + mise runtimes
+    script/setup        # symlink dotfiles, deploy tools, copy templates
+
+After pulling changes, just re-run setup (fast, idempotent, no network):
+
     script/setup
-
-The setup script will:
-
-1. Create symlinks for each file in `MANIFEST`
-2. Symlink tool scripts from `tools/` into `~/.local/bin`
-3. Copy config templates (only if they don't exist)
-4. Deploy Claude Code config into profile dirs
-5. Install `tpm` for tmux
-6. Run `mise install` for runtime versions
 
 After setup, start a new terminal session or run `exec zsh`.
 

@@ -40,6 +40,14 @@ for file in "$LOCAL_DIR"/*; do
 done
 __results+="\n* Copied local config files from dir \"local/\" to $HOME (skipped existing)"
 
+# Symlink tool scripts into ~/.local/bin (already on PATH via zshrc)
+mkdir -p "$HOME/.local/bin"
+for script in "$PWD"/bin/*; do
+  [ "$(basename "$script")" = "setup" ] && continue
+  ln -sf "$script" "$HOME/.local/bin/$(basename "$script")"
+done
+__results+="\n* Linked tool scripts from bin/ into ~/.local/bin"
+
 # Claude Code config (special case: ~/.claude has runtime data, so we symlink individual files)
 # Deploy into each profile dir that exists (~/.claude-personal, ~/.claude-work)
 # Falls back to ~/.claude if neither profile dir exists

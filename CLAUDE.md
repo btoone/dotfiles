@@ -36,6 +36,7 @@ prefix + I
 
 - `script/` - Repo bootstrap (`script/setup`). Follows the [GitHub "Scripts to Rule Them All"](https://github.com/github/scripts-to-rule-them-all) convention
 - `tools/` - User tool scripts, symlinked into `~/.local/bin` during setup
+- `prototypes/` - Experimental scripts and reference implementations (not symlinked or deployed)
 - `templates/` - Machine-specific config seeds (copied once, then customized per machine). Follows the [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) `.local` override pattern
 - `git/` - Git ignore and attributes, symlinked into `~/.config/git/` (XDG standard location)
 - `claude/` - Claude Code config (settings, statusline, project-templates), symlinked into `~/.claude-personal` and/or `~/.claude-work` profile dirs
@@ -72,8 +73,8 @@ Installs system dependencies: runs `brew bundle --global` and `mise install`. Ru
 ### script/setup
 Configures the local environment: symlinks dotfiles from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, deploys Claude Code config, installs tpm. Fast, idempotent, no network needed.
 
-### tools/prodcon
-Production Rails console launcher. Creates isolated tmux session with separate socket (`~/.tmux-prod.sock`), checks out production branch, includes safety prompts.
+### prototypes/prodcon
+Production Rails console launcher prototype. Creates isolated tmux session with separate socket (`~/.tmux-prod.sock`), checks out production branch, includes safety prompts. Serves as a reference for building similar tools.
 
 ### tools/claude-tmux-sync
 Claude Code hook script that syncs the session title to the tmux window name. Runs on PostToolUse (mid-session), UserPromptSubmit (after /rename), and Stop (on exit).

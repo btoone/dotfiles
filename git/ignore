@@ -20,3 +20,6 @@ tmp/**/*
 /tags
 !/tags/
 !/tags/*
+
+# Claude Code local settings (machine-specific)
+**/.claude/settings.local.json

@@ -1,0 +1,2 @@
+config/credentials.yml.enc diff=encredible
+config/credentials/*.yml.enc diff=encredible

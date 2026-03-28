@@ -7,11 +7,11 @@ fzfrc
 ripgreprc
 gemrc
 gitconfig
-gitignore
 gitmessage
 gvimrc
 inputrc
 irbrc
+psqlrc
 pryrc
 rspec
 sqliterc
@@ -19,5 +19,6 @@ tmux.conf
 mise.toml
 tmux
 vim
+zprofile
 zshenv
 zshrc

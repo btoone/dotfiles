@@ -32,6 +32,12 @@ for file in "$TEMPLATES_DIR"/*; do
 done
 __results+="\n* Copied config templates to \$HOME (skipped existing)"
 
+# XDG config — symlink git ignore/attributes into ~/.config/git
+mkdir -p "$HOME/.config/git"
+ln -sf "$PWD/git/ignore" "$HOME/.config/git/ignore"
+ln -sf "$PWD/git/attributes" "$HOME/.config/git/attributes"
+__results+="\n* Linked git config into ~/.config/git"
+
 # Symlink tool scripts into ~/.local/bin (on PATH via zshrc)
 mkdir -p "$HOME/.local/bin"
 for script in "$PWD"/tools/*; do

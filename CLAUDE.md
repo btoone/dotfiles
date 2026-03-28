@@ -37,6 +37,7 @@ prefix + I
 - `script/` - Repo bootstrap (`script/setup`). Follows the [GitHub "Scripts to Rule Them All"](https://github.com/github/scripts-to-rule-them-all) convention
 - `tools/` - User tool scripts, symlinked into `~/.local/bin` during setup
 - `templates/` - Machine-specific config seeds (copied once, then customized per machine). Follows the [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) `.local` override pattern
+- `git/` - Git ignore and attributes, symlinked into `~/.config/git/` (XDG standard location)
 - `claude/` - Claude Code config (settings, statusline, project-templates), symlinked into `~/.claude-personal` and/or `~/.claude-work` profile dirs
 - `vim/` - Vim configuration with vim-plug managed plugins (symlinked as `~/.vim`)
 - `tmux/` - Tmux config and plugins: tpm, catppuccin, resurrect (symlinked as `~/.tmux`)

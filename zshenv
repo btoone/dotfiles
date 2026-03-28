@@ -1,6 +1,6 @@
 # Values set here will be available for all shells (including scripts and
 # system processes). But be cautious: ~/.zshenv is sourced by all Zsh instances
-export DOTFILES="~/code/dotfiles"
+export DOTFILES="$HOME/dotfiles"
 
 # Detect architecture and set Homebrew prefix
 # arm64 = Apple Silicon (M1/M2), x86_64 = Intel

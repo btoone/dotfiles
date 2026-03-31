@@ -62,6 +62,42 @@ Robert C. Martin's SOLID principles, applied with Ruby pragmatism:
 
 Functions should be small, do one thing, and have names that reveal intent. If you need a comment to explain what code does, the code isn't clear enough.
 
+### Style Preferences
+
+- **No trailing guards on long lines** — Don't sneak `unless` or `if` onto the end of a complex line. Use an explicit guard clause or block instead. Trailing guards are fine on short, simple lines.
+- **Manage dependencies at the boundary** — External dependencies (APIs, workers, services) should be easy to isolate in tests. Prefer designs where collaborators are accessible through simple, stubbable seams — whether that's a wrapped method, a constructor default, or a method argument depends on context. The goal is testability without reaching into internals.
+- **Favor declarative style, use imperative when it earns its place** — Default to expressing *what things are* rather than *what to do*. Most code should describe structure, relationships, and rules declaratively. Reserve imperative control flow (guard clauses, early returns, step-by-step sequencing) for the edges — where you're orchestrating actions or handling exceptional cases. When imperative style makes the intent clearer than a declarative alternative would, use it without apology.
+
+  This aligns with how Eric Evans draws the line in DDD: the domain model (entities, value objects, specifications, scopes) should be declarative — describing rules, relationships, and constraints. Application services and orchestration layers are where imperative style lives — coordinating actions, enforcing sequence, handling edge cases. Evans advocates "declarative design" in the domain precisely because it keeps the model readable as a specification of the business. The imperative mechanics belong at the boundaries.
+
+  **Example — declarative domain, imperative orchestration:**
+  ```ruby
+  # Declarative: describes what a shipping policy is
+  class ShippingPolicy
+    THRESHOLDS = { standard: 5_00, express: 20_00 }.freeze
+
+    def initialize(order)
+      @order = order
+    end
+
+    def free?       = @order.total >= THRESHOLDS.fetch(tier)
+    def tier        = @order.priority ? :express : :standard
+    def estimate    = ShippingCalculator.rate_for(tier, @order.weight)
+  end
+
+  # Imperative: orchestrates what to do at checkout
+  def finalize_shipment(order)
+    policy = ShippingPolicy.new(order)
+    return notify_warehouse(order) if policy.free?
+
+    charge = collect_shipping(order, policy.estimate)
+    return handle_payment_failure(order) unless charge.success?
+
+    notify_warehouse(order)
+  end
+  ```
+  The policy reads like a specification — what shipping *is* for this order. The method reads like a recipe — guard, act, handle failure, proceed. Both are clear; each uses the style that fits.
+
 ---
 
 ## Continuous Delivery Mindset

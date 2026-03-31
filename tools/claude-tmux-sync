@@ -9,7 +9,13 @@ session_id=$(echo "$input" | jq -r '.session_id')
 [ -z "$transcript" ] || [ "$transcript" = "null" ] && exit 0
 [ -f "$transcript" ] || exit 0
 
-current_window=$(tmux display-message -p '#W' 2>/dev/null)
+# Resolve the window where this agent is running (not necessarily the active window)
+if [ -n "$TMUX_PANE" ]; then
+  target_window=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}' 2>/dev/null)
+fi
+[ -z "$target_window" ] && exit 0
+
+current_window=$(tmux display-message -t "$target_window" -p '#W' 2>/dev/null)
 
 # Use grep + tail for speed instead of jq scanning every line
 title=$(grep '"custom-title"' "$transcript" | tail -1 | jq -r '.customTitle // empty' 2>/dev/null)
@@ -27,5 +33,5 @@ fi
 # Skip if window already has this title
 [ "$current_window" = "$title" ] && exit 0
 
-tmux set-window-option automatic-rename off 2>/dev/null
-tmux rename-window "$title" 2>/dev/null
+tmux set-window-option -t "$target_window" automatic-rename off 2>/dev/null
+tmux rename-window -t "$target_window" "$title" 2>/dev/null

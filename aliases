@@ -43,7 +43,7 @@ alias tom='top -o vsize' # memory
 # tmux wrapper: auto-names session after current folder when called without args
 tmux() {
   if [[ $# -eq 0 ]]; then
-    local name="${PWD##*/}"
+    local name=$(echo "${PWD##*/}" | tr '[:upper:]' '[:lower:]' | tr ' .:' '-')
     command tmux new-session -s "$name"
   else
     command tmux "$@"
@@ -61,11 +61,11 @@ tmn() {
   case "$input" in
     /*|~*)
       dir="${input/#\~/$HOME}"
-      name="${dir##*/}"
+      name=$(echo "${dir##*/}" | tr '[:upper:]' '[:lower:]' | tr ' .:' '-')
       ;;
     *)
       dir="$HOME/code/$input"
-      name="$input"
+      name=$(echo "$input" | tr '[:upper:]' '[:lower:]' | tr ' .:' '-')
       ;;
   esac
   mkdir -p "$dir"

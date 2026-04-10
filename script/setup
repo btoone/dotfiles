@@ -56,6 +56,10 @@ for cdir in "${claude_dirs[@]}"; do
   ln -sf "$PWD/claude/statusline-command.sh" "$cdir/statusline-command.sh"
   ln -sfn "$PWD/claude/project-templates" "$cdir/project-templates"
   ln -sf "$PWD/claude/settings.json" "$cdir/settings.json"
+  mkdir -p "$cdir/skills"
+  for skill in "$PWD"/claude/skills/*/; do
+    ln -sfn "$skill" "$cdir/skills/$(basename "$skill")"
+  done
   if [ ! -f "$cdir/settings.local.json" ]; then
     cp "$PWD/templates/claude-settings.local.json" "$cdir/settings.local.json"
   fi

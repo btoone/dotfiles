@@ -1,6 +1,6 @@
 ---
 name: brain
-description: Save information to the Obsidian vault at ~/brains. Use when the user says "save this to brain", "brain pbx", "save to my vault", or wants to capture a conversation summary for later review.
+description: Save information to the Obsidian vault at ~/Vaults/Developer. Use when the user says "save this to brain", "brain pbx", "save to my vault", or wants to capture a conversation summary for later review.
 argument-hint: [folder] [optional-title]
 user-invocable: true
 allowed-tools: Write, Bash(ls *), Bash(mkdir *)
@@ -8,7 +8,7 @@ allowed-tools: Write, Bash(ls *), Bash(mkdir *)
 
 # Save to Obsidian Vault
 
-Save a well-structured markdown note to the user's Obsidian vault at `~/brains/`.
+Save a well-structured markdown note to the user's Obsidian vault at `~/Vaults/Developer/`.
 
 ## Arguments
 
@@ -41,13 +41,13 @@ Look at the **most recent substantive response** in the conversation — the inf
 
 - Use the title (provided or generated) as the filename
 - Replace spaces with spaces (Obsidian handles this fine)
-- Example: `~/brains/PBX/Sentry Plugin Workflow.md`
+- Example: `~/Vaults/Developer/PBX/Sentry Plugin Workflow.md`
 
 ## Example
 
 User runs: `/brain pbx Sentry Workflow`
 
-Creates: `~/brains/PBX/Sentry Workflow.md` containing a well-formatted note based on the recent conversation content.
+Creates: `~/Vaults/Developer/PBX/Sentry Workflow.md` containing a well-formatted note based on the recent conversation content.
 
 ## Important
 

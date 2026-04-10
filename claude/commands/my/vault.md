@@ -1,11 +1,3 @@
----
-name: vault
-description: Save information to an Obsidian vault. Use when the user says "save this to brain", "vault pbx", "save to my vault", or wants to capture a conversation summary for later review.
-argument-hint: [vault] folder/[optional-title]
-user-invocable: true
-allowed-tools: Write, Bash(ls *), Bash(mkdir *), Bash(echo *)
----
-
 # Save to Obsidian Vault
 
 Save a well-structured markdown note to a user's Obsidian vault under `~/Vaults/`.
@@ -54,11 +46,13 @@ Look at the **most recent substantive response** in the conversation -- the info
 
 | Command | Vault | File |
 |---------|-------|------|
-| `/vault pbx/Sentry Workflow` | Developer (default) | `~/Vaults/Developer/PBX/Sentry Workflow.md` |
-| `/vault brain pbx/Sentry Workflow` | Brain | `~/Vaults/Brain/PBX/Sentry Workflow.md` |
-| `/vault pbx` | Developer (default) | `~/Vaults/Developer/PBX/<generated title>.md` |
+| `/my:vault pbx/Sentry Workflow` | Developer (default) | `~/Vaults/Developer/PBX/Sentry Workflow.md` |
+| `/my:vault brain pbx/Sentry Workflow` | Brain | `~/Vaults/Brain/PBX/Sentry Workflow.md` |
+| `/my:vault pbx` | Developer (default) | `~/Vaults/Developer/PBX/<generated title>.md` |
 
 ## Important
 
 - Do NOT overwrite existing files. If a file with the same name exists, append a number: `Title 2.md`
 - Confirm to the user what was saved and where
+
+$ARGUMENTS

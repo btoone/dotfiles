@@ -3,7 +3,7 @@ name: vault
 description: Save information to an Obsidian vault. Use when the user says "save this to brain", "vault pbx", "save to my vault", or wants to capture a conversation summary for later review.
 argument-hint: [vault] folder/[optional-title]
 user-invocable: true
-allowed-tools: Write, Bash(ls *), Bash(mkdir *)
+allowed-tools: Write, Bash(ls *), Bash(mkdir *), Bash(echo *)
 ---
 
 # Save to Obsidian Vault
@@ -13,13 +13,13 @@ Save a well-structured markdown note to a user's Obsidian vault under `~/Vaults/
 ## Configuration
 
 - **Vaults root:** `~/Vaults/`
-- **Default vault:** `Developer`
+- **Default vault:** Read from `$OBSIDIAN_DEFAULT_VAULT` env var (`echo $OBSIDIAN_DEFAULT_VAULT`). If unset or empty, fall back to the first directory found in `~/Vaults/`.
 
 ## Argument Parsing
 
 Arguments follow the pattern: `[vault] folder/[title]`
 
-1. **Vault selection** (optional first argument): `ls ~/Vaults/` and case-insensitively match the first argument against vault directory names. If it matches, use that vault and consume the argument. If no match, use the default vault (`Developer`).
+1. **Vault selection** (optional first argument): `ls ~/Vaults/` and case-insensitively match the first argument against vault directory names. If it matches, use that vault and consume the argument. If no match, use the default vault (from `$OBSIDIAN_DEFAULT_VAULT`).
 2. **Folder and title**: The next argument is parsed as `folder/title`. If there's no `/`, treat the whole thing as the folder and generate a title from the conversation content.
 
 ### Folder Shorthand

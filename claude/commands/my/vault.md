@@ -1,11 +1,17 @@
 # Save to Obsidian Vault
 
-Save a well-structured markdown note to a user's Obsidian vault under `~/Vaults/`.
+Save a well-structured markdown note to a user's Obsidian vault under `~/Vaults/`, then run brain maintenance if the vault has a `_Schema.md`.
 
 ## Configuration
 
 - **Vaults root:** `~/Vaults/`
-- **Default vault:** Read from `$OBSIDIAN_DEFAULT_VAULT` env var (`echo $OBSIDIAN_DEFAULT_VAULT`). If unset or empty, fall back to the first directory found in `~/Vaults/`.
+
+### Vault Resolution (in priority order)
+
+1. **Explicit argument** — if the first argument matches a vault name (case-insensitive against `ls ~/Vaults/`), use it and consume the argument
+2. **Current working directory** — if `pwd` is inside `~/Vaults/<something>/`, use that vault
+3. **`$OBSIDIAN_DEFAULT_VAULT`** env var (`echo $OBSIDIAN_DEFAULT_VAULT`)
+4. **Fallback** — first directory found in `~/Vaults/`
 
 ## Argument Parsing
 
@@ -54,5 +60,45 @@ Look at the **most recent substantive response** in the conversation -- the info
 
 - Do NOT overwrite existing files. If a file with the same name exists, append a number: `Title 2.md`
 - Confirm to the user what was saved and where
+
+---
+
+## Brain Maintenance
+
+After saving the note, check if the target vault has a `_Schema.md` file at its root. If it does, this vault follows the brain pattern and you **must** run maintenance:
+
+### 1. Categorize
+
+If the note was saved to a folder that doesn't match the schema's folder structure (e.g., saved to a shorthand folder), consider whether it belongs in one of the schema-defined categories (`ai/`, `business/`, `career/`, `personal/`, `_sources/`). If so, move it there. If the shorthand folder is intentional (project-specific), leave it.
+
+### 2. Cross-reference
+
+Scan the new note for concepts, names, and topics that overlap with existing notes in the vault. For each match:
+- Add a `[[wiki link]]` in the new note pointing to the existing note
+- Add a `[[wiki link]]` in the existing note pointing back to the new note (place it contextually near related content, not dumped at the bottom)
+
+Read the `index.md` to understand what already exists before linking.
+
+### 3. Update Index
+
+Add the new note to `index.md` under the appropriate category. Include a brief `—` description. If no existing category fits, create a new subsection.
+
+### 4. Update Log
+
+Append an entry to `log.md`:
+```
+[INGEST] YYYY-MM-DD — Brief description of what was added and where it was filed
+```
+
+### 5. Source Separation
+
+If the saved content is raw material (a conversation transcript, article clip, chat dump), file it in `_sources/` under the appropriate subfolder (`conversations/`, `clippings/`, `transcripts/`). Then create or update a distilled note in the brain layer that references the source with a link.
+
+### 6. Report
+
+After maintenance, briefly tell the user:
+- Where the note was filed
+- What cross-references were added
+- Any other notes that were updated
 
 $ARGUMENTS

@@ -49,7 +49,37 @@ __results+="\n* Linked tool scripts into ~/.local/bin"
 claude_dirs=()
 [ -d "$HOME/.claude-personal" ] && claude_dirs+=("$HOME/.claude-personal")
 [ -d "$HOME/.claude-work" ] && claude_dirs+=("$HOME/.claude-work")
-[ ${#claude_dirs[@]} -eq 0 ] && claude_dirs=("$HOME/.claude")
+
+if [ ${#claude_dirs[@]} -eq 0 ]; then
+  echo ""
+  echo "No Claude Code profile directory found (~/.claude-personal or ~/.claude-work)."
+  echo "Which profile should be set up as the default?"
+  echo "  1) personal  (~/.claude-personal)"
+  echo "  2) work      (~/.claude-work)"
+  echo "  3) skip      (use ~/.claude for now)"
+  printf "Choose [1/2/3]: "
+  read -r claude_choice
+  case "$claude_choice" in
+    1)
+      claude_dirs=("$HOME/.claude-personal")
+      machine_type="personal"
+      ;;
+    2)
+      claude_dirs=("$HOME/.claude-work")
+      machine_type="work"
+      ;;
+    *)
+      claude_dirs=("$HOME/.claude")
+      machine_type=""
+      ;;
+  esac
+
+  # Update ~/.zshrc.local with MACHINE_TYPE if the user picked a profile
+  if [ -n "$machine_type" ] && [ -f "$HOME/.zshrc.local" ]; then
+    sed -i '' "s|^# export MACHINE_TYPE=.*|export MACHINE_TYPE=$machine_type|" "$HOME/.zshrc.local"
+    sed -i '' 's|^# export CLAUDE_CONFIG_DIR=|export CLAUDE_CONFIG_DIR=|' "$HOME/.zshrc.local"
+  fi
+fi
 
 for cdir in "${claude_dirs[@]}"; do
   mkdir -p "$cdir"
@@ -85,6 +115,8 @@ __results+="
 2. In tmux: prefix + I to install plugins
 3. In vim: :PlugInstall to install plugins
 4. Set terminal font to \"Hack Nerd Font\" for status bar icons
+5. For Claude Code: verify MACHINE_TYPE is set in ~/.zshrc.local
+   (should already be configured if you chose a profile above)
 "
 
 echo -e "$__results"

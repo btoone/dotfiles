@@ -17,7 +17,7 @@ Summary:
 # Symlink dotfiles listed in MANIFEST
 readonly MANIFEST='MANIFEST'
 while read -r f; do
-  ln -sf "$PWD/$f" "$HOME/.$f"
+  ln -sfn "$PWD/$f" "$HOME/.$f"
 done < "$MANIFEST"
 __results+="\n* Symlinked dotfiles from MANIFEST"
 

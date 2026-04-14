@@ -86,19 +86,34 @@ for cdir in "${claude_dirs[@]}"; do
   ln -sf "$PWD/claude/statusline-command.sh" "$cdir/statusline-command.sh"
   ln -sfn "$PWD/claude/project-templates" "$cdir/project-templates"
   ln -sf "$PWD/claude/settings.json" "$cdir/settings.json"
-  mkdir -p "$cdir/skills"
-  for skill in "$PWD"/claude/skills/*/; do
-    ln -sfn "$skill" "$cdir/skills/$(basename "$skill")"
-  done
-  mkdir -p "$cdir/commands"
-  for cmd_dir in "$PWD"/claude/commands/*/; do
-    ln -sfn "$cmd_dir" "$cdir/commands/$(basename "$cmd_dir")"
-  done
   if [ ! -f "$cdir/settings.local.json" ]; then
     cp "$PWD/templates/claude-settings.local.json" "$cdir/settings.local.json"
   fi
 done
 __results+="\n* Linked Claude Code config into ${claude_dirs[*]}"
+
+# Register my-plugin in each Claude profile
+MY_PLUGIN_PATH="$PWD/my-plugin"
+NOW=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
+for cdir in "${claude_dirs[@]}"; do
+  plugins_file="$cdir/plugins/installed_plugins.json"
+  mkdir -p "$cdir/plugins"
+  if [ ! -f "$plugins_file" ]; then
+    echo '{"version":2,"plugins":{}}' > "$plugins_file"
+  fi
+  jq --arg path "$MY_PLUGIN_PATH" --arg now "$NOW" '
+    .plugins["my@my-plugin"] = [
+      (.plugins["my@my-plugin"][0] // {}) * {
+        scope: "user",
+        installPath: $path,
+        version: "1.0.0",
+        installedAt: ((.plugins["my@my-plugin"][0].installedAt) // $now),
+        lastUpdated: $now
+      }
+    ]
+  ' "$plugins_file" > "$plugins_file.tmp" && mv "$plugins_file.tmp" "$plugins_file"
+done
+__results+="\n* Registered my-plugin in Claude Code profiles"
 
 # Install tmux plugin manager
 if [ ! -d "$HOME/.tmux/plugins" ]; then
@@ -117,6 +132,9 @@ __results+="
 4. Set terminal font to \"Hack Nerd Font\" for status bar icons
 5. For Claude Code: verify MACHINE_TYPE is set in ~/.zshrc.local
    (should already be configured if you chose a profile above)
+6. For additional Claude Code profiles (e.g. switching between work/personal):
+   claude plugins marketplace add ~/dotfiles/my-plugin
+   claude plugins install my
 "
 
 echo -e "$__results"

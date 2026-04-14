@@ -1,3 +1,7 @@
+---
+description: Run health checks on an Obsidian vault with brain pattern
+---
+
 # Lint Brain
 
 Run a health check on an Obsidian vault that follows the brain pattern (has a `_Schema.md`).

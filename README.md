@@ -19,6 +19,7 @@ Several configurations borrowed from https://github.com/thoughtbot/dotfiles.
 | `tools/`    | User tool scripts → symlinked into `~/.local/bin`           | [XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/latest/) |
 | `templates/`| Machine-specific config seeds → copied once per machine      | [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) |
 | `claude/`   | Claude Code config → symlinked into profile dirs             | —                           |
+| `my-plugin/`| Claude Code personal plugin (`my:` namespace)                | [Claude Code Plugins](https://docs.anthropic.com/en/docs/claude-code/plugins) |
 | `vim/`      | Vim config → symlinked as `~/.vim`                           | —                           |
 | `tmux/`     | Tmux config → symlinked as `~/.tmux`                         | —                           |
 
@@ -92,6 +93,17 @@ tmn /absolute/path      # creates session "path" in /absolute/path
 * Git-aware prompt with compact path display
 * Useful aliases
 * Local config support (`~/.zshrc.local`)
+
+### Claude Code
+
+Personal skills and commands are packaged as a plugin under `my-plugin/`. After running `script/setup`, install the plugin:
+
+```bash
+claude plugins marketplace add ~/dotfiles/my-plugin
+claude plugins install my
+```
+
+This registers the `my:` namespace with commands like `/my:vault`, `/my:dennis`, `/my:lint-brain`, `/my:init-brain` and the `my:tdd` skill (auto-loads during TDD work).
 
 ### Mise
 

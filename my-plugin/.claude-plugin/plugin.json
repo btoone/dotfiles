@@ -1,0 +1,9 @@
+{
+  "name": "my",
+  "version": "1.0.0",
+  "description": "Personal skills and commands",
+  "author": {
+    "name": "Brandon Toone",
+    "email": "btoone@gmail.com"
+  }
+}

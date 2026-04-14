@@ -1,0 +1,13 @@
+{
+  "name": "my-plugin",
+  "owner": {
+    "name": "Brandon Toone"
+  },
+  "plugins": [
+    {
+      "name": "my",
+      "description": "Personal skills and commands",
+      "source": "./"
+    }
+  ]
+}

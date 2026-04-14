@@ -19,6 +19,10 @@ script/setup        # fast, idempotent, no network
 # Install vim plugins (from within vim)
 :PlugInstall
 
+# Install personal Claude Code plugin (per-profile, once)
+claude plugins marketplace add ~/dotfiles/my-plugin
+claude plugins install my
+
 # Install tmux plugins (from within tmux)
 prefix + I
 ```
@@ -40,6 +44,7 @@ prefix + I
 - `templates/` - Machine-specific config seeds (copied once, then customized per machine). Follows the [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) `.local` override pattern
 - `git/` - Git ignore and attributes, symlinked into `~/.config/git/` (XDG standard location)
 - `claude/` - Claude Code config (settings, statusline, project-templates), symlinked into `~/.claude-personal` and/or `~/.claude-work` profile dirs
+- `my-plugin/` - Claude Code personal plugin providing the `my:` namespace (skills and commands)
 - `vim/` - Vim configuration with vim-plug managed plugins (symlinked as `~/.vim`)
 - `tmux/` - Tmux config and plugins: tpm, catppuccin, resurrect (symlinked as `~/.tmux`)
 
@@ -54,6 +59,12 @@ prefix + I
 
 - **Vim**: vim-plug - plugins defined in `vim/vimrc` between `plug#begin()` and `plug#end()`
 - **Tmux**: TPM (Tmux Plugin Manager) - plugins defined at bottom of `tmux.conf`
+- **Claude Code**: Personal plugin at `my-plugin/`, installed per-profile via the CLI:
+  ```bash
+  claude plugins marketplace add ~/dotfiles/my-plugin
+  claude plugins install my
+  ```
+  Provides the `my:` namespace — skills in `my-plugin/skills/`, commands in `my-plugin/commands/`
 
 ### Runtime Management
 

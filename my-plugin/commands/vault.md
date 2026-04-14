@@ -1,3 +1,7 @@
+---
+description: Save conversation content as a note in an Obsidian vault
+---
+
 # Save to Obsidian Vault
 
 Save a well-structured markdown note to a user's Obsidian vault under `~/Vaults/`, then run brain maintenance if the vault has a `_Schema.md`.

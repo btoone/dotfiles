@@ -48,13 +48,20 @@
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "skillify@claude-skillify": true,
-    "sentry@claude-plugins-official": true
+    "sentry@claude-plugins-official": true,
+    "my@my-plugin": true
   },
   "extraKnownMarketplaces": {
     "claude-skillify": {
       "source": {
         "source": "github",
         "repo": "0xMH/claude-skillify"
+      }
+    },
+    "my-plugin": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/brandon/dotfiles/my-plugin"
       }
     }
   },

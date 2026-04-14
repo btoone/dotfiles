@@ -1,3 +1,7 @@
+---
+description: Set up the brain pattern in an Obsidian vault
+---
+
 # Initialize Brain
 
 Set up the brain pattern in an Obsidian vault. This creates a `_Schema.md`, `index.md`, and `log.md` tailored to the vault's existing content.

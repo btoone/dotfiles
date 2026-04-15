@@ -20,13 +20,13 @@ else
   exit 1
 fi
 
-echo "==> Installing runtimes via mise..."
-if command -v mise &> /dev/null; then
-  mise install
-else
-  echo "    mise not found (should have been installed by brew bundle)"
-  exit 1
+echo "==> Installing mise..."
+if ! command -v mise &> /dev/null; then
+  curl https://mise.run | sh
 fi
+
+echo "==> Installing runtimes via mise..."
+mise install
 
 echo ""
 echo "Done. Now run: script/setup"

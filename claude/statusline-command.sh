@@ -7,6 +7,7 @@ input=$(cat)
 profile=$(basename "${CLAUDE_CONFIG_DIR:-}" | sed 's/^\.claude-//')
 
 # Extract stats using jq
+repo=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null)
 branch=$(git branch --show-current 2>/dev/null)
 pct=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 
@@ -30,7 +31,11 @@ if [ -n "$profile" ]; then
   parts+=("$(printf '\033[34m%s\033[0m' "$profile")")
 fi
 
-if [ -n "$branch" ]; then
+if [ -n "$repo" ] && [ -n "$branch" ]; then
+  parts+=("$(printf '\033[36m%s:%s\033[0m' "$repo" "$branch")")
+elif [ -n "$repo" ]; then
+  parts+=("$(printf '\033[36m%s\033[0m' "$repo")")
+elif [ -n "$branch" ]; then
   parts+=("$(printf '\033[36m%s\033[0m' "$branch")")
 fi
 

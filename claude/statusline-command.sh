@@ -3,11 +3,12 @@
 # Read JSON input from Claude Code
 input=$(cat)
 
-# Extract useful stats using jq
-model=$(echo "$input" | jq -r '.model.display_name // "?"')
-cost=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
-input_tokens=$(echo "$input" | jq -r '.context_window.current_usage.input_tokens // 0')
-context_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
+# Detect profile from CLAUDE_CONFIG_DIR
+profile=$(basename "${CLAUDE_CONFIG_DIR:-}" | sed 's/^\.claude-//')
+
+# Extract stats using jq
+branch=$(git branch --show-current 2>/dev/null)
+pct=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 
 # Extract current task (first in_progress todo, or current tool activity)
 current_task=$(echo "$input" | jq -r '
@@ -21,31 +22,27 @@ if [ -n "$current_task" ] && [ ${#current_task} -gt 40 ]; then
   current_task="${current_task:0:37}..."
 fi
 
-# Calculate context usage percentage
-if [ "$context_size" -gt 0 ] 2>/dev/null; then
-  pct=$((input_tokens * 100 / context_size))
-else
-  pct=0
+# Build output: profile | branch | ctx% | task
+# Colors: blue for profile, cyan for branch, yellow for context, magenta for task
+parts=()
+
+if [ -n "$profile" ]; then
+  parts+=("$(printf '\033[34m%s\033[0m' "$profile")")
 fi
 
-# Format cost (show cents if under $1)
-if (( $(echo "$cost < 1" | bc -l) )); then
-  cost_fmt=$(printf "%.0f¢" "$(echo "$cost * 100" | bc -l)")
-else
-  cost_fmt=$(printf "$%.2f" "$cost")
+if [ -n "$branch" ]; then
+  parts+=("$(printf '\033[36m%s\033[0m' "$branch")")
 fi
 
-# Format tokens (k for thousands)
-if [ "$input_tokens" -ge 1000 ]; then
-  tokens_fmt="$((input_tokens / 1000))k"
-else
-  tokens_fmt="$input_tokens"
-fi
+parts+=("$(printf '\033[33m%d%%\033[0m' "$pct")")
 
-# Output: Model | Cost | Tokens (Context%) | Task
-# Colors: cyan for model, green for cost, yellow for tokens, magenta for task
 if [ -n "$current_task" ]; then
-  printf "\033[36m%s\033[0m | \033[32m%s\033[0m | \033[33m%s (%d%%)\033[0m | \033[35m%s\033[0m" "$model" "$cost_fmt" "$tokens_fmt" "$pct" "$current_task"
-else
-  printf "\033[36m%s\033[0m | \033[32m%s\033[0m | \033[33m%s (%d%%)\033[0m" "$model" "$cost_fmt" "$tokens_fmt" "$pct"
+  parts+=("$(printf '\033[35m%s\033[0m' "$current_task")")
 fi
+
+# Join with " | "
+first=true
+for part in "${parts[@]}"; do
+  if $first; then first=false; else printf ' | '; fi
+  printf '%s' "$part"
+done

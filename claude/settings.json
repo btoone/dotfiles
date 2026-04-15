@@ -65,5 +65,9 @@
       }
     }
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "statusLine": {
+    "type": "command",
+    "command": "$CLAUDE_CONFIG_DIR/statusline-command.sh"
+  }
 }

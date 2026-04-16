@@ -14,6 +14,8 @@ bindkey -v
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd 'vv' edit-command-line
+bindkey -M viins '^P' up-history
+bindkey -M viins '^N' down-history
 
 # Mise (runtime version manager)
 export PATH="$HOME/.local/bin:$PATH"

@@ -190,8 +190,8 @@ alias vup='vagrant up'
 
 # Claude Code (use CLAUDE_CONFIG_DIR for separate account configs)
 # Default config dir is set via MACHINE_TYPE in ~/.zshrc.local
-alias claude-personal='CLAUDE_CONFIG_DIR=~/.claude-personal command claude'
-alias claude-work='CLAUDE_CONFIG_DIR=~/.claude-work command claude'
+alias claude-personal='CLAUDE_CONFIG_DIR=~/.claude-personal command claude --permission-mode auto'
+alias claude-work='CLAUDE_CONFIG_DIR=~/.claude-work command claude --permission-mode auto'
 
 # Markdown
 # Suffix alias: typing ./README.md (or any .md path) runs it through gum for

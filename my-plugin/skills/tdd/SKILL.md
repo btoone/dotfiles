@@ -9,113 +9,131 @@ allowed-tools:
   - Grep
   - Bash(bin/rspec:*)
   - Bash(bundle exec rspec:*)
+  - Bash(bin/rails test:*)
+  - Bash(bundle exec rake test:*)
+  - Bash(ruby -Itest:*)
+  - Bash(npm test:*)
+  - Bash(npx vitest:*)
+  - Bash(npx jest:*)
+  - Bash(yarn test:*)
+  - Bash(pnpm test:*)
+  - Bash(go test:*)
+  - Bash(bats:*)
   - Agent
 when_to_use: >
   Use when the user asks to implement a feature, fix a bug, add a spec, or do
   any code change that should follow TDD. This includes when the user says
   'go ahead', 'let's do it', 'start', 'begin', or similar to kick off
   previously discussed implementation work. If you are about to write
-  production code or spec files, this skill applies. Examples: 'add filtering
+  production code or test files, this skill applies. Examples: 'add filtering
   to transactions', 'fix the zero-amount bug', 'write tests for the parser',
   'TDD this', 'implement...', 'go ahead'.
 ---
 
 # TDD — Test-Driven Development with BDD Conventions
 
-Every code change follows the RED → GREEN → REFACTOR cycle. Tests describe
-behavior in domain language. Implementation is minimal and domain-first.
+Every code change follows RED → GREEN → REFACTOR. Tests describe behavior in
+domain language. Implementation is minimal and domain-first.
 
 ## Goal
 
-Produce working, well-tested code where:
-- Every behavior is proven by a test that was written first and seen to fail
-- Specs read like a behavioral specification a domain expert could follow
+- Every behavior is proven by a test written first and seen to fail
+- Tests read like a behavioral specification a domain expert could follow
 - Implementation uses ubiquitous language and avoids premature abstraction
 
-## Steps
+## Step 0 — Detect the framework
 
-### 1. Understand the Change
+Before writing any test, identify the project's test runner and load the
+matching reference file from `frameworks/`:
 
-Read the relevant code, models, controllers, and existing specs. Understand:
-- What behavior needs to be added or fixed
-- What domain language applies (check model names, service names, existing specs)
-- Where the spec file should live (follow existing test organization)
-- What factories already exist in `spec/factories/`
+| Signal | Reference |
+|--------|-----------|
+| `Gemfile` with `rspec-rails`/`rspec` or a `spec/` dir | `frameworks/rspec.md` |
+| `Gemfile` with `minitest` or a `test/` dir (Rails default) | `frameworks/minitest.md` |
+| `package.json` using `vitest` or `jest` | `frameworks/vitest.md` |
+| `go.mod` present | `frameworks/go.md` |
+| `*.bats` files or a `test/bats/` dir | `frameworks/bats.md` |
 
-**Success criteria**: You can articulate the behavior to be tested in one sentence using domain language.
+If the signal is ambiguous or missing, ask the user which runner to use. Read
+the framework file once per session — it supplies the exact run commands,
+file paths, idiomatic test syntax, factory conventions, language idioms, and
+framework-specific anti-patterns for the universal rules below.
 
-### 2. Write the Failing Test (RED)
+## Step 1 — Understand the change
 
-Write a spec that describes the desired behavior. Then run it and confirm it fails.
+Read the relevant modules and existing tests. You should be able to
+articulate in one sentence, in domain language, what behavior will change.
+Check how tests are organized in this repo, and which factory/fixture helpers
+already exist.
 
-```bash
-bin/rspec spec/path/file_spec.rb:LINE
-```
+**Success criteria:** you can name the behavior under test using ubiquitous
+language from the domain.
 
-**BDD naming rules** (non-negotiable):
-- `describe` names a **capability or behavior**, never a method: `'creating a transaction'`, `'resolving a dispute'` — NOT `'#call'`, `'#resolve'`
-- `context` describes a **scenario or condition**: `'when amount is zero'`, `'with invalid input'` — NOT `'with valid params'`
-- `it` states the **expected outcome**: `'persists the record'`, `'returns failure'`
-- The spec output should read like a behavioral specification
+## Step 2 — Write the failing test (RED)
 
-**Test quality rules** (non-negotiable):
-- Test **observable outcomes only** — state changes, return values, side effects, errors
-- NEVER use `receive` to test internal method calls (only for isolating infrastructure like Redis, external APIs)
-- NEVER use `send(:private_method)` or `instance_variable_get`
-- NEVER test class constants, configuration, or metadata
-- NEVER copy implementation logic into the test
-- Use `FactoryBot.create` / `FactoryBot.build` — NEVER `Model.new` or `Model.create!`
-- One behavior per `it` block — no god tests with 20 assertions
+Write one test describing the desired behavior. Run it and confirm it fails
+with a meaningful message.
 
-**Success criteria**:
-- The test is written and runs
-- It **fails** with a meaningful failure message (not a random error or syntax issue)
-- The failure message clearly shows what behavior is missing
+**BDD naming (principle — see the framework file for exact syntax):**
+- Describe a **capability or behavior**, never a method — "creating a
+  transaction", "resolving a dispute" — NOT "#call" or "resolve()"
+- Scenarios name a **condition**, not a judgment — "when amount is zero" —
+  NOT "with valid params"
+- Outcomes state what is **observable** — "persists the record", "returns
+  failure"
+- The test output should read like a behavioral specification
 
-### 3. Implement Minimum Code (GREEN)
+**Test quality (universal, non-negotiable):**
+- Test **observable outcomes only** — state changes, return values, side
+  effects, errors raised
+- Mock only at **infrastructure boundaries** (HTTP, Redis, the clock,
+  external APIs). Never mock internal calls on the unit under test
+- Never reach into private members (private methods, unexported fields,
+  instance variables) from a test
+- Never test constants, configuration, or metadata
+- Never copy implementation logic into the test
+- Use the project's factory/fixture helper — not raw constructors
+- One behavior per test block — no god tests with 20 assertions
 
-Write the minimum code to make the failing test pass. Then run the test.
+**Success criteria:** the test fails with a message that clearly shows what
+behavior is missing.
 
-```bash
-bin/rspec spec/path/file_spec.rb:LINE
-```
+## Step 3 — Implement the minimum (GREEN)
 
-**Implementation rules**:
-- Write only what the test requires — no gold-plating, no extra features
-- No premature abstractions — three similar lines of code is better than the wrong abstraction
-- Domain-first: use ubiquitous language from the business domain
-- POROs over framework objects when persistence/callbacks/associations aren't needed
-- Favor declarative style in domain code (what things *are*), imperative in orchestration (what to *do*)
-- No trailing guards on complex lines — use explicit guard clauses
+Write the simplest code that makes the failing test pass. Run the test.
+
+**Rules (universal):**
+- Write only what the test requires — no gold-plating
+- No premature abstractions — three similar lines beat the wrong abstraction
+- Domain-first: ubiquitous language from the business domain
+- Favor declarative style in domain code (what things *are*), imperative in
+  orchestration (what to *do*)
 - Don't add error handling for scenarios that can't happen
+- For language-specific idioms (plain objects vs framework types, zero
+  values, etc.) see the framework file
 
-**Success criteria**:
-- The test passes
-- No other existing tests are broken (`bin/rspec` on the relevant file)
-- The implementation is the simplest thing that works
+**Success criteria:** the new test passes, no other tests break, the
+implementation is the simplest thing that works.
 
-### 4. Refactor (Optional)
+## Step 4 — Refactor (optional)
 
-If the code would benefit from restructuring, do it now. Tests are your safety net.
+If the code benefits from restructuring, do it now. Tests are the safety net.
 
-```bash
-bin/rspec spec/path/file_spec.rb
-```
-
-**Rules**:
-- No behavior changes — tests should not change during refactoring
+- No behavior changes; tests should not change during refactoring
 - Extract only when the pattern is clear (Rule of Three)
-- Apply SOLID principles with Ruby pragmatism
-- If refactoring breaks tests, the tests were testing implementation — fix the tests first
+- If a refactor breaks a test, the test was testing implementation — fix the
+  test first
 
-**Success criteria**: All tests still pass, code is cleaner, no behavior changed.
+**Success criteria:** all tests still pass, code is cleaner, no behavior
+changed.
 
-### 5. Repeat
+## Step 5 — Repeat
 
 If the feature has multiple slices, loop back to Step 2. Each slice is one
-RED → GREEN → REFACTOR cycle producing one atomic, independently revertable change.
+RED → GREEN → REFACTOR cycle producing one atomic, independently revertable
+change.
 
-**Feature slice rhythm**:
+**Feature rhythm:**
 ```
 Cycle 1 → feat: display transaction list
 Cycle 2 → feat: add date range filter
@@ -123,25 +141,28 @@ Cycle 3 → refactor: extract query scope (optional)
 Cycle 4 → feat: add pagination
 ```
 
-**Bug fix rhythm**:
+**Bug fix rhythm:**
 ```
 Cycle 1 → fix: handle zero-amount fee calculation
            (regression test + fix in one commit)
 ```
 
-**Success criteria**: Each cycle has a passing test suite. The commit history reads like a changelog.
+**Success criteria:** every cycle has a passing test suite; commit history
+reads like a changelog.
 
-## Anti-Patterns to Watch For
+## Anti-patterns
 
 If you catch yourself doing any of these, stop and correct:
 
 | Smell | Fix |
 |-------|-----|
 | Writing implementation before the test | Stop. Write the test first. |
-| `describe '#method_name'` | Rename to describe the behavior |
-| `expect(obj).to receive(:internal_method)` | Test the outcome instead |
-| `send(:private_method)` in a test | Test through the public interface |
-| Test with 10+ assertions | Split into separate `it` blocks |
-| `Model.create!(attrs)` in a spec | Use `create(:factory)` |
+| Test name describes a method instead of behavior | Rename to describe the behavior |
+| Mocking a method on the unit under test | Test the outcome instead |
+| Reaching into private members from a test | Test through the public interface |
+| Test with 10+ assertions | Split into separate test blocks |
+| Constructing objects directly when factories exist | Use the project's factory helper |
 | Adding features the test didn't ask for | Delete them. Stay GREEN. |
 | Extracting an abstraction on first use | Wait for the third use |
+
+Framework-specific anti-patterns live in the matching `frameworks/*.md`.

@@ -45,6 +45,10 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "$CLAUDE_CONFIG_DIR/statusline-command.sh"
+  },
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "skillify@claude-skillify": true,
@@ -65,9 +69,6 @@
       }
     }
   },
-  "skipDangerousModePermissionPrompt": true,
-  "statusLine": {
-    "type": "command",
-    "command": "$CLAUDE_CONFIG_DIR/statusline-command.sh"
-  }
+  "effortLevel": "xhigh",
+  "skipDangerousModePermissionPrompt": true
 }

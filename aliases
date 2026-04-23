@@ -90,7 +90,23 @@ alias gbr='git branch -r'
 alias gc='git commit'
 alias gca='git commit -a'
 alias gcm='git commit -m'
-alias gco='git checkout'
+# gco - checkout branch, or fzf-pick from recent branches when called bare
+# Usage: gco my/branch  -> checkout that branch
+#        gco            -> fzf search of recent branches (local + remote)
+# Credit: https://github.com/mbroadhead/
+gco() {
+  if [ $# -gt 0 ]; then
+    git checkout "$@"
+    return
+  fi
+  local branch
+  branch=$(git branch --all --sort=-committerdate --format='%(refname:short)' |
+    grep -v HEAD |
+    sed 's#^origin/##' |
+    awk '!seen[$0]++' |
+    fzf --height=40% --reverse --preview 'git log --oneline --graph --decorate --color=always {} | head -50') &&
+    git checkout "$branch"
+}
 alias gd='git diff'
 alias gds='git diff --stat'
 alias gdt='git difftool'

@@ -1,4 +1,7 @@
 {
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "hooks": {
     "Stop": [
       {
@@ -53,7 +56,8 @@
     "commit-commands@claude-plugins-official": true,
     "skillify@claude-skillify": true,
     "sentry@claude-plugins-official": true,
-    "my@my-plugin": true
+    "my@my-plugin": true,
+    "frontend-design@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-skillify": {
@@ -71,8 +75,5 @@
   },
   "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true,
-  "permissions": {
-    "defaultMode": "auto"
-  }
+  "skipAutoPermissionPrompt": true
 }

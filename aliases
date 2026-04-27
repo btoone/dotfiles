@@ -107,6 +107,7 @@ gco() {
     fzf --height=40% --reverse --preview 'git log --oneline --graph --decorate --color=always {} | head -50') &&
     git checkout "$branch"
 }
+compdef _git gco=git-checkout
 alias gd='git diff'
 alias gds='git diff --stat'
 alias gdt='git difftool'

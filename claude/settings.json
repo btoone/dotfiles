@@ -57,7 +57,8 @@
     "skillify@claude-skillify": true,
     "sentry@claude-plugins-official": true,
     "my@my-plugin": true,
-    "frontend-design@claude-plugins-official": true
+    "frontend-design@claude-plugins-official": true,
+    "app@pbx": true
   },
   "extraKnownMarketplaces": {
     "claude-skillify": {
@@ -70,6 +71,12 @@
       "source": {
         "source": "directory",
         "path": "/Users/brandon/dotfiles/my-plugin"
+      }
+    },
+    "pbx": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/brandon/code/pbx"
       }
     }
   },

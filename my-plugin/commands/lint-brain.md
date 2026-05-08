@@ -23,6 +23,10 @@ Read the vault's `_Schema.md` AND scan the actual filesystem. The schema is not 
 
 If no `_Schema.md` exists, tell the user this vault doesn't follow the brain pattern and offer to initialize it.
 
+### Enumerate the filesystem completely
+
+Brain vaults are often in iCloud, Obsidian Sync, or another cloud-backed directory. A first `ls` may return only the locally-materialized subset — newer/unsynced files can be invisible to a fresh process. **Run `ls -la <vault>` and `find <vault> -type f -name '*.md'` together as your authoritative inventory, and cross-check the counts.** If the two disagree, force a directory stat (`stat <vault>`) and re-list. Treat any discrepancy between scans as a fail-closed signal — re-scan before reporting.
+
 ## Checks
 
 Run all checks, then present a single report. Read `index.md` and `log.md` first, then scan all `.md` files in the vault.
@@ -65,7 +69,12 @@ Find notes outside `_sources/` that are missing the required YAML frontmatter (`
 
 **Fix:** Add frontmatter with best-guess `created` date (from file metadata) and `source: manual`.
 
-### 8. Schema Drift
+### 8. Root Stragglers
+Find `*.md` files at the vault root that aren't part of the brain's reserved set: `_Schema.md`, `index.md`, `log.md`, `README.md`. Anything else at root is a straggler — created in Obsidian without a folder, dropped from clipboard, or left behind by a rename. These bypass every other check (no folder = not in any category, often no frontmatter, often "Untitled").
+
+**Fix:** Move each straggler to the correct folder, rename if the title is generic (`Untitled.md`, `Untitled 1.md`), add frontmatter, link from at least one related note, and add to `index.md`.
+
+### 9. Schema Drift
 Compare the folder structure defined in `_Schema.md` against what actually exists on the filesystem. Flag:
 
 - **New folders** — directories that exist in the vault but aren't in the schema. These are intentional — the user created them. Offer to update the schema to include them.
@@ -91,6 +100,7 @@ Date: YYYY-MM-DD
 - X empty/stub notes
 - X potential duplicates
 - X missing frontmatter
+- X root stragglers
 - X schema drift issues
 
 ### Details

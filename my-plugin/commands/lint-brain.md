@@ -84,6 +84,47 @@ Compare the folder structure defined in `_Schema.md` against what actually exist
 
 **Fix:** Update `_Schema.md` to reflect the current reality. The filesystem wins — the schema describes the brain, not the other way around.
 
+## Lint Policies (defaults)
+
+The lint is **agentic, not interactive**. For each finding, apply a default action without asking. Only escalate to the user when the policy says ASK or when the rule genuinely has no clear answer (e.g., a root straggler whose target folder is ambiguous).
+
+**Vault-specific overrides:** before applying defaults, check `_Schema.md` for a `## Lint Policies` section. Apply those overrides first; fall back to the defaults below for anything the schema doesn't cover.
+
+| Check | Default action | Asks user? |
+|---|---|---|
+| Orphan notes | Add to `index.md` under the section matching the note's folder; if folder doesn't map to an index section, add under "Other" | Only if folder is unrecognized AND no obvious section |
+| Broken links — basename match exists | Repoint to the matching note | No |
+| Broken links — no match, target looks like a real concept | Strip the `[[...]]` markers, keep the link text inline | No |
+| Broken links — folder/path-only reference (e.g., `[[PBX]]` meaning the project) | Strip markers; preserve text | No |
+| Missing index entries | Add to `index.md` under the matching folder section, with a one-line description derived from the note's first heading or paragraph | No |
+| Stale content | Report only | Yes — judgment call |
+| Empty notes (0 words after frontmatter) | If file mtime >7 days old AND no incoming links → delete. Else flag and skip. | No (delete or flag, no ask) |
+| Stub notes (1–49 words) | Report only | Yes — judgment call |
+| Duplicate coverage | Report only | Yes — judgment call |
+| Missing frontmatter | Add YAML: `created` from file mtime (formatted `YYYY-MM-DD`), `source: manual`, `tags: []` | No |
+| Root straggler — `Untitled*.md` | Move to `_sources/conversations/` with name `YYYY-MM-<topic-slug>.md`. Date from frontmatter `created` if present else file mtime. Topic slug derived from first heading, the first sentence, or detectable subject (max 6 words, kebab-cased). | No |
+| Root straggler — content clearly maps to a project (e.g., PBX-tagged, mentions a specific project repeatedly) | Move into that `projects/<name>/` folder, add frontmatter, add to `index.md` | No |
+| Root straggler — content is ambiguous | Report only | Yes |
+| Schema drift — folder exists, not in schema | Add it to `_Schema.md` (filesystem wins) | No |
+| Schema drift — folder in schema, missing from filesystem, but notes are referenced under that section name in index | Create the folder and move the matching notes in | No |
+| Schema drift — folder in schema, missing from filesystem, no matching notes | Remove from schema | No |
+| Schema drift — empty schema-defined folder (zero notes) | Leave alone (folder may be aspirational) | No |
+
+### Destructive-action guardrails
+
+`rm` is the only action that's not reversible from inside the lint. Apply it only for empty notes (0 words after frontmatter) that meet **all** of: no incoming links, mtime older than 7 days, no `tags` indicating draft/wip status. Anything else, even if 100% redundant, gets reported — never deleted.
+
+`mv` is always reversible (the user can move the file back). Apply moves freely under policy without prompting.
+
+### When to ask
+
+Even with policies, ask the user when:
+- Multiple findings collapse into a single ambiguous decision (e.g., 3 root files all need a home but the destination folder is judgment-dependent — ask once, batched).
+- A policy says "Yes — judgment call" (stale, stubs, duplicates).
+- The schema-and-defaults combination doesn't cover the case at all — surface it explicitly rather than guessing.
+
+Group all questions into a single multi-question prompt at the end. Don't interleave questions with auto-fixes.
+
 ## Output Format
 
 Present findings as a structured report:
@@ -112,9 +153,12 @@ Date: YYYY-MM-DD
 
 ## Interaction
 
-After presenting the report:
-1. Ask the user if they want to auto-fix the fixable issues
-2. For report-only items, ask what they'd like to do with each
-3. After all fixes, append a `[LINT]` entry to `log.md` summarizing what was found and fixed
+The lint runs in one shot:
+1. Present the full report.
+2. Apply all auto-fixes per the Lint Policies (above) without asking. Show what was applied as part of the report.
+3. Group any genuinely judgment-dependent findings (stale content, stubs, duplicates, ambiguous-folder stragglers) into a single batched multi-question prompt at the end. Skip this step entirely if there's nothing to ask.
+4. After all fixes, append a `[LINT]` entry to `log.md` summarizing what was found, what was auto-fixed, and any user-decided actions.
+
+Do **not** ask "should I auto-fix?" before applying policy-driven fixes. The user invoked `/my:lint-brain` to have it run, not to decide whether it should run.
 
 $ARGUMENTS

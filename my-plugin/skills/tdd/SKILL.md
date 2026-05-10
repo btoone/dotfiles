@@ -18,6 +18,11 @@ allowed-tools:
   - Bash(yarn test:*)
   - Bash(pnpm test:*)
   - Bash(go test:*)
+  - Bash(pytest:*)
+  - Bash(python -m pytest:*)
+  - Bash(python -m unittest:*)
+  - Bash(uv run pytest:*)
+  - Bash(poetry run pytest:*)
   - Bash(bats:*)
   - Agent
 when_to_use: >
@@ -52,6 +57,7 @@ matching reference file from `frameworks/`:
 | `Gemfile` with `minitest` or a `test/` dir (Rails default) | `frameworks/minitest.md` |
 | `package.json` using `vitest` or `jest` | `frameworks/vitest.md` |
 | `go.mod` present | `frameworks/go.md` |
+| `pyproject.toml`/`requirements*.txt`/`setup.py`, or `tests/test_*.py`, or a `conftest.py` | `frameworks/python.md` |
 | `*.bats` files or a `test/bats/` dir | `frameworks/bats.md` |
 
 If the signal is ambiguous or missing, ask the user which runner to use. Read

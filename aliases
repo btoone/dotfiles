@@ -95,17 +95,28 @@ alias gcm='git commit -m'
 #        gco            -> fzf search of recent branches (local + remote)
 # Credit: https://github.com/mbroadhead/
 gco() {
+  local branch
   if [ $# -gt 0 ]; then
     git checkout "$@"
     return
   fi
-  local branch
-  branch=$(git branch --all --sort=-committerdate --format='%(refname:short)' |
-    grep -v HEAD |
-    sed 's#^origin/##' |
-    awk '!seen[$0]++' |
-    fzf --height=40% --reverse --preview 'git log --oneline --graph --decorate --color=always {} | head -50') &&
-    git checkout "$branch"
+  branch=$(
+    # Walk the reflog, newest first, emitting one line per HEAD movement.
+    git reflog --pretty=format:'%gs' |
+      # Keep only "checkout: moving from <old> to <new>" entries and grab <new>.
+      awk '/checkout: moving from/ {print $NF}' |
+      # Dedupe while preserving order — first sighting wins, so recency stays intact.
+      awk '!seen[$0]++' |
+      # Drop entries whose branch no longer exists locally.
+      # First file (the for-each-ref list) loads existing branches into the `branches` set;
+      # the second stream (stdin via `-`) is the reflog list, kept only if present in the set.
+      awk 'NR==FNR{branches[$0]; next} ($0 in branches)' \
+        <(git for-each-ref --format='%(refname:short)' refs/heads/) - |
+      # Cap the menu at 50 surviving branches.
+      head -50 |
+      # Interactive picker with a per-branch git-log preview.
+      fzf --height=40% --reverse --preview 'git log --oneline --graph --decorate --color=always {} | head -50'
+  ) && git checkout "$branch"
 }
 compdef _git gco=git-checkout
 alias gd='git diff'

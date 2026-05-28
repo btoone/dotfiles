@@ -55,3 +55,6 @@ export FZF_DEFAULT_OPTS_FILE=~/.fzfrc
 # Gum
 # auto, dark, dracula, light, notty, pink, tokyo-night
 export GUM_FORMAT_THEME="dark"
+
+# Configure default branch for ghb alias
+export GHB_DEFAULT_BRANCH=develop

@@ -123,8 +123,26 @@ alias grm='git remote -v'
 alias gs='git status --short'
 alias gss='git status'
 alias gls='clear; gss'
-git-url() { gh browse "$(git rev-parse "${1:-HEAD}")" -n; }
-alias gurl='git-url'
+ghb() {
+  local branch="${GHB_DEFAULT_BRANCH:-}" args=() branch_args=()
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -b|--branch) branch="$2"; shift 2 ;;
+      *)           args+=("$1"); shift ;;
+    esac
+  done
+
+  if [ ${#args[@]} -eq 0 ]; then
+    args=("$(git rev-parse "${branch:-HEAD}")")
+    branch=""
+  fi
+
+  [ -n "$branch" ] && branch_args=(-b "$branch")
+  local url
+  url="$(gh browse "${args[@]}" "${branch_args[@]}" -n)" || return
+  printf '%s' "$url" | pbcopy
+  echo "$url"
+}
 
 # Edit files changed in git diff
 # Usage: vd           -> unstaged changes

@@ -114,6 +114,7 @@ alias gdt='git difftool'
 alias gexport='git archive --format zip --output'
 alias gl="git log"
 alias gll="git log --oneline --decorate"
+alias glld="git log --date=short --pretty=format:'%C(auto)%h %C(green)%ad%C(auto)%d %C(reset)%s %C(blue)(%an)'"
 alias glg='git log --oneline --graph --decorate --all'
 alias gmt="git mergetool"
 alias gpl='git pull'

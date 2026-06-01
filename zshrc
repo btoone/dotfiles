@@ -2,6 +2,7 @@
 setopt HIST_IGNORE_ALL_DUPS
 setopt INC_APPEND_HISTORY
 setopt SH_WORD_SPLIT
+setopt INTERACTIVE_COMMENTS    # allow `#` to comment out a line interactively
 
 # Completions (Homebrew provides git completions via site-functions)
 autoload -Uz compinit && compinit

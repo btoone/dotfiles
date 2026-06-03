@@ -57,8 +57,7 @@
     "skillify@claude-skillify": true,
     "sentry@claude-plugins-official": true,
     "my@my-plugin": true,
-    "frontend-design@claude-plugins-official": true,
-    "app@pbx": true
+    "frontend-design@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-skillify": {
@@ -72,20 +71,14 @@
         "source": "directory",
         "path": "/Users/brandon/dotfiles/my-plugin"
       }
-    },
-    "pbx": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/brandon/code/pbx"
-      }
     }
   },
   "effortLevel": "xhigh",
-  "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
   "voice": {
     "enabled": true,
     "mode": "hold"
-  }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }

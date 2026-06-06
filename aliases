@@ -173,7 +173,7 @@ alias ri='ri -f ansi'
 
 # Archive
 # Usage: archive-project <name> [-- extra tar flags]
-# Example: archive-project pbx -- --exclude='lib/ip2location'
+# Example: archive-project acme -- --exclude='lib/ip2location'
 archive-project() {
   local name=${1:?Usage: archive-project <project-name> [-- extra tar flags]}
   shift

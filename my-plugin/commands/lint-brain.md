@@ -95,7 +95,7 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 | Orphan notes | Add to `index.md` under the section matching the note's folder; if folder doesn't map to an index section, add under "Other" | Only if folder is unrecognized AND no obvious section |
 | Broken links — basename match exists | Repoint to the matching note | No |
 | Broken links — no match, target looks like a real concept | Strip the `[[...]]` markers, keep the link text inline | No |
-| Broken links — folder/path-only reference (e.g., `[[PBX]]` meaning the project) | Strip markers; preserve text | No |
+| Broken links — folder/path-only reference (e.g., `[[Acme]]` meaning the project) | Strip markers; preserve text | No |
 | Missing index entries | Add to `index.md` under the matching folder section, with a one-line description derived from the note's first heading or paragraph | No |
 | Stale content | Report only | Yes — judgment call |
 | Empty notes (0 words after frontmatter) | If file mtime >7 days old AND no incoming links → delete. Else flag and skip. | No (delete or flag, no ask) |
@@ -103,7 +103,7 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 | Duplicate coverage | Report only | Yes — judgment call |
 | Missing frontmatter | Add YAML: `created` from file mtime (formatted `YYYY-MM-DD`), `source: manual`, `tags: []` | No |
 | Root straggler — `Untitled*.md` | Move to `_sources/conversations/` with name `YYYY-MM-<topic-slug>.md`. Date from frontmatter `created` if present else file mtime. Topic slug derived from first heading, the first sentence, or detectable subject (max 6 words, kebab-cased). | No |
-| Root straggler — content clearly maps to a project (e.g., PBX-tagged, mentions a specific project repeatedly) | Move into that `projects/<name>/` folder, add frontmatter, add to `index.md` | No |
+| Root straggler — content clearly maps to a project (e.g., project-tagged, mentions a specific project repeatedly) | Move into that `projects/<name>/` folder, add frontmatter, add to `index.md` | No |
 | Root straggler — content is ambiguous | Report only | Yes |
 | Schema drift — folder exists, not in schema | Add it to `_Schema.md` (filesystem wins) | No |
 | Schema drift — folder in schema, missing from filesystem, but notes are referenced under that section name in index | Create the folder and move the matching notes in | No |

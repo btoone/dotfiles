@@ -30,7 +30,7 @@ Map these shorthand names to actual folder paths within the vault:
 
 | Shorthand | Folder |
 |-----------|--------|
-| `pbx` | `PBX` |
+| `acme` | `Acme` |
 | `glow` | `Glow app` |
 | `sales` | `Sales Board Vibe Coding` |
 | `fleetio` | `Fleetio Code Challenge` |
@@ -50,15 +50,15 @@ Look at the **most recent substantive response** in the conversation -- the info
 
 - Use the title (provided or generated) as the filename
 - Replace spaces with spaces (Obsidian handles this fine)
-- Example: `~/Vaults/Developer/PBX/Sentry Plugin Workflow.md`
+- Example: `~/Vaults/Developer/Acme/Sentry Plugin Workflow.md`
 
 ## Examples
 
 | Command | Vault | File |
 |---------|-------|------|
-| `/my:vault pbx/Sentry Workflow` | Developer (default) | `~/Vaults/Developer/PBX/Sentry Workflow.md` |
-| `/my:vault brain pbx/Sentry Workflow` | Brain | `~/Vaults/Brain/PBX/Sentry Workflow.md` |
-| `/my:vault pbx` | Developer (default) | `~/Vaults/Developer/PBX/<generated title>.md` |
+| `/my:vault acme/Sentry Workflow` | Developer (default) | `~/Vaults/Developer/Acme/Sentry Workflow.md` |
+| `/my:vault brain acme/Sentry Workflow` | Brain | `~/Vaults/Brain/Acme/Sentry Workflow.md` |
+| `/my:vault acme` | Developer (default) | `~/Vaults/Developer/Acme/<generated title>.md` |
 
 ## Important
 

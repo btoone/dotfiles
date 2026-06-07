@@ -58,3 +58,4 @@ brew "supabase"
 brew "with-readline"
 brew "termshot"
 brew "gum"
+brew "mcp-toolbox" # Google MCP Toolbox for Databases — read-only DB access for agents

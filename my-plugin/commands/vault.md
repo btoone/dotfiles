@@ -65,6 +65,22 @@ Look at the **most recent substantive response** in the conversation -- the info
 - Do NOT overwrite existing files. If a file with the same name exists, append a number: `Title 2.md`
 - Confirm to the user what was saved and where
 
+## Register in Obsidian Recents
+
+After saving (and after brain maintenance, so the final file location is settled), open the note via the Obsidian URI so it appears in Obsidian's recent-files list. Use `open -g` so Obsidian does not steal focus:
+
+```bash
+open -g "obsidian://open?vault=<vault>&file=<url-encoded path relative to vault root, without .md>"
+```
+
+Example for `~/Vaults/Developer/projects/PBX/Repo Setup.md`:
+
+```bash
+open -g "obsidian://open?vault=Developer&file=projects%2FPBX%2FRepo%20Setup"
+```
+
+URL-encode spaces (`%20`) and slashes in the `file` parameter (`%2F`). If the note was moved during brain maintenance, use its final path.
+
 ---
 
 ## Brain Maintenance

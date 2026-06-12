@@ -192,9 +192,9 @@ nnoremap <Leader>b :Buffers<CR>
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w!<CR>
 
-" Full manual tags rebuild — gutentags maintains tags automatically;
-" excludes live in ~/.ctags.d/default.ctags
-nnoremap <Leader>ct :!ctags -R .<CR>
+" Full manual tags rebuild (async, via gutentags) — for after big
+" out-of-vim changes like git pull or branch switches
+nnoremap <Leader>ct :GutentagsUpdate!<CR>
 
 " Use ctrl+p to serach ctags
 " nnoremap <Leader>. :CtrlPTag<CR>

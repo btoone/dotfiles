@@ -326,6 +326,10 @@ let NERDTreeShowHidden=1
 " from the working directory — tag jumps work regardless of where vim opened
 set tags=./tags;,tags
 
+" Jump straight to a tag when unique, show a pick-list when several match
+nnoremap <C-]> g<C-]>
+vnoremap <C-]> g<C-]>
+
 " Vim Test
 " ========
 

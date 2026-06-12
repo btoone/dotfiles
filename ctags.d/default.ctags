@@ -1,0 +1,9 @@
+--exclude=.git
+--exclude=log
+--exclude=tmp
+--exclude=node_modules
+--exclude=vendor/assets/bower_components
+--exclude=coverage
+--exclude=public/assets
+--exclude=public/packs
+--exclude=*.min.js

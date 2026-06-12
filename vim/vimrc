@@ -34,8 +34,7 @@ call plug#begin()
 Plug 'mileszs/ack.vim'
 Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
-Plug 'xolox/vim-easytags'
-Plug 'xolox/vim-misc'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -193,9 +192,9 @@ nnoremap <Leader>b :Buffers<CR>
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w!<CR>
 
-" Index ctags from any project, including those outside Rails
-" map <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=vendor/assets/bower_components --exclude=node_modules .<CR>
-nnoremap <Leader>ct :!ctags -R --exclude=.git --exclude=log --exclude=tmp --exclude=vendor/assets/bower_components --exclude=node_modules --exclude=coverage --exclude=public/assets --exclude=public/packs .<CR>
+" Full manual tags rebuild — gutentags maintains tags automatically;
+" excludes live in ~/.ctags.d/default.ctags
+nnoremap <Leader>ct :!ctags -R .<CR>
 
 " Use ctrl+p to serach ctags
 " nnoremap <Leader>. :CtrlPTag<CR>
@@ -321,10 +320,11 @@ let g:airline_theme='supernova'
 " Show hidden files by default; toggle with Shift+i
 let NERDTreeShowHidden=1    
 
-" Easytags
-" ========
-let g:easytags_async=1
-let g:easytags_auto_highlight=0
+" Tags
+" ====
+" Search for a tags file upward from the current file's directory, then
+" from the working directory — tag jumps work regardless of where vim opened
+set tags=./tags;,tags
 
 " Vim Test
 " ========

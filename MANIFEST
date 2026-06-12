@@ -2,6 +2,7 @@ ackrc
 aliases
 shellcheckrc
 Brewfile
+ctags.d
 default-gems
 fzfrc
 ripgreprc

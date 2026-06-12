@@ -32,6 +32,9 @@ fi
 
 # Set PATH, MANPATH, etc., for Homebrew.
 eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
+# /etc/paths.d/homebrew already puts homebrew in PATH (after /usr/bin), which
+# makes `brew shellenv` skip its prepend — force homebrew ahead of system dirs.
+path=($HOMEBREW_PREFIX/bin $HOMEBREW_PREFIX/sbin ${path:#$HOMEBREW_PREFIX/(bin|sbin)})
 
 # case insensitive path-completion
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'

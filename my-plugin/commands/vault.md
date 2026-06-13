@@ -67,16 +67,23 @@ Look at the **most recent substantive response** in the conversation -- the info
 
 ## Register in Obsidian Recents
 
-After saving (and after brain maintenance, so the final file location is settled), open the note via the Obsidian URI so it appears in Obsidian's recent-files list. Use `open -g` so Obsidian does not steal focus:
+After saving (and after brain maintenance, so the final file location is settled), open the note via the Obsidian URI so it appears in Obsidian's recent-files list. Use `open -g` so Obsidian does not steal focus.
+
+**Important — the `vault=` name is NOT the `~/Vaults/` directory name.** Entries under `~/Vaults/` are often symlinks (e.g. `~/Vaults/Developer -> …/Brains/Developer Brain`), and Obsidian names a vault by the basename of its *real* path ("Developer Brain"), not the symlink name ("Developer"). Always derive the name from the resolved target:
 
 ```bash
-open -g "obsidian://open?vault=<vault>&file=<url-encoded path relative to vault root, without .md>"
+vault_name=$(basename "$(realpath ~/Vaults/<resolved-vault>)")
+file_path=$(python3 -c 'import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))' "<path relative to vault root, without .md>")
+vault_arg=$(python3 -c 'import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))' "$vault_name")
+open -g "obsidian://open?vault=${vault_arg}&file=${file_path}"
 ```
 
-Example for `~/Vaults/Developer/projects/PBX/Repo Setup.md`:
+`realpath` follows the symlink, so this yields the correct registered name for both symlinked vaults (→ "Developer Brain") and direct directories (→ "Brain", "Test") with one code path.
+
+Example for `~/Vaults/Developer/projects/PBX/Repo Setup.md` (symlinked vault → registered name "Developer Brain"):
 
 ```bash
-open -g "obsidian://open?vault=Developer&file=projects%2FPBX%2FRepo%20Setup"
+open -g "obsidian://open?vault=Developer%20Brain&file=projects%2FPBX%2FRepo%20Setup"
 ```
 
 URL-encode spaces (`%20`) and slashes in the `file` parameter (`%2F`). If the note was moved during brain maintenance, use its final path.

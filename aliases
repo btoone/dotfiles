@@ -196,6 +196,30 @@ archive-project() {
   echo "Archived to $dest"
 }
 
+# Passwords
+# genpass - generate a random password and copy it to the clipboard
+# Usage: genpass          -> 20-char password, copied silently
+#        genpass 32       -> 32-char password
+#        genpass -s       -> also echo the password to the terminal
+#        genpass -s 32    -> 32 chars and echo it
+genpass() {
+  local show=0 length=20
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -s|--show) show=1; shift ;;
+      *)         length="$1"; shift ;;
+    esac
+  done
+  local password
+  password=$(LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&*()_=+-' < /dev/urandom | head -c "$length")
+  printf '%s' "$password" | pbcopy
+  if [ "$show" -eq 1 ]; then
+    echo "$password  (copied to clipboard)"
+  else
+    echo "Password copied to clipboard ($length chars)"
+  fi
+}
+
 # Utility
 alias reload='source ~/.zshrc; source ~/.zshenv && echo Reloaded ~/.zshrc and ~/.zshenv'
 alias path='echo $PATH | tr -s ":" "\n"'  # pretty print the path

@@ -170,5 +170,22 @@ If you catch yourself doing any of these, stop and correct:
 | Constructing objects directly when factories exist | Use the project's factory helper |
 | Adding features the test didn't ask for | Delete them. Stay GREEN. |
 | Extracting an abstraction on first use | Wait for the third use |
+| Adding a retry to silence a flaky test | Find the cause — a flake is a false negative. See Flaky tests |
 
 Framework-specific anti-patterns live in the matching `frameworks/*.md`.
+
+## Flaky tests
+
+A flaky test passes or fails on the same code. It's a false negative that makes
+every red ambiguous, so fix the cause — never paper over it with a retry. Almost
+all flakes fall into two families:
+
+- **Time-dependent** — the result depends on *when* the test runs. Anything
+  asserting over a relative or bounded window ("this month", "last 30 days", "the
+  next 14 days") flakes at a date/time boundary. Freeze the clock at a fixed,
+  mid-window instant for the assertion, and don't date fixtures relative to today.
+- **Async / ordering** — the test reads state before an asynchronous change has
+  settled (a UI update, a background job, a goroutine, a timer). Wait for the
+  expected condition; never snapshot-read state right after triggering async work.
+
+See the matching `frameworks/*.md` for the exact freeze-time and wait helpers.

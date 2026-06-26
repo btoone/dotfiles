@@ -98,6 +98,8 @@ Functions should be small, do one thing, and have names that reveal intent. If y
   ```
   The policy reads like a specification — what shipping *is* for this order. The method reads like a recipe — guard, act, handle failure, proceed. Both are clear; each uses the style that fits.
 
+- **Name with nouns; treat an "-er" as a prompt, not a verdict** — Agent-noun classes coined from verbs (`Materializer`, `Resolver`, `Manager`, `Processor`, `Handler`) are often a smell — a function wishing it were a function, behavior stolen from an entity (Fowler's Anemic Domain Model), or a missing noun. When I reach for one I ask: does this have a cohesive identity beyond a single `call`, or is it hiding a noun — or behavior an entity should own? Default to domain nouns for value objects and services (`RateSchedule`, `EligibilityCheck`, `BookingEstimate` — not `…Checker`/`…Estimator`), and prefer moving record-level predicates onto the record (a most-specific-wins lookup is usually a finder on the aggregate, e.g. `Plan.in_force_for(...)`, not a `PlanResolver`). This is *not* absolute: Evans' Domain Services are legitimately named for activities when an operation spans aggregates and belongs to no entity, so a real boundary operation — an `Ingestor`, a `Translator` at an anti-corruption layer — earns its "-er." The heuristic raises the question; it doesn't mandate the rename.
+
 ---
 
 ## Continuous Delivery Mindset

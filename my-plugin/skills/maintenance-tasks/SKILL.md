@@ -202,6 +202,12 @@ and re-run. Design so re-running is safe **and cheap**:
   `insert … ON CONFLICT (cols) DO NOTHING`, `find_or_create_by!` on the unique
   key. Never `unique_by` an auto-generated `id` that isn't in the insert list —
   it never conflicts and silently duplicates.
+- **The batch cursor and `upsert_all(unique_by:)` both assume the key is unique
+  and not-null.** Enforce it with a DB PK / unique + NOT NULL constraint so the
+  assumption can't rot. If it isn't enforced, uniqueness is load-bearing but
+  unproven: a duplicate makes `upsert_all` raise (`ON CONFLICT … cannot affect
+  row a second time`) and the keyset cursor skip rows at a batch boundary; a
+  NULL breaks the ordering/access. Establish the guarantee before relying on it.
 - **A `no_collection` statement must be idempotent on its own** — add the
   `WHERE … IS NULL` / `ON CONFLICT` guard so re-running is a no-op.
 

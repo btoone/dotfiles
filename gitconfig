@@ -91,6 +91,8 @@
 	rebase = true
 [fetch]
 	prune = true
+[trim]
+	protected = master, main, develop
 [difftool]
 	prompt = false
 [mergetool]

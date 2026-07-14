@@ -1,7 +1,11 @@
 # Minitest (Ruby)
 
-Rails' default test framework. Works in Spec style (BDD, preferred here) or
-Test/Unit style (class-based). Match whichever style the codebase already uses.
+Rails' default test framework. Works in Spec style (`describe`/`it`) or
+classic style (class-based `test "..."` blocks). **Match whichever style the
+codebase already uses** — neither is preferred in the abstract. Classic style
+is the Rails default and the safer choice in Rails apps: the base
+`ActiveSupport::TestCase` has no `let`, and a top-level `describe` block runs
+without fixture access.
 
 ## Run
 
@@ -19,7 +23,7 @@ ruby -Itest test/path/file_test.rb -n /pattern/   # filter by name regex
 `app/services/transactions/create.rb` has its test at
 `test/services/transactions/create_test.rb`.
 
-## BDD syntax (Minitest/Spec — preferred)
+## Spec style (when the codebase uses it)
 
 ```ruby
 require 'test_helper'
@@ -39,7 +43,7 @@ end
 - Minitest/Spec has no `context` — fold the scenario into the `it` name, or
   nest another `describe`
 
-## Classic style (acceptable when the codebase uses it)
+## Classic style (Rails default)
 
 ```ruby
 class TransactionCreationTest < ActiveSupport::TestCase
@@ -53,17 +57,20 @@ end
 The BDD principles still apply — the `test '...'` string names the outcome,
 not the method.
 
-## Factories
+## Factories and fixtures
 
-FactoryBot works with Minitest — prefer it over Rails fixtures for
-behavioral tests. Fixtures are fine for reference data that rarely varies.
+**Match what the codebase already uses.** Rails ships with fixtures and many
+suites standardize on them (shared personas like `users(:rep)`); others use
+FactoryBot for per-test variation. Don't introduce the missing one into a
+suite that has settled on the other.
 
 ```ruby
-create(:transaction, amount: 0)
-build(:transaction, amount: 0)
+users(:rep)                      # fixture persona
+create(:transaction, amount: 0)  # FactoryBot, when the suite uses it
 ```
 
-Never `Transaction.new` or `Transaction.create!` in a test when a factory exists.
+Either way, never `Transaction.new` or `Transaction.create!` inline in a test
+when the suite's helper covers it — add the missing fixture or factory instead.
 
 ## Framework-specific anti-patterns
 
@@ -76,6 +83,23 @@ Never `Transaction.new` or `Transaction.create!` in a test when a factory exists
 | `Time.now`/`Date.today` in code under test, or stubbed in a test | `Time.current`/`Date.current` (zone-aware); freeze with `travel_to` — see Flaky tests |
 | Asserting on fixture IDs | Query by domain attribute |
 | Leaking state via `@ivar` from `setup` into assertions | Set up via factories in each test; avoid hidden state |
+
+## Multi-write units (ActiveRecord)
+
+When one action writes several rows, wrap it in `ApplicationRecord.transaction`
+— `save!` raising rolls back nothing already committed. Three traps in the
+rollback test and the implementation:
+
+- **Vacuous fail-on-first stubs** — a rollback test that fails the *first*
+  write passes even without a transaction. Fail a *later* record so an
+  earlier record's committed write is what proves the rollback.
+- **`ActiveRecord::Rollback` swallowed in nested transactions** — a nested
+  `transaction` block absorbs it silently (it's not re-raised past the
+  innermost block unless `requires_new: true` with savepoints). Prefer
+  raising a real error, or explicit compensation like `destroy!`.
+- **Asserting over an association the action just emptied** — capture the
+  records in a local before the action; afterwards the association may be
+  empty or stale and the assertion loops over nothing.
 
 ## Flaky tests
 

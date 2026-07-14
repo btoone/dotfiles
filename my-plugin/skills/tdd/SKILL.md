@@ -101,6 +101,16 @@ with a meaningful message.
 - Use the project's factory/fixture helper — not raw constructors
 - One behavior per test block — no god tests with 20 assertions
 
+**Multi-write unit check:** if the behavior under test writes more than one
+record — a loop of saves, a service touching several rows, or "X and Y" /
+"as a unit" / "whole cloth" in the test name — the unit needs an explicit
+atomicity decision (usually a transaction) and the test list needs a
+rollback test. Raising on failure is not atomicity: an exception mid-way
+rolls back nothing already committed. Write the rollback test to fail a
+*later* record so an earlier record's committed write proves the rollback
+(fail-on-first is vacuous — it passes even without a transaction).
+Framework-specific traps live in the matching `frameworks/*.md`.
+
 **Success criteria:** the test fails with a message that clearly shows what
 behavior is missing.
 
@@ -170,6 +180,7 @@ If you catch yourself doing any of these, stop and correct:
 | Constructing objects directly when factories exist | Use the project's factory helper |
 | Adding features the test didn't ask for | Delete them. Stay GREEN. |
 | Extracting an abstraction on first use | Wait for the third use |
+| Multiple writes between entry and return, atomicity undecided | Wrap the unit in a transaction; add a rollback test that fails a *later* record |
 | Adding a retry to silence a flaky test | Find the cause — a flake is a false negative. See Flaky tests |
 
 Framework-specific anti-patterns live in the matching `frameworks/*.md`.

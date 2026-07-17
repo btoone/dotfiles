@@ -13,13 +13,12 @@ alias cwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 alias diff='diff -u --color'
 alias less="less -RMN --ignore-case --status-column"
 # ls
-alias ll="ls -al"
+alias ll="ls -altr" # sorted by modified, newest at the bottom
 alias la="ls -A -l -G"
 alias l.='ls -d .[^.]*'
 alias ll.='ls -ld .[^.]*'
 alias l='ls -lhGt'  # -l long listing, most recent first with color
 alias lh="ls -lh"
-alias lt='ls -lt' # sort with recently modified first
 # cd
 alias cdc='cd ~/code'
 alias cdd='cd ~/code/dotfiles'

@@ -17,7 +17,7 @@ alias ll="ls -altr" # sorted by modified, newest at the bottom
 alias la="ls -A -l -G"
 alias l.='ls -d .[^.]*'
 alias ll.='ls -ld .[^.]*'
-alias l='ls -lhGt'  # -l long listing, most recent first with color
+alias l='ls -lhGtr'  # long listing, newest at the bottom, with color
 alias lh="ls -lh"
 # cd
 alias cdc='cd ~/code'

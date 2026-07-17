@@ -13,7 +13,7 @@ alias cwd="pwd | tr -d '\n' | pbcopy && echo 'pwd copied to clipboard'"
 alias diff='diff -u --color'
 alias less="less -RMN --ignore-case --status-column"
 # ls
-alias ll="ls -altr" # sorted by modified, newest at the bottom
+alias ll="ls -alhGtr" # like l, plus hidden files
 alias la="ls -A -l -G"
 alias l.='ls -d .[^.]*'
 alias ll.='ls -ld .[^.]*'

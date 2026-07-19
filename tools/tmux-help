@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# Help popup for custom tmux keybindings, bound to prefix + ? in tmux.conf.
+# Self-maintaining: parses bind lines out of tmux.conf and uses the comment
+# above each one as its description, so new bindings show up automatically.
+set -uo pipefail
+
+parse_binds() {
+  awk '
+    function flush() {
+      if (keys != "") printf "%-16s %s\n", keys, prev_desc
+      keys = ""
+    }
+    /^#/ {
+      if (!in_comment) { comment = $0; sub(/^#[[:space:]]*/, "", comment); in_comment = 1 }
+      next
+    }
+    /^[[:space:]]*$/ { in_comment = 0; comment = ""; next }
+    /^(bind|bind-key)[[:space:]]/ {
+      in_comment = 0
+      n = split($0, t, /[[:space:]]+/)
+      i = 2; repeatable = 0; table = ""
+      while (i <= n) {
+        if (t[i] == "-r") { repeatable = 1; i++ }
+        else if (t[i] == "-n") { table = "root"; i++ }
+        else if (t[i] == "-T") { table = t[i+1]; i += 2 }
+        else break
+      }
+      if (table != "" && table != "root") { next }
+      key = t[i]
+      if (repeatable) key = key "*"
+      if (table == "root") key = key " (no prefix)"
+      desc = comment
+      if (desc == "") { desc = ""; for (j = i + 1; j <= n; j++) desc = desc t[j] " " }
+      if (desc == prev_desc) { keys = keys " " key }
+      else { flush(); prev_desc = desc; keys = key }
+      next
+    }
+    { in_comment = 0 }
+    END { flush() }
+  ' "$@"
+}
+
+conf_files=()
+[ -f "$HOME/.tmux.conf" ] && conf_files+=("$HOME/.tmux.conf")
+[ -f "$HOME/.tmux.conf.local" ] && conf_files+=("$HOME/.tmux.conf.local")
+
+# Keep the user's interactive fzf defaults (previews, --tmux, etc.) out of the popup
+fzf_clean() { FZF_DEFAULT_OPTS='' FZF_DEFAULT_OPTS_FILE='' fzf "$@"; }
+
+case "${1:-}" in
+  --list)
+    parse_binds "${conf_files[@]}"
+    exit 0
+    ;;
+  --popup)
+    # Size the popup to its content, then re-run inside it
+    list=$(parse_binds "${conf_files[@]}")
+    h=$(( $(wc -l <<<"$list") + 5 ))
+    w=$(( $(awk '{ if (length > m) m = length } END { print m }' <<<"$list") + 6 ))
+    [ "$w" -lt 70 ] && w=70
+    [ "$w" -gt 120 ] && w=120
+    exec tmux display-popup -E -w "$w" -h "$h" "$0"
+    ;;
+esac
+
+prefix=$(tmux show -gv prefix 2>/dev/null || echo "C-b")
+
+parse_binds "${conf_files[@]}" | fzf_clean --no-sort --layout=reverse-list --info=inline \
+  --prompt='keys > ' \
+  --header="prefix = $prefix   capital = shift   * = repeatable without re-pressing prefix" \
+  >/dev/null || true

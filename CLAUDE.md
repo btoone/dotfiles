@@ -90,6 +90,9 @@ Production Rails console launcher prototype. Creates isolated tmux session with 
 ### tools/claude-tmux-sync
 Claude Code hook script that syncs the session title to the tmux window name. Runs on PostToolUse (mid-session), UserPromptSubmit (after /rename), and Stop (on exit).
 
+### tools/agent-board-hook + tools/agent-board
+Status board for Claude Code sessions across tmux (named generically so the tool can grow beyond Claude later). The hook (UserPromptSubmit, PreToolUse, Notification, Stop, SessionEnd) writes one state file per session to `~/.local/state/agent-board/` and sets a `@agent_glyph` window option that catppuccin renders in the status bar (🔄 working, 💬 needs answer, 🔐 needs permission, ✅ done, 🫙 marinating). `agent-board` is the fzf popup TUI bound to `prefix + B` in tmux.conf: sessions grouped under colored lane headers, a preview pane showing the session's last assistant message, enter jumps to the session's pane, ctrl-s sends a prompt into it, ctrl-t toggles marinating. While the board is open the hook live-reloads it by POSTing to fzf's `--listen` port (written to the state dir as `.port`). Lane/glyph logic is duplicated between the two scripts — keep in sync.
+
 ## Configuration Patterns
 
 ### Local Overrides

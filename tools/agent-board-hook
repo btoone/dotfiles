@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# Claude Code hook: maintains one state file per session for the agent-board
+# TUI, and sets @agent_glyph on the session's tmux window for ambient status.
+# Wired into UserPromptSubmit, PreToolUse, Notification, Stop, SessionEnd.
+#
+# State files live in ~/.local/state/agent-board/<session_id>.json.
+# Lane/glyph logic is mirrored in agent-board — keep them in sync.
+
+# Hooks must stay silent: UserPromptSubmit stdout is injected into context.
+exec >/dev/null 2>&1
+
+[ -n "${TMUX_PANE:-}" ] || exit 0
+
+board_dir="${AGENT_BOARD_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/agent-board}"
+mkdir -p "$board_dir"
+
+input=$(cat /dev/stdin)
+session_id=$(echo "$input" | jq -r '.session_id // empty')
+[ -n "$session_id" ] || exit 0
+event=$(echo "$input" | jq -r '.hook_event_name // empty')
+cwd=$(echo "$input" | jq -r '.cwd // empty')
+transcript=$(echo "$input" | jq -r '.transcript_path // empty')
+
+IFS=$'\t' read -r tmux_session window_id window_name < <(
+  tmux display-message -t "$TMUX_PANE" -p $'#{session_name}\t#{window_id}\t#W'
+)
+[ -n "$window_id" ] || exit 0
+
+state_file="$board_dir/$session_id.json"
+
+# If an agent-board popup is open, tell its fzf to reload the list
+poke_board() {
+  local port_file="$board_dir/.port"
+  [ -f "$port_file" ] || return 0
+  curl -s -m 1 -X POST "http://localhost:$(cat "$port_file")" \
+    -d "reload($HOME/.local/bin/agent-board --lines)" || true
+}
+
+if [ "$event" = "SessionEnd" ]; then
+  rm -f "$state_file"
+  tmux set-window-option -t "$window_id" -u @agent_glyph
+  poke_board
+  exit 0
+fi
+
+# Last chunk of the last assistant message, whitespace-collapsed
+last_assistant_text() {
+  [ -f "$transcript" ] || return 0
+  grep '"type":"assistant"' "$transcript" | tail -1 |
+    jq -r '[.message.content[]? | select(.type == "text") | .text] | join(" ") | gsub("\\s+"; " ")'
+}
+
+tail_chars() {
+  local s=$1 n=$2
+  if [ "${#s}" -gt "$n" ]; then printf '%s' "${s: -n}"; else printf '%s' "$s"; fi
+}
+
+state="" reason="" clear_marinating=false
+
+case "$event" in
+  UserPromptSubmit)
+    state="working"
+    reason=$(echo "$input" | jq -r '.prompt // empty' | tr '\n\t' '  ' | head -c 80)
+    clear_marinating=true
+    ;;
+  PreToolUse)
+    state="working"
+    tool=$(echo "$input" | jq -r '.tool_name // empty')
+    reason="using ${tool:-a tool}"
+    ;;
+  Notification)
+    reason=$(echo "$input" | jq -r '.message // empty')
+    case "$reason" in
+      *permission*) state="needs-permission" ;;
+      *)            state="needs-answer" ;;
+    esac
+    ;;
+  Stop)
+    text=$(last_assistant_text)
+    if [[ "$(tail_chars "$text" 200)" == *\?* ]]; then
+      state="needs-answer"
+      reason=$(tail_chars "$text" 100)
+    else
+      state="done"
+      reason="${text:0:80}"
+    fi
+    ;;
+  *) exit 0 ;;
+esac
+
+marinating=false
+if [ "$clear_marinating" = false ] && [ -f "$state_file" ]; then
+  marinating=$(jq -r '.marinating // false' "$state_file")
+  [ "$marinating" = "true" ] || marinating=false
+fi
+
+case "$state" in
+  working)          glyph="🔄" ;;
+  needs-answer)     glyph="💬" ;;
+  needs-permission) glyph="🔐" ;;
+  done)             glyph="✅" ;;
+esac
+[ "$marinating" = "true" ] && glyph="🫙"
+
+jq -n \
+  --arg session_id "$session_id" \
+  --arg cwd "$cwd" \
+  --arg transcript "$transcript" \
+  --arg pane "$TMUX_PANE" \
+  --arg tmux_session "$tmux_session" \
+  --arg window_id "$window_id" \
+  --arg window_name "$window_name" \
+  --arg state "$state" \
+  --arg reason "$reason" \
+  --argjson marinating "$marinating" \
+  --argjson updated_at "$(date +%s)" \
+  '{$session_id, $cwd, $transcript, $pane, $tmux_session, $window_id, $window_name, $state, $reason, $marinating, $updated_at}' \
+  > "$state_file.tmp" && mv "$state_file.tmp" "$state_file"
+
+tmux set-window-option -t "$window_id" @agent_glyph "$glyph"
+poke_board
+
+exit 0

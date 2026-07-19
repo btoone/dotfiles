@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+# fzf status board for Claude Code sessions, fed by agent-board-hook state
+# files. Meant to run in a tmux popup (prefix + B).
+#
+#   enter   jump to the session's pane
+#   ctrl-s  send a prompt into the session (canned list, or type your own)
+#   ctrl-t  toggle "marinating" (deliberately resting — sorts to its own lane)
+#
+# The list live-reloads while open: the hook POSTs to fzf's --listen port
+# (written to <state dir>/.port). The preview pane shows the session's last
+# assistant message straight from its transcript.
+#
+# Lane/glyph logic is mirrored in agent-board-hook — keep them in sync.
+
+set -uo pipefail
+
+board_dir="${AGENT_BOARD_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/agent-board}"
+mkdir -p "$board_dir"
+port_file="$board_dir/.port"
+
+# Keep the user's interactive fzf defaults (previews, --tmux, etc.) out of the popup
+fzf_clean() { FZF_DEFAULT_OPTS='' FZF_DEFAULT_OPTS_FILE='' fzf "$@"; }
+
+prune_dead_sessions() {
+  local live_panes f pane
+  live_panes=$(tmux list-panes -a -F '#{pane_id}')
+  for f in "$board_dir"/*.json; do
+    [ -e "$f" ] || continue
+    pane=$(jq -r '.pane // empty' "$f")
+    grep -qxF "$pane" <<<"$live_panes" || rm -f "$f"
+  done
+}
+
+# TSV: lane, updated_at, session_id, pane, window_id, tmux_session, display
+build_lines() {
+  local now f
+  now=$(date +%s)
+  for f in "$board_dir"/*.json; do
+    [ -e "$f" ] || continue
+    jq -r --argjson now "$now" '
+      def lane:  if .marinating then 3
+                 elif .state == "needs-permission" then 0
+                 elif .state == "needs-answer" then 1
+                 elif .state == "working" then 2
+                 else 4 end;
+      def glyph: if .marinating then "🫙"
+                 elif .state == "needs-permission" then "🔐"
+                 elif .state == "needs-answer" then "💬"
+                 elif .state == "working" then "🔄"
+                 else "✅" end;
+      def age:   ($now - .updated_at) |
+                 if . < 60 then "\(.)s"
+                 elif . < 3600 then "\(. / 60 | floor)m"
+                 else "\(. / 3600 | floor)h" end;
+      [ (lane | tostring), (.updated_at | tostring),
+        .session_id, .pane, .window_id, .tmux_session,
+        "\(glyph) \(.tmux_session):\(.window_name)  [\(.cwd | sub(".*/"; ""))]  \(age)  \(.reason // "")"
+      ] | @tsv
+    ' "$f"
+  done | sort -t$'\t' -k1,1n -k2,2nr
+}
+
+# build_lines plus a colored header row above each lane (empty session_id
+# marks a header — every action guards on that)
+build_board() {
+  build_lines | awk -F'\t' '
+    BEGIN {
+      name[0] = "NEEDS PERMISSION"; color[0] = "\033[1;31m"
+      name[1] = "NEEDS ANSWER";     color[1] = "\033[1;33m"
+      name[2] = "WORKING";          color[2] = "\033[1;36m"
+      name[3] = "MARINATING";       color[3] = "\033[1;35m"
+      name[4] = "DONE";             color[4] = "\033[1;90m"
+    }
+    { rows[NR] = $0; lane[NR] = $1; cnt[$1]++ }
+    END {
+      prev = -1
+      for (i = 1; i <= NR; i++) {
+        if (lane[i] != prev) {
+          printf "%s\t9999999999\t\t\t\t\t%s── %s (%d) ──\033[0m\n",
+                 lane[i], color[lane[i]], name[lane[i]], cnt[lane[i]]
+          prev = lane[i]
+        }
+        print rows[i]
+      }
+    }
+  '
+}
+
+toggle_marinating() {
+  local f=$1 glyph
+  jq '.marinating = (.marinating | not)' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+  glyph=$(jq -r '
+    if .marinating then "🫙"
+    elif .state == "needs-permission" then "🔐"
+    elif .state == "needs-answer" then "💬"
+    elif .state == "working" then "🔄"
+    else "✅" end' "$f")
+  tmux set-window-option -t "$(jq -r '.window_id' "$f")" @agent_glyph "$glyph"
+}
+
+pick_prompt() {
+  local canned out query sel
+  canned=$'continue\nproceed with your recommendation\nrun the tests and fix any failures\ncommit this\nsummarize where you are and what is left'
+  out=$(fzf_clean --print-query --layout=reverse-list --info=inline \
+            --prompt='send prompt > ' \
+            --header='pick a canned prompt, or type your own and hit enter' \
+            <<<"$canned") || true
+  query=$(sed -n 1p <<<"$out")
+  sel=$(sed -n 2p <<<"$out")
+  [ -n "${sel:-$query}" ] || return 1
+  printf '%s' "${sel:-$query}"
+}
+
+show_preview() {
+  local id=${1:-} f transcript
+  f="$board_dir/$id.json"
+  { [ -n "$id" ] && [ -f "$f" ]; } || exit 0
+  jq -r '"\(.state)\(if .marinating then " · marinating" else "" end) · \(.tmux_session):\(.window_name)\n\(.cwd)\n"' "$f"
+  transcript=$(jq -r '.transcript // empty' "$f")
+  if [ -f "$transcript" ]; then
+    echo "── last assistant message ──"
+    grep '"type":"assistant"' "$transcript" | tail -1 |
+      jq -r '[.message.content[]? | select(.type == "text") | .text] | join("\n")' |
+      fold -s -w "${FZF_PREVIEW_COLUMNS:-80}"
+  else
+    echo "(no transcript recorded yet — restart this session to pick up the new hook)"
+  fi
+}
+
+case "${1:-}" in
+  --list)
+    prune_dead_sessions
+    build_lines
+    exit 0
+    ;;
+  --lines)  # board format for fzf reloads (headers included)
+    prune_dead_sessions
+    build_board
+    exit 0
+    ;;
+  --toggle)
+    [ -n "${2:-}" ] && [ -f "$board_dir/$2.json" ] && toggle_marinating "$board_dir/$2.json"
+    exit 0
+    ;;
+  --send)
+    [ -n "${2:-}" ] && [ -n "${3:-}" ] || exit 0
+    if prompt=$(pick_prompt); then
+      tmux send-keys -t "$3" -l "$prompt"
+      tmux send-keys -t "$3" Enter
+    fi
+    exit 0
+    ;;
+  --preview)
+    show_preview "${2:-}"
+    exit 0
+    ;;
+esac
+
+trap 'rm -f "$port_file"' EXIT
+
+while true; do
+  prune_dead_sessions
+  lines=$(build_board)
+  if [ -z "$lines" ]; then
+    echo "No Claude Code sessions on the board."
+    sleep 2
+    exit 0
+  fi
+
+  sel=$(fzf_clean --ansi --delimiter=$'\t' --with-nth=7 --no-sort \
+            --layout=reverse-list --info=inline \
+            --listen \
+            --bind "start:execute-silent(echo \$FZF_PORT > $port_file)" \
+            --bind "ctrl-t:execute-silent($0 --toggle {3})+reload($0 --lines)" \
+            --bind "ctrl-s:execute($0 --send {3} {4})" \
+            --preview "$0 --preview {3}" \
+            --preview-window=right,45%,wrap \
+            --prompt='agent board > ' \
+            --header=$'enter: jump   ctrl-s: send prompt   ctrl-t: toggle marinating' \
+            <<<"$lines") || exit 0
+  IFS=$'\t' read -r _ _ session_id pane window_id tmux_session _ <<<"$sel"
+  [ -n "$session_id" ] || continue
+
+  tmux select-window -t "$window_id"
+  tmux select-pane -t "$pane"
+  tmux switch-client -t "$tmux_session"
+  exit 0
+done

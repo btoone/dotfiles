@@ -120,4 +120,16 @@ jq -n \
 tmux set-window-option -t "$window_id" @agent_glyph "$glyph"
 poke_board
 
+# Blocked sessions get a clickable macOS banner (click jumps to the session).
+# Deliberately NOT suppressed when the pane is active/visible: an active pane
+# doesn't mean the user is at the keyboard.
+if [ "$event" = "Notification" ] && command -v terminal-notifier >/dev/null; then
+  terminal-notifier \
+    -title "Claude Code" \
+    -subtitle "$tmux_session · $(basename "$cwd")" \
+    -message "$reason" \
+    -group "agent-board-$session_id" \
+    -execute "$HOME/.local/bin/agent-board --jump $session_id" || true
+fi
+
 exit 0

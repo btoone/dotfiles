@@ -111,6 +111,24 @@ pick_prompt() {
   printf '%s' "${sel:-$query}"
 }
 
+# Focus a session's pane. Inside tmux, switches the current client; outside
+# (e.g. clicking a notification), steers the most recently active client and
+# brings iTerm forward.
+jump_to() {
+  local f="$board_dir/$1.json" pane window session client
+  [ -f "$f" ] || return 0
+  IFS=$'\t' read -r pane window session < <(jq -r '[.pane, .window_id, .tmux_session] | @tsv' "$f")
+  tmux select-window -t "$window"
+  tmux select-pane -t "$pane"
+  if [ -n "${TMUX:-}" ]; then
+    tmux switch-client -t "$session"
+  else
+    client=$(tmux list-clients -F '#{client_activity} #{client_name}' | sort -rn | head -1 | awk '{print $2}')
+    [ -n "$client" ] && tmux switch-client -c "$client" -t "$session"
+    open -a iTerm
+  fi
+}
+
 show_preview() {
   local id=${1:-} f transcript
   f="$board_dir/$id.json"
@@ -154,6 +172,10 @@ case "${1:-}" in
     show_preview "${2:-}"
     exit 0
     ;;
+  --jump)
+    [ -n "${2:-}" ] && jump_to "$2"
+    exit 0
+    ;;
 esac
 
 trap 'rm -f "$port_file"' EXIT
@@ -178,11 +200,9 @@ while true; do
             --prompt='agent board > ' \
             --header=$'enter: jump   ctrl-s: send prompt   ctrl-t: toggle marinating' \
             <<<"$lines") || exit 0
-  IFS=$'\t' read -r _ _ session_id pane window_id tmux_session _ <<<"$sel"
+  IFS=$'\t' read -r _ _ session_id _ <<<"$sel"
   [ -n "$session_id" ] || continue
 
-  tmux select-window -t "$window_id"
-  tmux select-pane -t "$pane"
-  tmux switch-client -t "$tmux_session"
+  jump_to "$session_id"
   exit 0
 done

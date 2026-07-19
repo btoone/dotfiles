@@ -27,6 +27,7 @@ brew "mise" # runtime version manager — script/bootstrap runs `mise install` a
 brew "redis"
 brew "shellcheck"
 brew "sqlite"
+brew "terminal-notifier" # clickable macOS notifications — agent-board-hook uses it for blocked-session alerts
 brew "tmux"
 brew "tree"
 brew "unzip"

@@ -37,7 +37,7 @@ prune_dead_sessions() {
   done
 }
 
-# TSV: lane, updated_at, session_id, pane, window_id, tmux_session, display
+# TSV: lane, updated_at, session_id, pane, window_id, tmux_session, display, note
 build_lines() {
   local now f
   now=$(date +%s)
@@ -157,8 +157,8 @@ edit_note() {
   save_note "$f" "$(sed -n 1p <<<"$out")"
 }
 
-# Attach a note to the agent session in the current tmux window — the
-# cowsay-in-a-split replacement: run it from any pane next to the agent.
+# Attach a note to the agent session in the current tmux window — matched by
+# window, not pane, since it's run from a shell split beside the agent.
 note_current_window() {
   local text=$1 win f best
   win=$(tmux display-message -p '#{window_id}') || return 1

@@ -48,8 +48,7 @@ if [ "$event" = "SessionEnd" ]; then
   exit 0
 fi
 
-# Rename the window to the session title (custom-title, else the sessions
-# index summary). Formerly the separate claude-tmux-sync hook.
+# Window title from the transcript custom-title, else the sessions-index summary.
 sync_window_title() {
   [ -f "$transcript" ] || return 0
   local title index
@@ -73,7 +72,6 @@ esac
 # PostToolUse exists for title sync only; PreToolUse already covers board state
 [ "$event" = "PostToolUse" ] && exit 0
 
-# Last chunk of the last assistant message, whitespace-collapsed
 last_assistant_text() {
   [ -f "$transcript" ] || return 0
   grep '"type":"assistant"' "$transcript" | tail -1 |

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Claude Code hook: maintains one state file per session for the agent-board
-# TUI, and sets @agent_glyph on the session's tmux window for ambient status.
-# Wired into UserPromptSubmit, PreToolUse, Notification, Stop, SessionEnd.
+# TUI, syncs the session title to the tmux window name, sets @agent_glyph on
+# the window for ambient status, and raises blocked-session notifications.
+# Wired into UserPromptSubmit, PreToolUse, PostToolUse, Notification, Stop,
+# SessionEnd.
 #
 # State files live in ~/.local/state/agent-board/<session_id>.json.
 # Lane/glyph logic is mirrored in agent-board — keep them in sync.
@@ -45,6 +47,31 @@ if [ "$event" = "SessionEnd" ]; then
   poke_board
   exit 0
 fi
+
+# Rename the window to the session title (custom-title, else the sessions
+# index summary). Formerly the separate claude-tmux-sync hook.
+sync_window_title() {
+  [ -f "$transcript" ] || return 0
+  local title index
+  title=$(grep '"custom-title"' "$transcript" | tail -1 | jq -r '.customTitle // empty')
+  if [ -z "$title" ]; then
+    index="$(dirname "$transcript")/sessions-index.json"
+    if [ -f "$index" ]; then
+      title=$(jq -r --arg id "$session_id" '.entries[] | select(.sessionId == $id) | .summary // empty' "$index")
+    fi
+  fi
+  [ -z "$title" ] && return 0
+  [ "$window_name" = "$title" ] && return 0
+  tmux set-window-option -t "$window_id" automatic-rename off
+  tmux rename-window -t "$window_id" "$title"
+}
+
+case "$event" in
+  UserPromptSubmit|PostToolUse|Stop) sync_window_title ;;
+esac
+
+# PostToolUse exists for title sync only; PreToolUse already covers board state
+[ "$event" = "PostToolUse" ] && exit 0
 
 # Last chunk of the last assistant message, whitespace-collapsed
 last_assistant_text() {

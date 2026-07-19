@@ -9,10 +9,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "claude-tmux-sync"
-          },
-          {
-            "type": "command",
             "command": "agent-board-hook"
           }
         ]
@@ -21,10 +17,6 @@
     "UserPromptSubmit": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "claude-tmux-sync"
-          },
           {
             "type": "command",
             "command": "agent-board-hook"
@@ -47,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "claude-tmux-sync"
+            "command": "agent-board-hook"
           }
         ]
       }

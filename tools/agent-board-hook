@@ -94,6 +94,10 @@ if [ "$clear_on_ice" = false ] && [ -f "$state_file" ]; then
   [ "$on_ice" = "true" ] || on_ice=false
 fi
 
+# User notes persist through every event; only the board clears them
+note=""
+[ -f "$state_file" ] && note=$(jq -r '.note // ""' "$state_file")
+
 case "$state" in
   working)          glyph="🔄" ;;
   needs-answer)     glyph="💬" ;;
@@ -112,9 +116,10 @@ jq -n \
   --arg window_name "$window_name" \
   --arg state "$state" \
   --arg reason "$reason" \
+  --arg note "$note" \
   --argjson on_ice "$on_ice" \
   --argjson updated_at "$(date +%s)" \
-  '{$session_id, $cwd, $transcript, $pane, $tmux_session, $window_id, $window_name, $state, $reason, $on_ice, $updated_at}' \
+  '{$session_id, $cwd, $transcript, $pane, $tmux_session, $window_id, $window_name, $state, $reason, $note, $on_ice, $updated_at}' \
   > "$state_file.tmp" && mv "$state_file.tmp" "$state_file"
 
 tmux set-window-option -t "$window_id" @agent_glyph "$glyph"

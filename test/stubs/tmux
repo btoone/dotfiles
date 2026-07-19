@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# tmux stub for bats tests: fixed pane/window topology, logs every call.
+# Live panes are %1 and %2 in window @7 of session "sess".
+echo "$*" >> "${TMUX_STUB_LOG:-/dev/null}"
+case "$1" in
+  list-panes)
+    printf '%%1\n%%2\n'
+    ;;
+  display-message)
+    case "$*" in
+      *'#{session_name}'*) printf 'sess\t@7\twin\n' ;;
+      *'#{window_id}'*)    echo "@7" ;;
+      *)                   echo "" ;;
+    esac
+    ;;
+  *) : ;;
+esac

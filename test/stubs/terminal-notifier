@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# terminal-notifier stub for bats tests: log instead of raising banners
+echo "$*" >> "${NOTIFIER_STUB_LOG:-/dev/null}"

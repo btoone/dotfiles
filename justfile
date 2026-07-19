@@ -2,6 +2,10 @@
 default:
     @just --list
 
+# Run the test suite
+test:
+    bats test/
+
 # Fresh machine: install Homebrew packages + mise runtimes
 bootstrap:
     script/bootstrap

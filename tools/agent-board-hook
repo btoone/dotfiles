@@ -28,12 +28,15 @@ IFS=$'\t' read -r tmux_session window_id window_name < <(
 
 state_file="$board_dir/$session_id.json"
 
-# If an agent-board popup is open, tell its fzf to reload the list
+# Tell every open board's fzf to reload, pruning dead .port.* files
+# (mirrored in agent-board)
 poke_board() {
-  local port_file="$board_dir/.port"
-  [ -f "$port_file" ] || return 0
-  curl -s -m 1 -X POST "http://localhost:$(cat "$port_file")" \
-    -d "reload($HOME/.local/bin/agent-board --lines)" || true
+  local pf
+  for pf in "$board_dir"/.port "$board_dir"/.port.*; do
+    [ -e "$pf" ] || continue
+    curl -s -m 1 -X POST "http://localhost:$(cat "$pf")" \
+      -d "reload($HOME/.local/bin/agent-board --lines)" || rm -f "$pf"
+  done
 }
 
 if [ "$event" = "SessionEnd" ]; then

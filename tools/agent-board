@@ -4,7 +4,7 @@
 #
 #   enter   jump to the session's pane
 #   ctrl-s  send a prompt into the session (canned list, or type your own)
-#   ctrl-t  toggle "marinating" (deliberately resting — sorts to its own lane)
+#   ctrl-t  toggle "on ice" (deliberately resting — sorts to its own lane)
 #
 # The list live-reloads while open: the hook POSTs to fzf's --listen port
 # (written to <state dir>/.port). The preview pane shows the session's last
@@ -38,12 +38,12 @@ build_lines() {
   for f in "$board_dir"/*.json; do
     [ -e "$f" ] || continue
     jq -r --argjson now "$now" '
-      def lane:  if .marinating then 3
+      def lane:  if .on_ice then 3
                  elif .state == "needs-permission" then 0
                  elif .state == "needs-answer" then 1
                  elif .state == "working" then 2
                  else 4 end;
-      def glyph: if .marinating then "🫙"
+      def glyph: if .on_ice then "🧊"
                  elif .state == "needs-permission" then "🔐"
                  elif .state == "needs-answer" then "💬"
                  elif .state == "working" then "🔄"
@@ -68,7 +68,7 @@ build_board() {
       name[0] = "NEEDS PERMISSION"; color[0] = "\033[1;31m"
       name[1] = "NEEDS ANSWER";     color[1] = "\033[1;33m"
       name[2] = "WORKING";          color[2] = "\033[1;36m"
-      name[3] = "MARINATING";       color[3] = "\033[1;35m"
+      name[3] = "ON ICE";       color[3] = "\033[1;35m"
       name[4] = "DONE";             color[4] = "\033[1;90m"
     }
     { rows[NR] = $0; lane[NR] = $1; cnt[$1]++ }
@@ -86,11 +86,11 @@ build_board() {
   '
 }
 
-toggle_marinating() {
+toggle_on_ice() {
   local f=$1 glyph
-  jq '.marinating = (.marinating | not)' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+  jq '.on_ice = (.on_ice | not)' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
   glyph=$(jq -r '
-    if .marinating then "🫙"
+    if .on_ice then "🧊"
     elif .state == "needs-permission" then "🔐"
     elif .state == "needs-answer" then "💬"
     elif .state == "working" then "🔄"
@@ -133,7 +133,7 @@ show_preview() {
   local id=${1:-} f transcript
   f="$board_dir/$id.json"
   { [ -n "$id" ] && [ -f "$f" ]; } || exit 0
-  jq -r '"\(.state)\(if .marinating then " · marinating" else "" end) · \(.tmux_session):\(.window_name)\n\(.cwd)\n"' "$f"
+  jq -r '"\(.state)\(if .on_ice then " · on ice" else "" end) · \(.tmux_session):\(.window_name)\n\(.cwd)\n"' "$f"
   transcript=$(jq -r '.transcript // empty' "$f")
   if [ -f "$transcript" ]; then
     echo "── last assistant message ──"
@@ -157,7 +157,7 @@ case "${1:-}" in
     exit 0
     ;;
   --toggle)
-    [ -n "${2:-}" ] && [ -f "$board_dir/$2.json" ] && toggle_marinating "$board_dir/$2.json"
+    [ -n "${2:-}" ] && [ -f "$board_dir/$2.json" ] && toggle_on_ice "$board_dir/$2.json"
     exit 0
     ;;
   --send)
@@ -198,7 +198,7 @@ while true; do
             --preview "$0 --preview {3}" \
             --preview-window=right,45%,wrap \
             --prompt='agent board > ' \
-            --header=$'enter: jump   ctrl-s: send prompt   ctrl-t: toggle marinating' \
+            --header=$'enter: jump   ctrl-s: send prompt   ctrl-t: toggle on ice' \
             <<<"$lines") || exit 0
   IFS=$'\t' read -r _ _ session_id _ <<<"$sel"
   [ -n "$session_id" ] || continue

@@ -55,13 +55,13 @@ tail_chars() {
   if [ "${#s}" -gt "$n" ]; then printf '%s' "${s: -n}"; else printf '%s' "$s"; fi
 }
 
-state="" reason="" clear_marinating=false
+state="" reason="" clear_on_ice=false
 
 case "$event" in
   UserPromptSubmit)
     state="working"
     reason=$(echo "$input" | jq -r '.prompt // empty' | tr '\n\t' '  ' | head -c 80)
-    clear_marinating=true
+    clear_on_ice=true
     ;;
   PreToolUse)
     state="working"
@@ -88,10 +88,10 @@ case "$event" in
   *) exit 0 ;;
 esac
 
-marinating=false
-if [ "$clear_marinating" = false ] && [ -f "$state_file" ]; then
-  marinating=$(jq -r '.marinating // false' "$state_file")
-  [ "$marinating" = "true" ] || marinating=false
+on_ice=false
+if [ "$clear_on_ice" = false ] && [ -f "$state_file" ]; then
+  on_ice=$(jq -r '.on_ice // false' "$state_file")
+  [ "$on_ice" = "true" ] || on_ice=false
 fi
 
 case "$state" in
@@ -100,7 +100,7 @@ case "$state" in
   needs-permission) glyph="🔐" ;;
   done)             glyph="✅" ;;
 esac
-[ "$marinating" = "true" ] && glyph="🫙"
+[ "$on_ice" = "true" ] && glyph="🧊"
 
 jq -n \
   --arg session_id "$session_id" \
@@ -112,9 +112,9 @@ jq -n \
   --arg window_name "$window_name" \
   --arg state "$state" \
   --arg reason "$reason" \
-  --argjson marinating "$marinating" \
+  --argjson on_ice "$on_ice" \
   --argjson updated_at "$(date +%s)" \
-  '{$session_id, $cwd, $transcript, $pane, $tmux_session, $window_id, $window_name, $state, $reason, $marinating, $updated_at}' \
+  '{$session_id, $cwd, $transcript, $pane, $tmux_session, $window_id, $window_name, $state, $reason, $on_ice, $updated_at}' \
   > "$state_file.tmp" && mv "$state_file.tmp" "$state_file"
 
 tmux set-window-option -t "$window_id" @agent_glyph "$glyph"

@@ -6,15 +6,15 @@
 # SessionEnd.
 #
 # State files live in ~/.local/state/agent-board/<session_id>.json.
-# Lane/glyph logic is mirrored in agent-board — keep them in sync.
+# The lane/glyph mapping lives in agent-board — glyph updates delegate to
+# `agent-board --window-glyph`.
 
 # Hooks must stay silent: UserPromptSubmit stdout is injected into context.
 exec >/dev/null 2>&1
 
-[ -n "${TMUX_PANE:-}" ] || exit 0
-
 board_dir="${AGENT_BOARD_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/agent-board}"
 mkdir -p "$board_dir"
+board_bin="${AGENT_BOARD_BIN:-$HOME/.local/bin/agent-board}"
 
 input=$(cat /dev/stdin)
 session_id=$(echo "$input" | jq -r '.session_id // empty')
@@ -23,6 +23,27 @@ event=$(echo "$input" | jq -r '.hook_event_name // empty')
 cwd=$(echo "$input" | jq -r '.cwd // empty')
 transcript=$(echo "$input" | jq -r '.transcript_path // empty')
 
+# Blocked sessions get a macOS banner (clickable when there's a pane to jump
+# to). Deliberately NOT suppressed when the pane is active/visible: an active
+# pane doesn't mean the user is at the keyboard.
+notify_blocked() { # subtitle [click-command]
+  command -v terminal-notifier >/dev/null || return 0
+  local args=(-title "Claude Code" -subtitle "$1" -message "$reason" -group "agent-board-$session_id")
+  [ -n "${2:-}" ] && args+=(-execute "$2")
+  terminal-notifier "${args[@]}" || true
+}
+
+# Outside tmux there's no window or board state to maintain, but a blocked
+# session still deserves a banner (this replaced the old unconditional
+# osascript hook — don't let that behavior narrow to tmux-only).
+if [ -z "${TMUX_PANE:-}" ]; then
+  if [ "$event" = "Notification" ]; then
+    reason=$(echo "$input" | jq -r '.message // empty')
+    notify_blocked "$(basename "$cwd")"
+  fi
+  exit 0
+fi
+
 IFS=$'\t' read -r tmux_session window_id window_name < <(
   tmux display-message -t "$TMUX_PANE" -p $'#{session_name}\t#{window_id}\t#W'
 )
@@ -30,21 +51,41 @@ IFS=$'\t' read -r tmux_session window_id window_name < <(
 
 state_file="$board_dir/$session_id.json"
 
-# Tell every open board's fzf to reload, pruning dead .port.* files
-# (mirrored in agent-board)
+# Serialize state-file read-modify-writes against the board's ctrl-t/ctrl-n
+# edits (mkdir as mutex; mirrored in agent-board). A crashed holder's lock is
+# broken after ~1s; bail unlocked after ~2s rather than ever wedging a hook.
+lock_state() {
+  local dir="$1.lock" tries=0
+  until mkdir "$dir" 2>/dev/null; do
+    tries=$((tries + 1))
+    [ "$tries" -ge 50 ] && rm -rf "$dir"
+    [ "$tries" -ge 100 ] && return 0
+    sleep 0.02
+  done
+}
+unlock_state() { rmdir "$1.lock" 2>/dev/null; }
+
+# Tell every open board's fzf to reload. Registrations are pruned when their
+# owning process is gone — never on curl failure, which may just be a busy
+# board mid-keybinding. (Mirrored in agent-board.)
 poke_board() {
-  local pf
-  for pf in "$board_dir"/.port "$board_dir"/.port.*; do
+  local pf pid
+  for pf in "$board_dir"/.port.*; do
     [ -e "$pf" ] || continue
+    pid=${pf##*.}
+    if ! kill -0 "$pid" 2>/dev/null; then
+      rm -f "$pf"
+      continue
+    fi
     curl -s -m 1 -X POST "http://localhost:$(cat "$pf")" \
-      -d "reload($HOME/.local/bin/agent-board --lines)" || rm -f "$pf"
+      -d "reload($board_bin --lines)" || true
   done
 }
 
 if [ "$event" = "SessionEnd" ]; then
   rm -f "$state_file"
-  tmux set-window-option -t "$window_id" -u @agent_glyph
-  poke_board
+  "$board_bin" --window-glyph "$window_id"
+  poke_board &
   exit 0
 fi
 
@@ -52,7 +93,10 @@ fi
 sync_window_title() {
   [ -f "$transcript" ] || return 0
   local title index
-  title=$(grep '"custom-title"' "$transcript" | tail -1 | jq -r '.customTitle // empty')
+  # Match the structural type key and re-check it in jq: a line that merely
+  # mentions custom-title (e.g. a grep of this very script) must not win
+  title=$(grep '"type":"custom-title"' "$transcript" | tail -1 |
+    jq -r 'select(.type == "custom-title") | .customTitle // empty')
   if [ -z "$title" ]; then
     index="$(dirname "$transcript")/sessions-index.json"
     if [ -f "$index" ]; then
@@ -116,6 +160,8 @@ case "$event" in
   *) exit 0 ;;
 esac
 
+lock_state "$state_file"
+
 on_ice=false
 if [ "$clear_on_ice" = false ] && [ -f "$state_file" ]; then
   on_ice=$(jq -r '.on_ice // false' "$state_file")
@@ -126,14 +172,7 @@ fi
 note=""
 [ -f "$state_file" ] && note=$(jq -r '.note // ""' "$state_file")
 
-case "$state" in
-  working)          glyph="🔄" ;;
-  needs-answer)     glyph="💬" ;;
-  needs-permission) glyph="🔐" ;;
-  done)             glyph="✅" ;;
-esac
-[ "$on_ice" = "true" ] && glyph="🧊"
-
+tmp=$(mktemp "$state_file.XXXXXX")
 jq -n \
   --arg session_id "$session_id" \
   --arg cwd "$cwd" \
@@ -148,21 +187,17 @@ jq -n \
   --argjson on_ice "$on_ice" \
   --argjson updated_at "$(date +%s)" \
   '{$session_id, $cwd, $transcript, $pane, $tmux_session, $window_id, $window_name, $state, $reason, $note, $on_ice, $updated_at}' \
-  > "$state_file.tmp" && mv "$state_file.tmp" "$state_file"
+  > "$tmp" && mv "$tmp" "$state_file" || rm -f "$tmp"
 
-tmux set-window-option -t "$window_id" @agent_glyph "$glyph"
-poke_board
+unlock_state "$state_file"
 
-# Blocked sessions get a clickable macOS banner (click jumps to the session).
-# Deliberately NOT suppressed when the pane is active/visible: an active pane
-# doesn't mean the user is at the keyboard.
-if [ "$event" = "Notification" ] && command -v terminal-notifier >/dev/null; then
-  terminal-notifier \
-    -title "Claude Code" \
-    -subtitle "$tmux_session · $(basename "$cwd")" \
-    -message "$reason" \
-    -group "agent-board-$session_id" \
-    -execute "$HOME/.local/bin/agent-board --jump $session_id" || true
+"$board_bin" --window-glyph "$window_id"
+# Backgrounded: PreToolUse blocks the tool call, and a busy board's listener
+# can eat the full curl timeout — never make the session wait on pokes
+poke_board &
+
+if [ "$event" = "Notification" ]; then
+  notify_blocked "$tmux_session · $(basename "$cwd")" "$board_bin --jump $session_id"
 fi
 
 exit 0

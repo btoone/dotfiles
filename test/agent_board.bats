@@ -6,6 +6,7 @@
 setup() {
   BOARD="$BATS_TEST_DIRNAME/../tools/agent-board"
   HOOK="$BATS_TEST_DIRNAME/../tools/agent-board-hook"
+  export AGENT_BOARD_BIN="$BOARD"
   export AGENT_BOARD_DIR="$BATS_TEST_TMPDIR/board"
   mkdir -p "$AGENT_BOARD_DIR"
   export PATH="$BATS_TEST_DIRNAME/stubs:$PATH"
@@ -48,6 +49,13 @@ hook_event() { # json
   [[ "$output" == *alive* ]]
   [[ "$output" != *dead* ]]
   [ ! -e "$AGENT_BOARD_DIR/dead.json" ]
+}
+
+@test "--list survives a tmux failure without wiping state" {
+  make_session alive %1 working
+
+  run env TMUX_STUB_FAIL=1 "$BOARD" --list
+  [ -e "$AGENT_BOARD_DIR/alive.json" ]
 }
 
 @test "--lines groups sessions under lane headers with counts" {
@@ -95,6 +103,22 @@ hook_event() { # json
 
   "$BOARD" --toggle s1
   [ ! -e "$AGENT_BOARD_DIR/.port.stale" ]
+}
+
+@test "a live board's port registration survives a failed poke" {
+  make_session s1 %1 working
+  echo "1" > "$AGENT_BOARD_DIR/.port.$$"
+
+  "$BOARD" --toggle s1
+  [ -e "$AGENT_BOARD_DIR/.port.$$" ]
+}
+
+@test "a stale lock does not wedge state writes" {
+  make_session s1 %1 working
+  mkdir "$AGENT_BOARD_DIR/s1.json.lock"
+
+  "$BOARD" --toggle s1
+  [ "$(jq -r '.on_ice' "$AGENT_BOARD_DIR/s1.json")" = "true" ]
 }
 
 @test "hook writes board state on UserPromptSubmit" {
@@ -153,4 +177,47 @@ hook_event() { # json
 
   [ ! -e "$AGENT_BOARD_DIR/h1.json" ]
   grep -q -- '-u @agent_glyph' "$TMUX_STUB_LOG"
+}
+
+@test "hook banners blocked sessions outside tmux, without board state" {
+  unset TMUX_PANE
+
+  hook_event '{"session_id":"h1","hook_event_name":"Notification","cwd":"/tmp/proj","message":"Claude needs your permission to use Bash"}'
+
+  grep -q 'Claude needs your permission' "$NOTIFIER_STUB_LOG"
+  [ ! -e "$AGENT_BOARD_DIR/h1.json" ]
+}
+
+@test "title sync ignores transcript lines that merely mention custom-title" {
+  make_session h1 %1 working
+  transcript="$BATS_TEST_TMPDIR/transcript.jsonl"
+  printf '%s\n' \
+    '{"type":"custom-title","customTitle":"real title","sessionId":"h1"}' \
+    '{"type":"user","message":{"content":"grep for \"custom-title\" records"}}' \
+    > "$transcript"
+
+  hook_event '{"session_id":"h1","hook_event_name":"PostToolUse","cwd":"/tmp/proj","transcript_path":"'"$transcript"'"}'
+
+  grep -q 'rename-window -t @7 real title' "$TMUX_STUB_LOG"
+}
+
+@test "window glyph shows the most urgent session in a shared window" {
+  make_session urgent %2 needs-permission
+  make_session busy %1 working
+
+  hook_event '{"session_id":"busy","hook_event_name":"PreToolUse","cwd":"/tmp/proj","tool_name":"Bash"}'
+
+  run bash -c "grep '@agent_glyph' '$TMUX_STUB_LOG' | tail -1"
+  [[ "$output" == *'@agent_glyph 🔐'* ]]
+}
+
+@test "SessionEnd keeps a shared window's glyph for the surviving session" {
+  make_session urgent %2 needs-permission
+  make_session busy %1 working
+
+  hook_event '{"session_id":"busy","hook_event_name":"SessionEnd","cwd":"/tmp/proj"}'
+
+  [ ! -e "$AGENT_BOARD_DIR/busy.json" ]
+  run bash -c "grep '@agent_glyph' '$TMUX_STUB_LOG' | tail -1"
+  [[ "$output" == *'@agent_glyph 🔐'* ]]
 }

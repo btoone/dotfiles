@@ -10,16 +10,23 @@
 # `agent-board --note <text>` from any pane attaches a note to the agent
 # session in that tmux window (the cowsay-in-a-split workflow, upgraded).
 #
-# The list live-reloads while open: the hook POSTs to fzf's --listen port
-# (written to <state dir>/.port). The preview pane shows the session's last
-# assistant message straight from its transcript.
+# The list live-reloads while open: the hook POSTs to each board's fzf
+# --listen port (registered as <state dir>/.port.<pid>). The preview pane
+# shows the session's last assistant message straight from its transcript.
 #
-# Lane/glyph logic is mirrored in agent-board-hook — keep them in sync.
+# The lane/glyph mapping lives here only — agent-board-hook delegates glyph
+# updates via --window-glyph.
 
 set -uo pipefail
 
+# Notification clicks run this script under launchd's minimal PATH (no
+# Homebrew, so no jq/tmux); appended rather than prepended so test stubs
+# and user overrides still win
+PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
+
 board_dir="${AGENT_BOARD_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/agent-board}"
 mkdir -p "$board_dir"
+board_bin="${AGENT_BOARD_BIN:-$HOME/.local/bin/agent-board}"
 # One port file per board instance so several boards (CLI + popups) all
 # receive live reloads; the hook pokes every .port.* and prunes dead ones
 port_file="$board_dir/.port.$$"
@@ -29,7 +36,10 @@ fzf_clean() { FZF_DEFAULT_OPTS='' FZF_DEFAULT_OPTS_FILE='' fzf "$@"; }
 
 prune_dead_sessions() {
   local live_panes f pane
-  live_panes=$(tmux list-panes -a -F '#{pane_id}')
+  # A tmux failure (server restarting, no server) must not read as "no panes
+  # exist" — that would wipe every state file, notes and all
+  live_panes=$(tmux list-panes -a -F '#{pane_id}') || return 0
+  [ -n "$live_panes" ] || return 0
   for f in "$board_dir"/*.json; do
     [ -e "$f" ] || continue
     pane=$(jq -r '.pane // empty' "$f")
@@ -37,23 +47,28 @@ prune_dead_sessions() {
   done
 }
 
+# The single copy of the lane/glyph tables: build_lines renders from it and
+# refresh_window_glyph serves it to the hook
+lane_glyph_jq='
+  def lane:  if .on_ice then 3
+             elif .state == "needs-permission" then 0
+             elif .state == "needs-answer" then 1
+             elif .state == "working" then 2
+             else 4 end;
+  def glyph: if .on_ice then "🧊"
+             elif .state == "needs-permission" then "🔐"
+             elif .state == "needs-answer" then "💬"
+             elif .state == "working" then "🔄"
+             else "✅" end;
+'
+
 # TSV: lane, updated_at, session_id, pane, window_id, tmux_session, display, note
 build_lines() {
   local now f
   now=$(date +%s)
   for f in "$board_dir"/*.json; do
     [ -e "$f" ] || continue
-    jq -r --argjson now "$now" '
-      def lane:  if .on_ice then 3
-                 elif .state == "needs-permission" then 0
-                 elif .state == "needs-answer" then 1
-                 elif .state == "working" then 2
-                 else 4 end;
-      def glyph: if .on_ice then "🧊"
-                 elif .state == "needs-permission" then "🔐"
-                 elif .state == "needs-answer" then "💬"
-                 elif .state == "working" then "🔄"
-                 else "✅" end;
+    jq -r --argjson now "$now" "$lane_glyph_jq"'
       def age:   ($now - .updated_at) |
                  if . < 60 then "\(.)s"
                  elif . < 3600 then "\(. / 60 | floor)m"
@@ -100,16 +115,43 @@ build_board() {
   ' | tr '\001' '\000'
 }
 
+# Serialize state-file read-modify-writes against the hook (mkdir as mutex;
+# mirrored in agent-board-hook). A crashed holder's lock is broken after ~1s;
+# bail unlocked after ~2s rather than ever wedging.
+lock_state() {
+  local dir="$1.lock" tries=0
+  until mkdir "$dir" 2>/dev/null; do
+    tries=$((tries + 1))
+    [ "$tries" -ge 50 ] && rm -rf "$dir"
+    [ "$tries" -ge 100 ] && return 0
+    sleep 0.02
+  done
+}
+unlock_state() { rmdir "$1.lock" 2>/dev/null; }
+
+# Sessions are per-pane but @agent_glyph is per-window: when several sessions
+# share a window, show the most urgent lane; unset only when none remain.
+refresh_window_glyph() {
+  local win=$1 best f
+  best=$(for f in "$board_dir"/*.json; do
+    [ -e "$f" ] || continue
+    jq -r --arg win "$win" "$lane_glyph_jq"'
+      select(.window_id == $win) | "\(lane)\t\(glyph)"' "$f"
+  done | sort -n | head -1 | cut -f2)
+  if [ -n "$best" ]; then
+    tmux set-window-option -t "$win" @agent_glyph "$best"
+  else
+    tmux set-window-option -t "$win" -u @agent_glyph
+  fi
+}
+
 toggle_on_ice() {
-  local f=$1 glyph
-  jq '.on_ice = (.on_ice | not)' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
-  glyph=$(jq -r '
-    if .on_ice then "🧊"
-    elif .state == "needs-permission" then "🔐"
-    elif .state == "needs-answer" then "💬"
-    elif .state == "working" then "🔄"
-    else "✅" end' "$f")
-  tmux set-window-option -t "$(jq -r '.window_id' "$f")" @agent_glyph "$glyph"
+  local f=$1 tmp
+  lock_state "$f"
+  tmp=$(mktemp "$f.XXXXXX")
+  jq '.on_ice = (.on_ice | not)' "$f" > "$tmp" && mv "$tmp" "$f" || rm -f "$tmp"
+  unlock_state "$f"
+  refresh_window_glyph "$(jq -r '.window_id' "$f")"
   poke_boards
 }
 
@@ -126,20 +168,30 @@ pick_prompt() {
   printf '%s' "${sel:-$query}"
 }
 
-# Tell every open board's fzf to reload (mirrored in agent-board-hook)
+# Tell every open board's fzf to reload. Registrations are pruned when their
+# owning process is gone — never on curl failure, which may just be a busy
+# board mid-keybinding. (Mirrored in agent-board-hook.)
 poke_boards() {
-  local pf
-  for pf in "$board_dir"/.port "$board_dir"/.port.*; do
+  local pf pid
+  for pf in "$board_dir"/.port.*; do
     [ -e "$pf" ] || continue
     [ "$pf" = "$port_file" ] && continue
+    pid=${pf##*.}
+    if ! kill -0 "$pid" 2>/dev/null; then
+      rm -f "$pf"
+      continue
+    fi
     curl -s -m 1 -X POST "http://localhost:$(cat "$pf")" \
-      -d "reload($HOME/.local/bin/agent-board --lines)" >/dev/null 2>&1 || rm -f "$pf"
+      -d "reload($board_bin --lines)" >/dev/null 2>&1 || true
   done
 }
 
 save_note() {
-  local f=$1 text=$2
-  jq --arg note "$text" '.note = $note' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+  local f=$1 text=$2 tmp
+  lock_state "$f"
+  tmp=$(mktemp "$f.XXXXXX")
+  jq --arg note "$text" '.note = $note' "$f" > "$tmp" && mv "$tmp" "$f" || rm -f "$tmp"
+  unlock_state "$f"
   poke_boards
 }
 
@@ -235,8 +287,10 @@ case "${1:-}" in
   --send)
     [ -n "${2:-}" ] && [ -n "${3:-}" ] || exit 0
     if prompt=$(pick_prompt); then
-      tmux send-keys -t "$3" -l "$prompt"
-      tmux send-keys -t "$3" Enter
+      # -- so a prompt starting with a dash isn't parsed as flags; && so a
+      # failed send never fires a bare Enter into the pane
+      tmux send-keys -t "$3" -l -- "$prompt" &&
+        tmux send-keys -t "$3" Enter
     fi
     exit 0
     ;;
@@ -246,6 +300,10 @@ case "${1:-}" in
     ;;
   --jump)
     [ -n "${2:-}" ] && jump_to "$2"
+    exit 0
+    ;;
+  --window-glyph)  # recompute @agent_glyph for a window (used by agent-board-hook)
+    [ -n "${2:-}" ] && refresh_window_glyph "$2"
     exit 0
     ;;
   --edit-note)

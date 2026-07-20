@@ -2,6 +2,8 @@
 # tmux stub for bats tests: fixed pane/window topology, logs every call.
 # Live panes are %1 and %2 in window @7 of session "sess".
 echo "$*" >> "${TMUX_STUB_LOG:-/dev/null}"
+# TMUX_STUB_FAIL simulates an unreachable tmux server
+[ -n "${TMUX_STUB_FAIL:-}" ] && exit 1
 case "$1" in
   list-panes)
     printf '%%1\n%%2\n'

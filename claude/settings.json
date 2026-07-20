@@ -73,7 +73,8 @@
     "commit-commands@claude-plugins-official": true,
     "skillify@claude-skillify": true,
     "my@my-plugin": true,
-    "frontend-design@claude-plugins-official": true
+    "frontend-design@claude-plugins-official": true,
+    "humanizer@humanizer": true
   },
   "extraKnownMarketplaces": {
     "claude-skillify": {
@@ -86,6 +87,12 @@
       "source": {
         "source": "directory",
         "path": "/Users/brandon/dotfiles/my-plugin"
+      }
+    },
+    "humanizer": {
+      "source": {
+        "source": "github",
+        "repo": "blader/humanizer"
       }
     }
   },

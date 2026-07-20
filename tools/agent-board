@@ -327,18 +327,30 @@ while true; do
     exit 0
   fi
 
+  # Outside tmux the board is a read-only watch tab: there's no way to pull
+  # focus to a tmux tab in another OS window, so enter is inert and the board
+  # stays a live dashboard. Inside tmux, enter accepts and the loop below hands
+  # this pane over to the session. A plain string (not a conditional array)
+  # because set -u + bash 3.2 rejects expanding an empty array.
+  enter_action='accept'; enter_hint='enter: jump   '
+  if [ -z "${TMUX:-}" ]; then
+    enter_action='ignore'
+    enter_hint='view-only   '
+  fi
+
   # build_board pipes straight in: $(...) would eat the NUL record separators
   sel=$(build_board | fzf_clean --ansi --read0 --delimiter=$'\t' --with-nth=7 --no-sort \
             --layout=reverse-list --info=inline \
             --listen --sync \
             --bind "start:pos(2)+execute-silent(echo \$FZF_PORT > $port_file)" \
+            --bind "enter:$enter_action" \
             --bind "ctrl-t:execute-silent($0 --toggle {3})+reload($0 --lines)" \
             --bind "ctrl-s:execute($0 --send {3} {4})" \
             --bind "ctrl-n:execute($0 --edit-note {3})+reload($0 --lines)" \
             --preview "$0 --preview {3}" \
             --preview-window=right,45%,wrap \
             --prompt='agent board > ' \
-            --header=$'enter: jump   ctrl-s: send prompt   ctrl-n: note   ctrl-t: toggle on ice' \
+            --header="${enter_hint}ctrl-s: send prompt   ctrl-n: note   ctrl-t: toggle on ice" \
             ) || exit 0
   IFS=$'\t' read -r _ _ session_id _ <<<"$sel"
   [ -n "$session_id" ] || continue

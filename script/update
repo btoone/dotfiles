@@ -12,24 +12,36 @@ if [[ $BASE_DIR != 'dotfiles' ]]; then
   echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
 fi
 
+# The three installs are independent, so a failing one must not skip the rest —
+# a silently unrun step is exactly how gutentags went missing for weeks.
+failed=()
+
 echo "==> Installing Homebrew packages..."
 if command -v brew &> /dev/null; then
-  brew bundle --global
+  brew bundle --global || failed+=("brew bundle")
 else
   echo "    Homebrew not found. Install it first: https://brew.sh"
-  exit 1
+  failed+=("brew bundle")
 fi
 
 # --sync so vim-plug finishes installing before +qa tears the session down
 echo "==> Installing vim plugins..."
-vim +'PlugInstall --sync' +'PlugClean!' +qa
+vim +'PlugInstall --sync' +'PlugClean!' +qa || failed+=("vim plugins")
 
 echo "==> Installing tmux plugins..."
 TPM_INSTALL="$HOME/.tmux/plugins/tpm/bin/install_plugins"
 if [ -x "$TPM_INSTALL" ]; then
-  "$TPM_INSTALL"
+  "$TPM_INSTALL" || failed+=("tmux plugins")
 else
   echo "    tpm not found. Run script/setup first."
+  failed+=("tmux plugins")
+fi
+
+if [ ${#failed[@]} -gt 0 ]; then
+  echo ""
+  echo "--- FAILED: ${failed[*]} ---"
+  echo "Fix the errors above and re-run script/update."
+  exit 1
 fi
 
 # Last script in the chain, so the manual leftovers get printed here

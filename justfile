@@ -6,14 +6,14 @@ default:
 test:
     bats test/
 
-# Fresh machine: install Homebrew packages + mise runtimes
+# Fresh machine: install prerequisites (Homebrew check + mise runtimes)
 bootstrap:
     script/bootstrap
 
-# After pulling changes: install new packages, symlink dotfiles, deploy tools
+# After pulling changes: symlink dotfiles, deploy tools, install new packages and plugins
 setup:
-    brew bundle --global
     script/setup
+    script/update
 
 # Pull latest changes and run setup
 update:

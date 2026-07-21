@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Brings installed dependencies in line with the current checkout: Homebrew
+# packages, vim plugins, tmux plugins. Run after pulling changes. Needs network.
+#
+# Usage: script/update
+
+set -e
+
+BASE_DIR=$(basename "$PWD")
+if [[ $BASE_DIR != 'dotfiles' ]]; then
+  echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
+fi
+
+echo "==> Installing Homebrew packages..."
+if command -v brew &> /dev/null; then
+  brew bundle --global
+else
+  echo "    Homebrew not found. Install it first: https://brew.sh"
+  exit 1
+fi
+
+# --sync so vim-plug finishes installing before +qa tears the session down
+echo "==> Installing vim plugins..."
+vim +'PlugInstall --sync' +'PlugClean!' +qa
+
+echo "==> Installing tmux plugins..."
+TPM_INSTALL="$HOME/.tmux/plugins/tpm/bin/install_plugins"
+if [ -x "$TPM_INSTALL" ]; then
+  "$TPM_INSTALL"
+else
+  echo "    tpm not found. Run script/setup first."
+fi
+
+echo ""
+echo "Done."

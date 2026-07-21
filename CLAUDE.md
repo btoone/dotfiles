@@ -10,21 +10,18 @@ Personal dotfiles for configuring developer environments on macOS and Linux. Fil
 
 ```bash
 # Fresh machine (run from ~/dotfiles)
-script/bootstrap    # install Homebrew packages + mise runtimes
+just install        # bootstrap + setup, in the right order
+script/bootstrap    # prerequisites only: Homebrew check + mise runtimes
 script/setup        # symlink dotfiles, deploy tools, copy templates
 
 # After pulling changes
-script/setup        # fast, idempotent, no network
-
-# Install vim plugins (from within vim)
-:PlugInstall
+just setup          # script/setup + script/update
+script/setup        # config only — fast, idempotent, no network
+script/update       # deps only — brew bundle, vim plugins, tmux plugins
 
 # Install personal Claude Code plugin (per-profile, once)
 claude plugins marketplace add ~/dotfiles/my-plugin
 claude plugins install my
-
-# Install tmux plugins (from within tmux)
-prefix + I
 ```
 
 ## Architecture
@@ -38,7 +35,7 @@ prefix + I
 
 ### Key Directories
 
-- `script/` - Repo bootstrap (`script/setup`). Follows the [GitHub "Scripts to Rule Them All"](https://github.com/github/scripts-to-rule-them-all) convention
+- `script/` - Repo bootstrap (`script/bootstrap`, `script/setup`, `script/update`). Follows the [GitHub "Scripts to Rule Them All"](https://github.com/github/scripts-to-rule-them-all) convention
 - `tools/` - User tool scripts, symlinked into `~/.local/bin` during setup
 - `prototypes/` - Experimental scripts and reference implementations (not symlinked or deployed)
 - `templates/` - Machine-specific config seeds (copied once, then customized per machine). Follows the [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) `.local` override pattern
@@ -79,10 +76,13 @@ Homebrew prefix detection in `zshenv`:
 ## Key Scripts
 
 ### script/bootstrap
-Installs system dependencies: runs `brew bundle --global` and `mise install`. Run once on a fresh machine or after adding new dependencies.
+Installs the prerequisites that install everything else: checks for Homebrew, installs mise, runs `mise install`. Run once on a fresh machine. Deliberately does **not** run `brew bundle` — that belongs to `script/update`, which runs after `script/setup` has created the `~/.Brewfile` symlink `brew bundle --global` depends on.
 
 ### script/setup
 Configures the local environment: symlinks dotfiles from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, deploys Claude Code config, installs tpm. Fast, idempotent, no network needed.
+
+### script/update
+Brings installed dependencies in line with the current checkout: `brew bundle --global`, vim plugins (`PlugInstall --sync` + `PlugClean!`), tmux plugins (tpm `install_plugins`). Needs network. Run after pulling changes — `just setup` runs it after `script/setup`, so a pull that adds a Brewfile entry or a `Plug` line lands without any manual follow-up.
 
 ### prototypes/prodcon
 Production Rails console launcher prototype. Creates isolated tmux session with separate socket (`~/.tmux-prod.sock`), checks out production branch, includes safety prompts. Serves as a reference for building similar tools.

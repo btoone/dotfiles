@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# Installs system dependencies (Homebrew packages, runtimes).
-# Run once on a fresh machine, or after adding new dependencies.
+# Installs the prerequisites that install everything else: Homebrew and mise,
+# plus the runtimes in mise.toml. Homebrew packages and editor plugins come
+# later, from script/update, once script/setup has laid down the symlinks.
 #
 # Usage: script/bootstrap
 
@@ -12,10 +13,8 @@ if [[ $BASE_DIR != 'dotfiles' ]]; then
   echo '--- ERROR: Must be in the project root to install. ---' ; exit 1
 fi
 
-echo "==> Installing Homebrew packages..."
-if command -v brew &> /dev/null; then
-  brew bundle --global
-else
+echo "==> Checking for Homebrew..."
+if ! command -v brew &> /dev/null; then
   echo "    Homebrew not found. Install it first: https://brew.sh"
   exit 1
 fi
@@ -29,4 +28,4 @@ echo "==> Installing runtimes via mise..."
 mise install
 
 echo ""
-echo "Done. Now run: script/setup"
+echo "Done. Now run: just setup (or: script/setup && script/update)"

@@ -32,5 +32,18 @@ else
   echo "    tpm not found. Run script/setup first."
 fi
 
-echo ""
-echo "Done."
+# Last script in the chain, so the manual leftovers get printed here
+cat <<'EOF'
+
+=================
+   NEXT STEPS
+=================
+
+1. Start a new terminal session (or run 'exec zsh' to reload)
+2. Set terminal font to "Hack Nerd Font" for status bar icons
+3. For Claude Code: verify MACHINE_TYPE is set in ~/.zshrc.local
+   (set automatically if you chose a profile during script/setup)
+4. For additional Claude Code profiles (e.g. switching between work/personal):
+   claude plugins marketplace add ~/dotfiles/my-plugin
+   claude plugins install my
+EOF

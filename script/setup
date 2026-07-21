@@ -123,19 +123,7 @@ if [ ! -d "$HOME/.tmux/plugins" ]; then
 fi
 
 __results+="
-=================
-   NEXT STEPS
-=================
-
-1. Start a new terminal session (or run 'exec zsh' to reload)
-2. Run script/update to install Homebrew, vim, and tmux packages
-   ('just setup' already does this for you)
-3. Set terminal font to \"Hack Nerd Font\" for status bar icons
-4. For Claude Code: verify MACHINE_TYPE is set in ~/.zshrc.local
-   (should already be configured if you chose a profile above)
-5. For additional Claude Code profiles (e.g. switching between work/personal):
-   claude plugins marketplace add ~/dotfiles/my-plugin
-   claude plugins install my
+Now run: script/update  ('just setup' runs both, and prints next steps)
 "
 
 echo -e "$__results"

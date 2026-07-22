@@ -84,6 +84,8 @@ Configures the local environment: symlinks dotfiles from MANIFEST, copies templa
 ### script/update
 Brings installed dependencies in line with the current checkout: `brew bundle --global`, vim plugins (`PlugInstall --sync` + `PlugClean!`), tmux plugins (tpm `install_plugins`). Needs network. Run after pulling changes — `just setup` runs it after `script/setup`, so a pull that adds a Brewfile entry or a `Plug` line lands without any manual follow-up.
 
+On macOS 13 and older, Homebrew no longer ships bottles, so every formula would compile from source (and the pinned `llvm` blocks the Rust-based ones outright). There, brew is **report-only**: `brew bundle check` names any drift instead of installing it, and nothing is upgraded. Those machines stay deliberately frozen — install a new formula by hand, knowing it builds from source. Vim and tmux plugins still install normally.
+
 ### prototypes/prodcon
 Production Rails console launcher prototype. Creates isolated tmux session with separate socket (`~/.tmux-prod.sock`), checks out production branch, includes safety prompts. Serves as a reference for building similar tools.
 

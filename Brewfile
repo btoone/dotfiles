@@ -4,9 +4,7 @@ tap "supabase/tap"
 tap "homeport/tap"
 
 cask "gcloud-cli"
-cask "bruno"
 cask "font-hack-nerd-font"
-cask "soulver-cli"
 
 brew "ack"
 brew "bat"
@@ -21,9 +19,8 @@ brew "gnupg"
 brew "gawk"
 brew "grep"
 brew "imagemagick"
-brew "markdown"
-brew "mise" # runtime version manager — script/bootstrap runs `mise install` after brew bundle
-brew "redis"
+# mise is deliberately absent: script/bootstrap installs it from mise.run. The
+# Homebrew formula drags in llvm, which pre-Sonoma Macs must build from source.
 brew "shellcheck"
 brew "sqlite"
 brew "terminal-notifier" # clickable macOS notifications — agent-board-hook uses it for blocked-session alerts
@@ -31,7 +28,6 @@ brew "tmux"
 brew "tree"
 brew "universal-ctags" # replaces the abandoned Exuberant `ctags` — parses TypeScript and reads ~/.ctags.d
 brew "unzip"
-brew "vcprompt"
 brew "vim"
 brew "watch"
 brew "wget"
@@ -51,14 +47,10 @@ brew "overmind"
 brew "lnav"
 brew "jq"
 brew "fd"
-brew "procs"
 brew "watchexec"
-brew "git-lfs"
-brew "git-trim" # delete local branches whose upstream is merged or gone (git trim)
 brew "ffmpeg"
 brew "kristoferlund/ostt/ostt"
 brew "supabase"
 brew "with-readline"
-brew "termshot"
 brew "gum"
 brew "mcp-toolbox" # Google MCP Toolbox for Databases — read-only DB access for agents

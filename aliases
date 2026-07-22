@@ -266,7 +266,6 @@ alias -s md='gum-md-view'
 alias cat='bat --theme="Catppuccin Mocha"'
 
 # Apps
-alias soulver="with-readline soulver"
 alias h='heroku'
 alias hl='heroku local -f Procfile.dev'
 alias fs='foreman start'

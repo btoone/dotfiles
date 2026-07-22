@@ -16,12 +16,27 @@ fi
 # a silently unrun step is exactly how gutentags went missing for weeks.
 failed=()
 
+# Homebrew stopped bottling for macOS 13 and older, so every formula there
+# compiles from source — hours per package, and pinned llvm blocks the Rust ones
+# outright. NO_UPGRADE freezes what's installed but still builds anything the
+# Brewfile adds later, so on those machines brew goes report-only: name the drift
+# and let it be installed deliberately, if at all.
+brew_report_only=false
+if [[ $OSTYPE == darwin* ]] && (( $(sw_vers -productVersion | cut -d. -f1) < 14 )); then
+  brew_report_only=true
+  export HOMEBREW_BUNDLE_NO_UPGRADE=1 HOMEBREW_BUNDLE_NO_JOBS=1
+  echo "==> macOS $(sw_vers -productVersion) has no Homebrew bottles: brew is report-only"
+fi
+
 echo "==> Installing Homebrew packages..."
-if command -v brew &> /dev/null; then
-  brew bundle --global || failed+=("brew bundle")
-else
+if ! command -v brew &> /dev/null; then
   echo "    Homebrew not found. Install it first: https://brew.sh"
   failed+=("brew bundle")
+elif [[ $brew_report_only == true ]]; then
+  brew bundle check --global --verbose ||
+    echo "    Anything missing compiles from source here. Install it deliberately: brew install <formula>"
+else
+  brew bundle --global || failed+=("brew bundle")
 fi
 
 # --sync so vim-plug finishes installing before +qa tears the session down

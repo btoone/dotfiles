@@ -163,8 +163,32 @@ Cycle 1 → fix: handle zero-amount fee calculation
            (regression test + fix in one commit)
 ```
 
-**Success criteria:** every cycle has a passing test suite; commit history
-reads like a changelog.
+**Commit as each cycle closes** — same working session, no waiting to be asked.
+Don't stack up green cycles and split them into commits afterward.
+
+The boundary is **what can stand alone green**, not how many files changed. If
+one new fixture or test forces changes in two units, that is ONE cycle and one
+commit: they ship together because neither passes without the other.
+
+Committing per cycle makes each commit green *by construction* — the suite ran
+when that commit's content existed. Splitting a finished blob afterward inverts
+that: you assert green states you never executed, and a commit whose test is
+only fixed by a later commit is red no matter how green the tip is.
+
+**Escape hatch — this is a means, not the goal.** Real work doesn't always
+separate cleanly: interleaved fixes, a refactor that touches every call site, a
+change that only makes sense whole. When it doesn't separate, write ONE commit
+with the entire suite green and say so in the message. A single honest green
+commit beats a tidy series that was never run. The property being protected is
+"every commit I present as green actually ran green" — not "many small commits."
+Never fabricate a boundary to look disciplined.
+
+If you do batch and split anyway, check out each reconstructed commit and run
+the suite before pushing. Never infer an intermediate commit is green from the
+tip being green.
+
+**Success criteria:** every commit you present as green has actually been run
+green; commit history reads like a changelog.
 
 ## Anti-patterns
 
@@ -182,6 +206,8 @@ If you catch yourself doing any of these, stop and correct:
 | Extracting an abstraction on first use | Wait for the third use |
 | Multiple writes between entry and return, atomicity undecided | Wrap the unit in a transaction; add a rollback test that fails a *later* record |
 | Adding a retry to silence a flaky test | Find the cause — a flake is a false negative. See Flaky tests |
+| Several green cycles stacked up uncommitted | Commit each as it closes |
+| Splitting a finished blob into commits you never ran | Run each boundary, or write one honest green commit |
 
 Framework-specific anti-patterns live in the matching `frameworks/*.md`.
 

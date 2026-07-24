@@ -11,7 +11,8 @@ description: >
   leave context and get wired into the tool instead. Produces a demotion
   plan (section → verdict → destination → lines saved) for approval BEFORE
   editing, and reports the honest metric: lines loaded at session start,
-  before and after. Works on a project CLAUDE.md or the global one. Use
+  before and after. Targets the project CLAUDE.md in the current
+  directory by default; the global one only when explicitly asked. Use
   when a CLAUDE.md "is getting long", when asked to "trim/audit context",
   when a project file creeps past ~150 lines, or after a stretch of
   appending rules without pruning. Do NOT use for routing fresh session
@@ -30,9 +31,11 @@ task calls for it, or a skill with a trigger description.
 
 ## Procedure
 
-1. **Baseline.** Identify the target (project `CLAUDE.md`, or the global
-   one) and measure what actually always loads: the file itself plus any
-   `@`-imports. Record the total.
+1. **Baseline.** The target is the project `CLAUDE.md` in the current
+   directory unless the user explicitly names another file or says
+   "global" — never widen to the global file on your own, even if it
+   looks trimmable. Measure what actually always loads *for the target*:
+   the file itself plus any `@`-imports. Record the total.
 2. **Classify each section** with the one test — *does this change how the
    agent should behave on every single turn?*
    - **Stays**: philosophy and hard rules that apply to all work
@@ -53,9 +56,12 @@ task calls for it, or a skill with a trigger description.
    - **Route out**: decisions with tradeoffs belong in an ADR; personal
      preferences and cross-session state in auto-memory; anything stale or
      no longer true gets deleted, shown in the plan first.
-3. **Present the plan before touching anything**: a table of section →
-   verdict → destination → lines saved, plus the projected before/after
-   totals. Apply only after approval.
+3. **Present the plan in full before touching anything.** Print the
+   complete plan as a normal text message in the conversation — a table
+   of section → verdict → destination → lines saved, plus the projected
+   before/after totals — and only then ask for approval. Never put the
+   plan only inside an approval prompt's option labels: the user must be
+   able to read the whole plan on screen before the question appears.
 4. **Apply.** Content moves substantially verbatim; the only new prose is
    pointer lines and skill trigger descriptions. Never silently drop a
    rule — every removal is either a demotion with a pointer or a deletion
@@ -70,10 +76,14 @@ task calls for it, or a skill with a trigger description.
 - **When in doubt, it goes on demand.** The cost of a missed always-on
   rule is one extra pointer lookup; the cost of always-on bloat is paid on
   every turn by every future session.
-- **Global CLAUDE.md deserves the same test.** Philosophy documents
-  accumulate worked examples and reference tables that apply at
-  design-tradeoff moments, not every turn; those demote to a skill loaded
-  when making design decisions.
+- **Stay scoped to the target.** Other always-loaded files — the global
+  CLAUDE.md when trimming a project file, or vice versa — are out of
+  scope: don't measure them, don't re-audit them, and don't report on
+  their state unless the user asks.
+- **When the global CLAUDE.md is the target, it deserves the same test.**
+  Philosophy documents accumulate worked examples and reference tables
+  that apply at design-tradeoff moments, not every turn; those demote to
+  a skill loaded when making design decisions.
 - **Don't over-trim the routing layer.** One line per on-demand doc or
   skill is the price of discoverability; a trimmed file with no pointers
   is just a smaller landfill nobody can navigate out of.

@@ -1,5 +1,6 @@
 .DS_Store
-.claude/
+.claude/*
+!.claude/agent-board.md
 vim/.netrwhist
 vim/spell
 tmux/plugins

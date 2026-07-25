@@ -44,6 +44,8 @@ domain language. Implementation is minimal and domain-first.
 
 - Every behavior is proven by a test written first and seen to fail
 - Tests read like a behavioral specification a domain expert could follow
+- Tests are executable specifications of what the system does for a consumer —
+  if they pass, you should feel able to ship
 - Implementation uses ubiquitous language and avoids premature abstraction
 
 ## Step 0 — Detect the framework
@@ -80,6 +82,12 @@ language from the domain.
 Write one test describing the desired behavior. Run it and confirm it fails
 with a meaningful message.
 
+**Mutation check:** before settling on the example, ask which subtly wrong
+implementation it would catch. An example that would still pass against an
+inverted comparison, an off-by-one, or a dropped condition is too weak —
+prefer boundary values and near-misses. Coverage only proves the code ran;
+the example's job is detection.
+
 **BDD naming (principle — see the framework file for exact syntax):**
 - Describe a **capability or behavior**, never a method — "creating a
   transaction", "resolving a dispute" — NOT "#call" or "resolve()"
@@ -92,13 +100,37 @@ with a meaningful message.
 **Test quality (universal, non-negotiable):**
 - Test **observable outcomes only** — state changes, return values, side
   effects, errors raised
-- Mock only at **infrastructure boundaries** (HTTP, Redis, the clock,
-  external APIs). Never mock internal calls on the unit under test
+- **The claim decides the boundary.** Every layer has its own public
+  interface; test at the one that owns the behavior, and let the test name
+  claim only what that boundary proves — a "user creates X" test that calls
+  the HTTP endpoint proves an HTTP contract, not a UI flow. Don't re-test
+  what another layer already owns; which test fails should tell you which
+  boundary broke
+- **Fakes over mocks.** A test double is a hand-written implementation of the
+  real interface, verified by state ("was it saved?"), not interaction ("was
+  `.save()` called?"). Never mock or spy on internal calls of the unit under
+  test; if the outside world must be doubled, do it at the outermost edge
+  (HTTP/network-level handlers where an unhandled request fails the test).
+  Asserting on a collaborator the caller provided through the public surface
+  (an injected recorder, an `onSubmit` callback) is behavior, not spying
+- **Time is a dependency** — prefer injecting a clock/`now` through an
+  existing seam and passing tests a fixed instant; use the framework's
+  freeze-time helper when there is no seam (see Flaky tests)
 - Never reach into private members (private methods, unexported fields,
   instance variables) from a test
 - Never test constants, configuration, or metadata
 - Never copy implementation logic into the test
-- Use the project's factory/fixture helper — not raw constructors
+- **Never extract a function just to test it** — a helper is an
+  implementation detail of its consumer; prove it through the consumer's
+  boundary. There is no 1:1 test-file-to-source-file rule; group test files
+  by behavior
+- Use the project's factory/fixture helper — builders return **complete,
+  valid objects** and accept per-test overrides, and a test overrides only
+  what its assertion is about. No shared mutable test data: build fresh per
+  test; lifecycle hooks are for booting servers, not building data
+- **Assert whole values where the shape is the contract** — equality on the
+  full object catches more wrong implementations than plucking single
+  fields; assert a partial shape only when only that part is the contract
 - One behavior per test block — no god tests with 20 assertions
 
 **Multi-write unit check:** if the behavior under test writes more than one
@@ -199,6 +231,9 @@ If you catch yourself doing any of these, stop and correct:
 | Writing implementation before the test | Stop. Write the test first. |
 | Test name describes a method instead of behavior | Rename to describe the behavior |
 | Mocking a method on the unit under test | Test the outcome instead |
+| Spying on an internal collaborator to prove a call happened | Fake the real interface; assert the resulting state |
+| Extracting a helper only so a test can reach it | Prove it through its consumer's public boundary |
+| Example still passes with an inverted comparison or off-by-one | Strengthen it with boundary values and near-misses |
 | Reaching into private members from a test | Test through the public interface |
 | Test with 10+ assertions | Split into separate test blocks |
 | Constructing objects directly when factories exist | Use the project's factory helper |

@@ -146,7 +146,7 @@ Don't hide assertions inside fixtures — fixtures arrange, tests assert.
 | `unittest.mock.patch.object(self, '_private')` | Test through the public interface |
 | `obj._private_field` / name-mangled `_Class__attr` access in tests | Assert on the public API |
 | `assert result` as a catch-all | Assert the specific value (`assert result.ok is False`) |
-| `assert x == y` on a whole object when one field is under test | Assert the changed field only |
+| Plucking single fields when the whole shape is the contract | `assert result == expected` on the whole value (dataclasses compare by value); compare a subset only when only that part is contracted |
 | `freezegun` / `time.sleep` to coordinate timing | Inject a clock; use `freeze_time` only at boundaries |
 | `monkeypatch` on internal helpers | Refactor a seam; only patch external boundaries |
 | `pytest.mark.skip` left in committed code | Delete the test or fix it |

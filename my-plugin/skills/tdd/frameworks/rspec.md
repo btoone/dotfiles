@@ -47,6 +47,19 @@ build_stubbed(:transaction)        # persistence stubbed
 Never `Transaction.new` or `Transaction.create!` in a spec when a factory
 exists. Add missing factories to `spec/factories/`.
 
+## Test doubles
+
+Prefer a hand-written fake over a chain of `allow(...).to receive` stubs when
+a collaborator has real behavior: a fake is a plain class exposing the same
+public methods, verified by the state it holds ("was the payload recorded?"),
+not by which methods were called. Ruby has no compiler to break a stale fake,
+so keep interfaces honest with `verify_partial_doubles = true` and
+`instance_double` where a full fake isn't warranted. Stub the outside world
+at the outermost edge — WebMock/VCR at the HTTP layer with unregistered
+requests raising — rather than stubbing methods on the client object, so URL
+drift fails the spec. Asserting on a collaborator the caller injected through
+the public surface is behavior, not spying.
+
 ## Framework-specific anti-patterns
 
 | Smell | Fix |

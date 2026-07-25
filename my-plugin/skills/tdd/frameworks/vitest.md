@@ -61,6 +61,31 @@ export const aTransaction = (
 Never `new Transaction({...})` or raw object literals in tests when a builder
 exists. Add a builder when a type is used in more than one test.
 
+Build data fresh inside each test. `let` declarations reassigned in
+`beforeEach` invite cross-test leakage; a builder call per test does not.
+
+## Test doubles
+
+Write fakes, not `vi.mock`/`jest.mock`. A fake is a hand-written class or
+object that `implements` the real interface, so the compiler breaks every
+fake whenever the contract changes:
+
+```ts
+class FakeReleaseSource implements ReleaseSource {
+  constructor(private readonly releases: Release[] = []) {}
+  async releasesSince(): Promise<Release[]> {
+    return this.releases;
+  }
+}
+```
+
+Verify state through the public surface, not calls. When the outside world
+must be doubled, do it at the network edge (MSW-style request handlers) with
+unhandled requests configured to fail the test, so URL drift is caught — the
+handler can assert the outgoing request shape, which removes any need to spy
+on the client. Casts like `as unknown as Octokit` live only inside fake
+constructors at the seam, never in application code.
+
 ## Framework-specific anti-patterns
 
 | Smell | Fix |
@@ -69,7 +94,7 @@ exists. Add a builder when a type is used in more than one test.
 | `vi.mock('./sibling')` / `jest.mock` to stub internal modules | Only mock external boundaries (network, FS, time); refactor seams for internals |
 | `(obj as any).privateField` / `@ts-ignore` in tests | Assert on the public API |
 | `expect(x).toBeTruthy()` as a catch-all | Assert the specific expected value |
-| `toEqual` on a whole fixture when one field is under test | Assert the changed field only |
+| Plucking single fields when the whole shape is the contract | `toEqual` on the whole value; `expect.objectContaining` when only part of the shape is contracted |
 | Snapshot tests for logic (not rendered UI) | Write explicit assertions |
 | `useFakeTimers` without `useRealTimers()` in teardown | Reset in `afterEach`; or pass a clock |
 

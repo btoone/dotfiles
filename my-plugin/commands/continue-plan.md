@@ -37,10 +37,23 @@ When the user picks one: set its `status: active`, and demote any previously act
 ## Continuing the work
 
 1. Read the plan fully before touching code.
-2. Reconcile it against reality — `git log` since the plan's `created` date, and the code it names. Plans go stale; say what no longer holds rather than implementing a premise that's already been overtaken.
-3. Work the next unfinished step under the normal TDD cycle (my:tdd).
-4. As steps land, append to the plan's `## Progress` section (create it if absent): a dated one-liner per completed step. This is what the next session reads.
-5. After each step, check whether any unfinished phase, part, or PR remains. When none does, the plan is finished — go straight to Finishing in the same session. Don't wait to be asked.
+2. If it has no lifecycle footer, add one now (see below). A plan should carry its own termination condition, so an agent reading only the file still knows the thing is disposable.
+3. Reconcile it against reality — `git log` since the plan's `created` date, and the code it names. Plans go stale; say what no longer holds rather than implementing a premise that's already been overtaken.
+4. Work the next unfinished step under the normal TDD cycle (my:tdd).
+5. As steps land, append to the plan's `## Progress` section (create it if absent): a dated one-liner per completed step. This is what the next session reads.
+6. After each step, check whether any unfinished phase, part, or PR remains. When none does, the plan is finished — go straight to Finishing in the same session. Don't wait to be asked.
+
+## The lifecycle footer
+
+Every plan file ends with this, verbatim. Any plan written or picked up without it gets it added:
+
+```markdown
+---
+
+*Temporary artifact. When this plan's last phase lands: set `status: shipped`, route its
+durable learnings out (`my:capture-learnings`), then delete this file. Never archive it —
+git history is the archive.*
+```
 
 ## Finishing
 

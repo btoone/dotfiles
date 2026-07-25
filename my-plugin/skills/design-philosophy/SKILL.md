@@ -135,7 +135,7 @@ XP-lineage testing practices distilled from Paul Hammond (Pack Software; `citypa
 - **Never extract a function just to test it** — the helper is an implementation detail of its consumer. No 1:1 test-file-to-source-file mapping.
 - **AI amplifies practices, good or bad.** Agent-assisted development requires stronger discipline, not less: force test-first, and earn trust via mutation kills, not green checkmarks.
 
-Deliberately *not* adopted from his system: blanket no-comments rule (my:comments governs comment style), commit-approval gates and plan-file workflow (conflicts with trunk-based flow), and 100%-coverage defaults (mutation evidence over a coverage number). His TypeScript strict-flag set is project-level policy, not philosophy — adopt per repo with a measured errors-per-flag pass.
+Deliberately *not* adopted from his system: blanket no-comments rule (my:comments governs comment style), commit-approval gates and the plan-PR workflow that gates implementation behind an approved plan document (conflicts with trunk-based flow), and 100%-coverage defaults (mutation evidence over a coverage number). Adopted narrowly from that same workflow: his *plan-file lifecycle* — a plan is a temporary artifact at `.claude/plans/<feature>.md`, deleted when the feature ships, with anything durable routed to an ADR, a guideline doc, or memory first. Plan **creation** stays the harness's judgment call; only the storage location and the delete-on-ship rule are house policy. His TypeScript strict-flag set is project-level policy, not philosophy — adopt per repo with a measured errors-per-flag pass.
 
 ## Continuous Delivery Mindset
 

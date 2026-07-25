@@ -63,6 +63,16 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "plan-gate list"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {

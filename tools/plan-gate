@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+# Plan-file lifecycle for Claude Code sessions. Plans are temporary artifacts
+# in <repo>/.claude/plans/<feature>.md, deleted once the feature ships — the
+# durable parts get routed out first (my:capture-learnings). This enforces the
+# "deleted, never archived" half and reports state to agents.
+#
+#   plan-gate list          inventory + the status contract (SessionStart hook)
+#   plan-gate check         exit 1 while any plan is `status: shipped`
+#   plan-gate install       wire `check` into this repo's pre-push hook
+#
+# Status lives in each plan's frontmatter: active | queued | blocked | shipped.
+# At most one plan may be `active`; new plans start `queued` so writing one
+# mid-flight can't displace the work in progress. A plan with no frontmatter is
+# unknown, not broken — nothing here nags about it or rewrites it.
+
+set -uo pipefail
+
+root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+plans_dir="$root/.claude/plans"
+
+# The first `status:` inside the leading --- frontmatter block, or empty.
+plan_status() {
+  awk '
+    NR == 1 && $0 !~ /^---[[:space:]]*$/ { exit }
+    NR == 1 { next }
+    /^---[[:space:]]*$/ { exit }
+    /^status:[[:space:]]*/ {
+      sub(/^status:[[:space:]]*/, "")
+      sub(/[[:space:]]+$/, "")
+      print
+      exit
+    }
+  ' "$1"
+}
+
+# Sorts action-needed to the top: active, shipped, blocked, queued, unknown.
+status_rank() {
+  case "$1" in
+    active) echo 0 ;;
+    shipped) echo 1 ;;
+    blocked) echo 2 ;;
+    queued) echo 3 ;;
+    *) echo 4 ;;
+  esac
+}
+
+each_plan() {
+  [ -d "$plans_dir" ] || return 0
+  for plan in "$plans_dir"/*.md; do
+    [ -e "$plan" ] || continue
+    printf '%s\n' "$plan"
+  done
+}
+
+cmd_list() {
+  local rows=""
+  local count=0
+  local active=0
+
+  while IFS= read -r plan; do
+    [ -n "$plan" ] || continue
+    local status
+    status=$(plan_status "$plan")
+    [ -n "$status" ] || status="no status"
+    [ "$status" = active ] && active=$((active + 1))
+    count=$((count + 1))
+    rows+="$(status_rank "$status")|$status|$(basename "$plan" .md)"$'\n'
+  done < <(each_plan)
+
+  [ "$count" -gt 0 ] || return 0
+
+  echo "Plans in .claude/plans ($count):"
+  printf '%s' "$rows" | sort -t'|' -k1,1n -k3,3 | while IFS='|' read -r _ status name; do
+    [ -n "$name" ] || continue
+    if [ "$status" = shipped ]; then
+      printf '  %-9s %s  <- drain and delete\n' "$status" "$name"
+    else
+      printf '  %-9s %s\n' "$status" "$name"
+    fi
+  done
+
+  if [ "$active" -eq 0 ]; then
+    echo "No active plan — ask which to promote before resuming; never pick by age."
+  elif [ "$active" -gt 1 ]; then
+    echo "More than one plan is active. That is a state bug: demote all but one."
+  fi
+
+  cat <<'CONTRACT'
+Plans are temporary: at most one `active`, new plans start `queued`. When a
+plan's last phase/PR lands, set `status: shipped` right then, route its durable
+learnings out (my:capture-learnings), and delete the file — never archive it.
+Git history is the archive.
+CONTRACT
+}
+
+cmd_check() {
+  local shipped=()
+
+  while IFS= read -r plan; do
+    [ -n "$plan" ] || continue
+    [ "$(plan_status "$plan")" = shipped ] && shipped+=("$plan")
+  done < <(each_plan)
+
+  [ "${#shipped[@]}" -eq 0 ] && return 0
+
+  echo "plan-gate: ${#shipped[@]} plan(s) marked shipped, still on disk:" >&2
+  printf '  %s\n' "${shipped[@]#$root/}" >&2
+  cat >&2 <<'BLOCKED'
+
+A shipped plan is a plan that has not been drained. Route its durable parts to
+their homes (my:capture-learnings), delete the file, commit, then push.
+Bypass once with: git push --no-verify
+BLOCKED
+  return 1
+}
+
+cmd_install() {
+  local hook="$root/.git/hooks/pre-push"
+
+  if [ ! -d "$root/.git" ]; then
+    echo "plan-gate: $root is not a git repository" >&2
+    return 1
+  fi
+
+  if [ -f "$hook" ] && grep -q plan-gate "$hook"; then
+    echo "plan-gate: already wired into $hook"
+    return 0
+  fi
+
+  local block
+  block=$(cat <<'HOOK'
+# plan-gate: refuse to push while a plan is marked shipped but not yet deleted
+if command -v plan-gate >/dev/null 2>&1; then
+  plan-gate check || exit 1
+fi
+HOOK
+  )
+
+  # Goes directly under the shebang, not at the end: an existing hook may end in
+  # `exit 0`, which would make an appended check dead code that never runs.
+  if [ -f "$hook" ]; then
+    local tmp="$hook.plan-gate.$$"
+    {
+      head -n 1 "$hook"
+      printf '\n%s\n' "$block"
+      tail -n +2 "$hook"
+    } > "$tmp" && mv "$tmp" "$hook"
+  else
+    printf '#!/bin/sh\n\n%s\n' "$block" > "$hook"
+  fi
+
+  chmod +x "$hook"
+  echo "plan-gate: wired into $hook"
+}
+
+case "${1:-list}" in
+  list) cmd_list ;;
+  check) cmd_check ;;
+  install) cmd_install ;;
+  *)
+    echo "usage: plan-gate [list|check|install]" >&2
+    exit 64
+    ;;
+esac

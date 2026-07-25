@@ -38,6 +38,7 @@ default — always-loaded lines are a tax on every future turn.
 | Valuable beyond this project: a technique, a research finding, a worldview, reusable playbook | Obsidian vault via `/my:vault` (Developer Brain for craft/tooling) |
 | An operational fact the team needs (runbook step, deploy gotcha, credential location pointer) | `docs/` or README, wherever the project keeps runbooks |
 | Content the project serves or publishes to others | The project's content directory, through its review path |
+| A written plan for work still in flight | `.claude/plans/<feature>.md` at the repo root, committed. Temporary — when its last phase lands mark it `status: shipped`, route its durable parts through this table, then delete the file. Never archive it; git history is the archive |
 | Only relevant to this conversation | Nowhere. Let it die. Delete scratch files and finished plans. |
 
 ## Rules

@@ -56,12 +56,19 @@ task calls for it, or a skill with a trigger description.
    - **Route out**: decisions with tradeoffs belong in an ADR; personal
      preferences and cross-session state in auto-memory; anything stale or
      no longer true gets deleted, shown in the plan first.
-3. **Present the plan in full before touching anything.** Print the
-   complete plan as a normal text message in the conversation — a table
-   of section → verdict → destination → lines saved, plus the projected
-   before/after totals — and only then ask for approval. Never put the
-   plan only inside an approval prompt's option labels: the user must be
-   able to read the whole plan on screen before the question appears.
+3. **Present the plan and end the turn.** The plan is the deliverable
+   of this step, delivered as the final text message of the turn: a
+   markdown table of section → verdict → destination → lines saved,
+   plus the projected before/after totals, ending with a one-line ask
+   ("Reply to approve, or name the verdicts to change"). No tool calls
+   after the table — do NOT use AskUserQuestion for this approval.
+   Ending the turn on the plan text is what guarantees the user can
+   read it; an approval prompt lets the turn end without the plan ever
+   appearing, which is the observed failure mode (the plan stays in
+   private reasoning or gets compressed into an option label like
+   "All 18 verdicts: 381 → ~140 lines", and the user is asked to
+   approve a plan they were never shown). Wait for the user's reply
+   before touching anything.
 4. **Apply.** Content moves substantially verbatim; the only new prose is
    pointer lines and skill trigger descriptions. Never silently drop a
    rule — every removal is either a demotion with a pointer or a deletion

@@ -112,8 +112,9 @@ alias gds='git diff --stat'
 alias gdt='git difftool'
 alias gexport='git archive --format zip --output'
 alias gl="git log"
-alias gll="git log --oneline --decorate"
-alias glld="git log --date=short --pretty=format:'%C(auto)%h %C(green)%ad%C(auto)%d %C(reset)%s %C(blue)(%an)'"
+# -3 is the common case; a later -n on the command line wins, so `gll -20` still works
+alias gll="git log --oneline --decorate -3"
+alias glld="git log -3 --date=human --pretty=format:'%C(auto)%h %C(green)%ad%C(auto)%d %C(reset)%s %C(blue)(%an)'"
 alias glg='git log --oneline --graph --decorate --all'
 alias gmt="git mergetool"
 alias gpl='git pull'

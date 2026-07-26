@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+"""Open a note in Obsidian by file path.
+
+Targets vaults by their Obsidian ID rather than their name. Obsidian names a
+vault after the basename of its real path, so a vault reached through a
+symlink (~/Vaults/Developer -> .../Brains/Developer Brain) answers to a name
+nobody would guess, and two vaults whose names share a prefix are easy to
+confuse. The IDs in obsidian.json are unambiguous and survive a rename.
+"""
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+import urllib.parse
+from pathlib import Path
+
+REGISTRY = Path.home() / "Library/Application Support/obsidian/obsidian.json"
+
+
+def registered_vaults():
+    """Vault (id, resolved path) pairs from Obsidian's registry."""
+    try:
+        raw = json.loads(REGISTRY.read_text())
+    except FileNotFoundError:
+        sys.exit(f"No Obsidian registry at {REGISTRY} — is Obsidian installed?")
+    except json.JSONDecodeError as err:
+        sys.exit(f"Could not parse {REGISTRY}: {err}")
+
+    vaults = []
+    for vault_id, entry in raw.get("vaults", {}).items():
+        path = entry.get("path")
+        if path:
+            vaults.append((vault_id, Path(path).resolve()))
+    return vaults
+
+
+def locate(note):
+    """The registered vault containing note, as (id, path).
+
+    Picks the longest matching root so a vault nested inside another resolves
+    to the inner one.
+    """
+    candidates = [(vid, root) for vid, root in registered_vaults() if root in note.parents]
+    if not candidates:
+        sys.exit(
+            f"{note} is not inside any vault registered with Obsidian.\n"
+            "Open it in Obsidian once to register it."
+        )
+    return max(candidates, key=lambda pair: len(pair[1].parts))
+
+
+def uri(note):
+    vault_id, root = locate(note)
+    relative = note.relative_to(root).with_suffix("")
+    # quote, not the default quote_plus: Obsidian wants %20 for spaces, not +.
+    query = urllib.parse.urlencode(
+        {"vault": vault_id, "file": str(relative)}, quote_via=urllib.parse.quote
+    )
+    return f"obsidian://open?{query}"
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Open a note in Obsidian.")
+    parser.add_argument("note", help="path to the note")
+    parser.add_argument(
+        "--print",
+        dest="print_only",
+        action="store_true",
+        help="print the obsidian:// URI instead of opening it",
+    )
+    parser.add_argument(
+        "--focus",
+        action="store_true",
+        help="bring Obsidian to the front (default: open in the background)",
+    )
+    args = parser.parse_args()
+
+    note = Path(args.note).expanduser()
+    if not note.exists():
+        sys.exit(f"No such note: {note}")
+    note = note.resolve()
+
+    target = uri(note)
+    if args.print_only:
+        print(target)
+        return
+
+    command = ["open"] + ([] if args.focus else ["-g"]) + [target]
+    subprocess.run(command, check=True)
+
+
+if __name__ == "__main__":
+    main()

@@ -25,7 +25,7 @@ If no `_Schema.md` exists, tell the user this vault doesn't follow the brain pat
 
 ### Enumerate the filesystem completely
 
-Brain vaults are often in iCloud, Obsidian Sync, or another cloud-backed directory. A first `ls` may return only the locally-materialized subset — newer/unsynced files can be invisible to a fresh process. **Run `ls -la <vault>` and `find <vault> -type f -name '*.md'` together as your authoritative inventory, and cross-check the counts.** If the two disagree, force a directory stat (`stat <vault>`) and re-list. Treat any discrepancy between scans as a fail-closed signal — re-scan before reporting.
+Brain vaults are often in iCloud, Obsidian Sync, or another cloud-backed directory. A first `ls` may return only the locally-materialized subset — newer/unsynced files can be invisible to a fresh process. **Run `ls -la <vault>` and `find -L <vault> -type f -name '*.md'` together as your authoritative inventory, and cross-check the counts.** The `-L` is required: vault entries under `~/Vaults/` are frequently symlinks to the real directory, and a bare `find` stops at the symlink and reports zero files — which reads as an empty vault rather than an error. If the two disagree, force a directory stat (`stat <vault>`) and re-list. Treat any discrepancy between scans as a fail-closed signal — re-scan before reporting.
 
 ## Checks
 

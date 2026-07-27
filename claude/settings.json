@@ -78,12 +78,15 @@
     "type": "command",
     "command": "$CLAUDE_CONFIG_DIR/statusline-command.sh"
   },
+  "env": {
+    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1"
+  },
   "enabledPlugins": {
-    "commit-commands@claude-plugins-official": true,
     "skillify@claude-skillify": true,
     "my@my-plugin": true,
-    "frontend-design@claude-plugins-official": true,
-    "humanizer@humanizer": true
+    "humanizer@humanizer": true,
+    "commit-commands@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-skillify": {
@@ -102,6 +105,12 @@
       "source": {
         "source": "github",
         "repo": "blader/humanizer"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
       }
     }
   },

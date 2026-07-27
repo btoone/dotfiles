@@ -113,6 +113,13 @@ gates.
    gates yourself before reporting — never accept an implementer's "green".
 4. **Escalate.** A judgment-call finding whose hinge question is still
    unanswered goes back to the user — never to an implementer to guess.
+5. **Ship.** The session that makes the shipping push owns the plan's
+   lifecycle. If the repo keeps plan files (`.claude/plans/`) and the active
+   plan has no unfinished phase left once the accepted fixes land, walk its
+   Finishing flow before pushing — set `status: shipped`, route durable
+   learnings out (my:capture-learnings), delete the file, commit — exactly as
+   `my:continue-plan` specifies. The implementing session is gone by now;
+   never leave a completed plan `active` for a session that no longer exists.
 
 Exception: a purely mechanical fix the finding already fully specifies (typo,
 stale comment, dead line) may be applied inline; anything that changes

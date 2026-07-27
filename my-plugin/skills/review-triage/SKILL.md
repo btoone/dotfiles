@@ -7,7 +7,10 @@ description: >
   re-renders them grouped by recommended action (fix now / judgment call /
   skip), each with the concrete failure, a fix sketch, and an effort size, so
   the user only has to veto, not analyze. Does NOT re-run the review, verify
-  findings, or apply fixes. Use AFTER /code-review or any review that produced
+  findings, or edit code itself — when the user picks findings to fix, the
+  triaging session orchestrates: it writes a self-contained brief per fix and
+  spawns a fresh implementer subagent per slice (see Handoff).
+  Use AFTER /code-review or any review that produced
   a findings list, when the user wants output they can act on. Triggers:
   "triage the findings", "reformat the review output", "which of these should
   I fix", "make the review output useful". Args may name a file containing
@@ -89,3 +92,28 @@ Reply `fix 1 2 3 4` (the fix-now set), or adjust the numbers.
 Keep each finding to three lines or fewer. The failure scenario stays concrete
 (inputs → wrong outcome), the fix sketch stays one line, and the whole report
 should fit on one screen for a typical review.
+
+## Handoff
+
+When the user replies with a fix set, you become the fix orchestrator — you
+do not edit code in this session. The reviewers were fresh agents; keep the
+fixers fresh too, and keep this session at the altitude of briefs, diffs, and
+gates.
+
+1. **Brief.** For each chosen finding (or a coherent group touching the same
+   code), write a self-contained fix brief: file:line, the concrete failure
+   scenario, the fix sketch, and the first failing test to write. Put briefs
+   where the project keeps in-flight work (the active plan file's follow-ups,
+   else a triage file under the plans directory) — a brief must make sense to
+   an agent with none of this session's context.
+2. **Delegate.** Spawn a fresh implementer subagent per slice with the brief
+   as its spec, following the project's TDD skill if one exists. Slices with
+   disjoint file sets may run in parallel, each warned off the others' files.
+3. **Verify.** Review each diff yourself between slices. Re-run the project's
+   gates yourself before reporting — never accept an implementer's "green".
+4. **Escalate.** A judgment-call finding whose hinge question is still
+   unanswered goes back to the user — never to an implementer to guess.
+
+Exception: a purely mechanical fix the finding already fully specifies (typo,
+stale comment, dead line) may be applied inline; anything that changes
+behavior gets a fresh implementer.

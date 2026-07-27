@@ -43,6 +43,32 @@ When the user picks one: set its `status: active`, and demote any previously act
 5. As steps land, append to the plan's `## Progress` section (create it if absent): a dated one-liner per completed step. This is what the next session reads.
 6. After each step, check whether any unfinished phase, part, or PR remains. When none does, the plan is finished — go straight to Finishing in the same session. Don't wait to be asked.
 
+## Orchestrating slices
+
+For a multi-slice plan, this session is the orchestrator; implementers are
+ephemeral:
+
+- One fresh implementer subagent per slice, briefed with a pointer at the plan
+  file — never resume an implementer across slices; a resumed agent replays
+  its whole transcript every turn, and self-contained slices lose nothing
+  from a fresh start.
+- Give each implementer an explicit verification budget: one full-suite run
+  at most, targeted tests otherwise, screenshots captured without self-reading.
+- Slices with disjoint file sets may run in parallel, each warned off the
+  others' files; serialize the full-suite gate through the orchestrator.
+- Review each slice's diff yourself and re-run the project's gates yourself
+  before committing — never accept an implementer's "green".
+
+A single-slice plan or a trivial step doesn't need the ceremony — work it
+directly.
+
+**The review gate:** after the last slice of a multi-slice plan — before the
+push that ships it — run `/code-review` on the accumulated diff, then
+`my:review-triage` on its findings; the triage's Handoff spawns fresh
+implementers for accepted fixes. Running the review from a fresh session is
+hygiene (cheap context, a triage untainted by having defended the slices),
+not a requirement — the finders and fixers are fresh agents either way.
+
 ## The lifecycle footer
 
 Every plan file ends with this, verbatim. Any plan written or picked up without it gets it added:

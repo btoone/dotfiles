@@ -2,20 +2,12 @@
 name: bounded-contexts
 description: >
   Decide WHERE new domain code lives so a codebase organized by bounded
-  context stays predictable as contexts get added — the rule a contributor
-  (agent or human) follows before introducing a new domain noun. Models the
-  domain in two coordinates: which bounded context owns the code (slices by
-  meaning) and which layer it sits in (slices by dependency direction), with
-  one hard rule — dependencies point down, a lower layer never names a higher
-  one. Places behavior by KIND not amount (record / domain / framework),
-  namespaces by ownership not reference, names from domain language not one
-  customer's vocabulary, and treats boundary purity as a default with an
-  evidence-based escape valve, never a tax. The durable rule lives here; each
-  project's own contexts table and migration state live in its
-  .claude/bounded_contexts.md, which this skill reads (and offers to scaffold
-  when missing). Loads a frameworks/<stack>.md appendix for stack-specific
-  placement (e.g. Rails directory coupling) and degrades to generic shapes
-  when none matches.
+  context stays predictable as contexts get added. Covers the two coordinates
+  (which context owns the code, which layer it sits in), the dependency rule,
+  placing behavior by kind, namespacing by ownership, naming, and the
+  evidence-based escape valve. Reads the project's own
+  .claude/bounded_contexts.md and a frameworks/<stack>.md appendix for
+  stack-specific placement.
 allowed-tools:
   - Read
   - Grep
@@ -26,16 +18,13 @@ allowed-tools:
   - Edit
 when_to_use: >
   Use BEFORE writing the first failing spec for any work that introduces or
-  relocates a top-level domain noun. Concrete triggers: a new noun that
-  doesn't fit an existing model (introducing Preference, Notification,
-  AuditTrail); a new top-level source directory; a new domain service, query
-  object, or value object that doesn't obviously belong to an existing
-  context; a refactor that surfaces a new noun out of an existing model
-  (extracting a resolver out of a persistence class); deciding whether a new
-  model should be namespaced under a context; or planning a migration that
-  re-homes existing code into a context. If you're only modifying behavior
-  inside an existing context, fixing a bug, or adding a column, this rule does
-  NOT fire — keep to the conventions already in that context.
+  relocates a top-level domain noun. Triggers: a new noun that doesn't fit an
+  existing model; a new top-level source directory; a new domain service,
+  query object, or value object with no obvious home; a refactor that surfaces
+  a new noun; deciding whether a model should be namespaced under a context;
+  planning a migration that re-homes existing code. Does NOT fire for behavior
+  changes inside an existing context, bug fixes, or adding a column — keep to
+  that context's conventions.
 ---
 
 # Bounded Contexts — where domain code lives

@@ -2,17 +2,13 @@
 name: handoff
 description: >
   Decide how much autonomy a piece of work gets, and write the brief that
-  makes an unattended run safe. Sorts work into paired (plan mode, small
-  steps, read the diff) versus autonomous (brief it, read the summary),
-  then requires four fields in the brief — outcome, constraints, file
-  scope, and the command that proves it done. Refuses the handoff when the
-  repo has no mechanical gate, rather than proceeding on care. Use when
-  kicking off work meant to run unattended, when asked to "just go" or
-  "don't stop to check in", before spawning implementer subagents, or when
-  deciding whether something needs plan mode. Do NOT use for the inner
-  red-green-refactor loop (that's tdd), for resuming an existing plan
-  (that's continue-plan), or for reviewing work already finished (that's
-  code-review and review-triage).
+  makes an unattended run safe. Sorts work into paired versus autonomous, and
+  refuses the handoff when the repo has no mechanical gate. Use when kicking
+  off work meant to run unattended, when asked to "just go", before spawning
+  implementer subagents, or when deciding whether something needs plan mode.
+  Do NOT use for the inner red-green-refactor loop (that's tdd), for resuming
+  an existing plan (that's continue-plan), or for reviewing work already
+  finished (that's code-review and review-triage).
 ---
 
 # Handoff

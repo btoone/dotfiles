@@ -25,6 +25,7 @@ default — always-loaded lines are a tax on every future turn.
 | The learning is... | It goes to... |
 |---|---|
 | A durable rule for working in this repo (command, convention, gotcha any contributor will hit) | The narrowest existing `.claude/` guideline doc; project CLAUDE.md only if it applies to every session and no linked doc fits |
+| A defect a review or production caught that generalizes — the implementation looked right and no test objected | The project's test-guideline doc, as an entry in a named trap catalogue (see **Trap catalogues**) |
 | A decision with tradeoffs someone might revisit or relitigate | An ADR in `docs/adr/` (or the project's decision-record convention; create `docs/` note if none) |
 | About the user: preferences, corrections, how they like to work | Auto-memory (`type: user` or `feedback`) |
 | Cross-session project state not derivable from code or git (goals, in-flight threads, external constraints) | Auto-memory (`type: project`), relative dates made absolute |
@@ -64,3 +65,50 @@ Example: **Docker named-volume mountpoints are created root-owned** — first
 `just setup` on a fresh clone. Non-root containers then can't write.
 `just setup` chowns the volume once, so composer cache works without manual
 intervention.
+
+## Trap catalogues
+
+When a code review or a production bug catches something the tests should have
+— the implementation looked right and nothing objected — the generalization is
+worth more than the fix. Append it to the project's test-guideline doc as an
+entry in a **named, dated catalogue**, so the next author trips a habit instead
+of the same trap.
+
+Group entries by **failure family**, not chronology, and head the group with
+the review or incident that produced it, so a later reader can judge whether
+it's still live:
+
+```
+## Upsert & Ingestion Traps (each hit in this repo — outreach reviews, 2026-07-19 / 2026-07-20)
+```
+
+Each entry has three parts, in this order:
+
+1. **The general rule, bold, as the lead** — stated so it applies past this
+   instance. "Never use user-editable display values as stable identifiers,"
+   not "the `find_by(name:)` call broke."
+2. **The instance as evidence** — what actually happened, with the real
+   symptom: "a rename through the stages UI turned every push into a 500."
+   A concrete failure is what makes the rule land instead of preach.
+3. **The test that proves it** — the example a future author must write, and
+   why the obvious one misses it. "Test every nested payload with a scalar
+   *and* an array-of-pairs — the second is the trap, because nothing raises."
+
+Part 3 is not optional; it is the part that compounds. Without it the catalogue
+is a bug diary, and rereading it changes no test.
+
+**Prefer a mechanical guard to a remembered rule.** If the trap can be caught by
+the harness — a lint, a helper that fails loudly, a check in the test setup —
+write that and let the entry explain why it exists. Entries that depend on
+everyone remembering them decay; the ones worth writing as prose are the ones
+no guard can express.
+
+**Then wire it to where it fires.** A catalogue nobody rereads is inert. Add the
+one-line form to whichever list the project already consults while writing tests
+— anti-pattern table, test smells, pre-commit checklist — pointing back to the
+full entry.
+
+**Split a family into its own doc once it earns one.** Several entries sharing a
+root cause (browser races, clock and date flakes, tests that inherit the
+machine's network) outgrow a subsection; move them out and leave a pointer
+behind.

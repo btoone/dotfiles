@@ -67,6 +67,14 @@ the framework file once per session — it supplies the exact run commands,
 file paths, idiomatic test syntax, factory conventions, language idioms, and
 framework-specific anti-patterns for the universal rules below.
 
+Then load **the project's own trap catalogue**, if it has one — the traps this
+codebase has already been bitten by. Look in the project's test-guideline doc
+(`.claude/tdd_guidelines.md`, `.claude/testing.md`, `docs/testing.md`, or
+whatever the project uses) for sections naming a family of traps, and in any
+doc split out from it (`test_flakiness.md` and the like). Read it once per
+session alongside the framework file. If the project has no such doc, don't
+manufacture one — proceed on the universal rules.
+
 ## Step 1 — Understand the change
 
 Read the relevant modules and existing tests. You should be able to
@@ -142,6 +150,13 @@ rolls back nothing already committed. Write the rollback test to fail a
 *later* record so an earlier record's committed write proves the rollback
 (fail-on-first is vacuous — it passes even without a transaction).
 Framework-specific traps live in the matching `frameworks/*.md`.
+
+**Trap-catalogue check:** scan the project's catalogue (loaded in Step 0) for
+entries whose family touches this behavior — the same kind of write, the same
+boundary, the same shared aggregate. Each entry names the example that catches
+it; if one applies, write that example now rather than discovering the trap in
+review. The catalogue exists because these were missed once by someone reading
+the code carefully, so "I checked and it looks right" is not the counterargument.
 
 **Success criteria:** the test fails with a message that clearly shows what
 behavior is missing.
@@ -261,3 +276,20 @@ all flakes fall into two families:
   expected condition; never snapshot-read state right after triggering async work.
 
 See the matching `frameworks/*.md` for the exact freeze-time and wait helpers.
+
+## The project's trap catalogue
+
+The universal rules in this skill are what every project needs. A mature project
+also accumulates its **own** traps — the misses a review or an incident caught,
+where the implementation looked right and no test objected. Those live in the
+project's test-guideline doc, grouped by failure family and dated to the review
+that produced them, and each entry names the example that catches it.
+
+Read it in Step 0, apply it in Step 2. Two entries in the same family are worth
+more than either alone: they show the shape of what this codebase gets wrong.
+
+**Closing the loop.** When a review or a production bug catches something the
+tests should have, the generalization outlives the fix — route it into the
+catalogue via `my:capture-learnings`, which carries the entry shape and the rule
+that a mechanical guard beats a remembered one. A catalogue only compounds if
+entries keep landing in it.

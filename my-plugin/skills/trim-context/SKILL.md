@@ -1,23 +1,15 @@
 ---
 name: trim-context
 description: >
-  Audit an overgrown CLAUDE.md and shrink what loads at session start.
-  Classifies every section by the test "does this apply to every turn?" —
-  always-on philosophy and routing stay; task-specific depth (examples,
-  catalogs, code blocks, per-area rules) gets demoted to an on-demand
-  .claude/ doc or a skill with a one-line pointer left behind; misfiled
-  knowledge gets routed out entirely (decisions → ADR, personal → memory,
-  stale → deleted); rules a hook, linter, or CI can enforce mechanically
-  leave context and get wired into the tool instead. Produces a demotion
-  plan (section → verdict → destination → lines saved) for approval BEFORE
-  editing, and reports the honest metric: lines loaded at session start,
-  before and after. Targets the project CLAUDE.md in the current
-  directory by default; the global one only when explicitly asked. Use
-  when a CLAUDE.md "is getting long", when asked to "trim/audit context",
-  when a project file creeps past ~150 lines, or after a stretch of
-  appending rules without pruning. Do NOT use for routing fresh session
-  learnings (that's capture-learnings), for auditing auto-memory (that's
-  audit-memory), or for prose style edits to content that's staying.
+  Shrink what loads at session start — an overgrown CLAUDE.md, or a
+  plugin's skill-listing frontmatter. Sorts always-on rules from
+  task-specific depth, demotes the depth to an on-demand doc, a skill, or
+  the SKILL.md body it belongs in, and presents a plan for approval before
+  editing. Use when a CLAUDE.md "is getting long", when asked to
+  "trim/audit context", when skill descriptions bloat the listing or risk
+  truncation, or when a file creeps past ~150 lines. Do NOT use for
+  routing fresh session learnings (that's capture-learnings) or for
+  auditing auto-memory (that's audit-memory).
 ---
 
 # Trim context
@@ -32,10 +24,13 @@ task calls for it, or a skill with a trigger description.
 ## Procedure
 
 1. **Baseline.** The target is the project `CLAUDE.md` in the current
-   directory unless the user explicitly names another file or says
-   "global" — never widen to the global file on your own, even if it
-   looks trimmable. Measure what actually always loads *for the target*:
-   the file itself plus any `@`-imports. Record the total.
+   directory unless the user explicitly names another one — a different
+   file, "global", or a plugin's skill listing (see *Trimming a skill
+   listing*). Never widen on your own, even when some other always-loaded
+   file looks trimmable. Measure what actually always loads *for the
+   target*: for a `CLAUDE.md`, the file itself plus any `@`-imports; for
+   a skill listing, the `description` and `when_to_use` frontmatter of
+   every `SKILL.md` in the named plugin. Record the total.
 2. **Classify each section** with the one test — *does this change how the
    agent should behave on every single turn?*
    - **Stays**: philosophy and hard rules that apply to all work
@@ -78,11 +73,47 @@ task calls for it, or a skill with a trigger description.
    file lacks a learnings-routing convention (capture-learnings), suggest
    adding one so the trim doesn't regrow.
 
+## Trimming a skill listing
+
+A `SKILL.md` is already split into the two tiers this skill reasons
+about: the frontmatter loads at session start for every session, the body
+loads only when the skill fires. An oversized `description` is the same
+demotion as an oversized CLAUDE.md section, with the destination one file
+closer. Usually the body already says it — grep before cutting, because
+that turns the move into a plain delete of a fact billed twice.
+
+Steps 3–5 are unchanged: plan, approve, apply, verify. Only the
+classification test differs, because a description is not content, it is
+a routing key. Ask of each clause: **would the skill still fire without
+it?**
+
+- **Stays**: what the skill does, in one clause.
+- **Stays**: the trigger vocabulary — the literal words a user would
+  type. This is the surface routing matches on, so it is the last thing
+  to cut, never the first.
+- **Stays**: the disambiguating clause ("do NOT use for X, that's Y"),
+  but only where a sibling skill genuinely competes for the same trigger.
+  A "do NOT" naming no real rival is dead weight.
+- **Moves to the body**: procedure, traps, worked detail, encoded
+  technical knowledge. A description that teaches is paying always-on
+  rates for on-demand content.
+- **Deleted**: restatements of the skill's own name, and exhaustive
+  trigger lists where three distinctive examples route as well as ten.
+
+Verify differently too. Re-read each trimmed description cold and name
+the tasks it should catch; if a real trigger no longer has a word to
+match on, put it back.
+
 ## Judgment calls
 
 - **When in doubt, it goes on demand.** The cost of a missed always-on
   rule is one extra pointer lookup; the cost of always-on bloat is paid on
   every turn by every future session.
+- **For descriptions, the doubt runs the other way.** An over-trimmed
+  CLAUDE.md costs one pointer lookup and announces itself. An
+  over-trimmed description fails silently — the skill simply never fires,
+  and nothing surfaces the miss. When unsure whether a trigger word is
+  load-bearing, keep it.
 - **Stay scoped to the target.** Other always-loaded files — the global
   CLAUDE.md when trimming a project file, or vice versa — are out of
   scope: don't measure them, don't re-audit them, and don't report on

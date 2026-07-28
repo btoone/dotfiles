@@ -1,22 +1,16 @@
 ---
 name: brain-maintenance
 description: >
-  Wire a note that already exists into the rest of an Obsidian brain vault —
-  the enrichment half of the schema's ingest operation. Adds `[[wiki links]]`
-  from the note to related existing notes and contextual backlinks from those
-  notes back to it, adds an `index.md` entry under the right category, and
-  appends an `[INGEST]` line to `log.md`. Deliberately does NOT decide where
-  the note lives, move it, rename it, or touch its frontmatter — placement is
-  the writer's job and is settled before this runs, so this skill never
-  invalidates a path someone has already been told. Reads its own context from
-  disk (the note, `_Schema.md`, `index.md`), so it works with no conversation
-  history and is safe to run in a background subagent.
-  Use when a note has been written into a brain vault and needs to be
-  connected: invoked by `/my:vault` after it saves, or standalone against a
-  note you wrote by hand or dropped in from elsewhere. Triggers: "link this
-  note up", "wire it into the index", "run maintenance on <note>". Do NOT use
-  to file or categorize an unplaced note (that belongs to the writer), or to
-  sweep the whole vault for orphans and broken links (that is `/my:lint-brain`).
+  Wire a note that already exists into the rest of an Obsidian brain vault.
+  Adds `[[wiki links]]` and backlinks between it and related notes, an
+  `index.md` entry under the right category, and an `[INGEST]` line in
+  `log.md`. Works with no conversation history, so it can run in a background
+  subagent. Use when a note has been written into a brain vault and needs
+  connecting: invoked by `/my:vault` after it saves, or standalone against a
+  note you wrote by hand. Triggers: "link this note up", "wire it into the
+  index", "run maintenance on <note>". Do NOT use to file or categorize an
+  unplaced note (that belongs to the writer), or to sweep the whole vault for
+  orphans and broken links (that is `/my:lint-brain`).
 ---
 
 # Brain Maintenance

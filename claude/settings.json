@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1"
+  },
   "permissions": {
     "defaultMode": "auto"
   },
@@ -77,9 +80,6 @@
   "statusLine": {
     "type": "command",
     "command": "$CLAUDE_CONFIG_DIR/statusline-command.sh"
-  },
-  "env": {
-    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1"
   },
   "enabledPlugins": {
     "skillify@claude-skillify": true,

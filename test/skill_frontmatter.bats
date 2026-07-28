@@ -9,7 +9,9 @@
 # not grow back once trimmed.
 
 setup() {
-  SKILLS="$BATS_TEST_DIRNAME/../my-plugin/skills"
+  # Overridable so the vocabulary tests can be mutation-checked against a
+  # perturbed copy of the tree.
+  SKILLS="${MY_PLUGIN_SKILLS:-$BATS_TEST_DIRNAME/../my-plugin/skills}"
   # Ratchet, not an aspiration: lower it as skills get trimmed, never raise it.
   BUDGET=13000
 }
@@ -96,4 +98,60 @@ assert_keeps_vocabulary() { # skill term...
   assert_keeps_vocabulary trim-context \
     "CLAUDE.md" "session start" "trim/audit context" "skill descriptions" \
     "capture-learnings" "audit-memory"
+}
+
+@test "data-lineage: keeps the vocabulary a provenance question routes on" {
+  assert_keeps_vocabulary data-lineage \
+    "source of truth" "stop updating" "which table feeds" "file:line" \
+    "globally-unique key"
+}
+
+@test "comments: keeps the vocabulary a comment-writing request routes on" {
+  assert_keeps_vocabulary comments \
+    "doc comment" "let the code speak" "audit the comments we added" \
+    "changeset" "gotcha"
+}
+
+@test "capture-learnings: keeps the vocabulary a wrap-up request routes on" {
+  assert_keeps_vocabulary capture-learnings \
+    "CLAUDE.md" "ADR" "auto-memory" "remember this" \
+    "capture what we learned" "wrap up"
+}
+
+@test "design-philosophy: keeps the vocabulary a design-tradeoff question routes on" {
+  assert_keeps_vocabulary design-philosophy \
+    "design tradeoff" "how should I model this" "Rule of Three" "SOLID" \
+    "DDD" "coding philosophy"
+}
+
+@test "brain-maintenance: keeps the vocabulary a note-wiring request routes on" {
+  assert_keeps_vocabulary brain-maintenance \
+    "Obsidian" "wiki links" "backlinks" "index.md" "log.md" \
+    "link this note up" "lint-brain"
+}
+
+@test "feature-guide: keeps the vocabulary a shareable-writeup request routes on" {
+  assert_keeps_vocabulary feature-guide \
+    "Artifact" "Playwright" "screenshot" "walkthrough" "non-technical"
+}
+
+@test "review-triage: keeps the vocabulary a post-review request routes on" {
+  assert_keeps_vocabulary review-triage \
+    "triage the findings" "/code-review" "ReportFindings" "fix now" \
+    "reformat the review output"
+}
+
+@test "handoff: keeps the vocabulary an autonomy question routes on" {
+  assert_keeps_vocabulary handoff \
+    "unattended" "just go" "plan mode" "mechanical gate" "autonomous"
+}
+
+@test "headless-tui: keeps the vocabulary a terminal-UI debugging request routes on" {
+  assert_keeps_vocabulary headless-tui \
+    "fzf" "TUI" "keybinding" "script(1)" "flashes and disappears"
+}
+
+@test "tdd: keeps the vocabulary an implementation request routes on" {
+  assert_keeps_vocabulary tdd \
+    "TDD" "BDD" "add a spec" "TDD this" "go ahead"
 }

@@ -80,7 +80,11 @@ about: the frontmatter loads at session start for every session, the body
 loads only when the skill fires. An oversized `description` is the same
 demotion as an oversized CLAUDE.md section, with the destination one file
 closer. Usually the body already says it — grep before cutting, because
-that turns the move into a plain delete of a fact billed twice.
+that turns the move into a plain delete of a fact billed twice. Grep
+under-reports, though: a phrase that wraps across lines in folded YAML or
+markdown never matches, so a zero hit on a multi-word phrase means go read
+the section, not that it is missing. Twice that nearly turned a delete
+into a needless move.
 
 Steps 3–5 are unchanged: plan, approve, apply, verify. Only the
 classification test differs, because a description is not content, it is
@@ -91,19 +95,26 @@ it?**
 - **Stays**: the trigger vocabulary — the literal words a user would
   type. This is the surface routing matches on, so it is the last thing
   to cut, never the first.
-- **Stays**: a negative clause doing either of two jobs. It **disambiguates**
-  from a sibling that genuinely competes for the same trigger ("do NOT use
-  for X, that's Y"), or it **bounds an over-broad trigger** — what stops
-  `capture-learnings`, which fires on "remember this", from catching every
-  mid-task scratch note, and `bounded-contexts`, which fires before the
-  first failing spec, from catching every bug fix. The second job names no
-  rival and is easy to mistake for dead weight; a skill whose triggers are
-  common phrases usually needs it more than a disambiguating one. A clause
-  doing neither — excluding nothing the triggers would otherwise catch —
-  is what gets cut.
+- **Stays**: a negative clause addressed to the **router** — one that changes
+  whether the skill fires. It either **disambiguates** from a sibling that
+  genuinely competes for the same trigger ("do NOT use for X, that's Y"), or
+  it **bounds an over-broad trigger** — what stops `capture-learnings`, which
+  fires on "remember this", from catching every mid-task scratch note, and
+  `bounded-contexts`, which fires before the first failing spec, from
+  catching every bug fix. The bounding kind names no rival and is easy to
+  mistake for dead weight; a skill whose triggers are common phrases needs
+  it more than a disambiguating one, not less. A clause doing neither —
+  excluding nothing the triggers would otherwise catch — is what gets cut.
 - **Moves to the body**: procedure, traps, worked detail, encoded
   technical knowledge. A description that teaches is paying always-on
   rates for on-demand content.
+- **Moves to the body**: a negative clause addressed to the **agent** —
+  what not to touch once the skill is already running. Same `do NOT`
+  surface as above, opposite verdict. `brain-maintenance`'s "does NOT move
+  or rename the note" and `review-triage`'s "does NOT re-run the review"
+  change nothing about what fires; they instruct the run, and each was
+  already stated in the section that owns it. Ask who the sentence is
+  talking to — the router, or the agent mid-run.
 - **Deleted**: restatements of the skill's own name, and exhaustive
   trigger lists where three distinctive examples route as well as ten.
 

@@ -3,18 +3,11 @@ name: review-triage
 description: >
   Reformat the findings of a just-run code review into a decision-ready triage
   report. Takes the findings already in the conversation — a ReportFindings
-  call, a raw JSON array of finding objects, or a prose findings list — and
-  re-renders them grouped by recommended action (fix now / judgment call /
-  skip), each with the concrete failure, a fix sketch, and an effort size, so
-  the user only has to veto, not analyze. Does NOT re-run the review, verify
-  findings, or edit code itself — when the user picks findings to fix, the
-  triaging session orchestrates: it writes a self-contained brief per fix and
-  spawns a fresh implementer subagent per slice (see Handoff).
-  Use AFTER /code-review or any review that produced
-  a findings list, when the user wants output they can act on. Triggers:
-  "triage the findings", "reformat the review output", "which of these should
-  I fix", "make the review output useful". Args may name a file containing
-  findings JSON; otherwise the conversation is the source.
+  call, a JSON array, or a prose list — and groups them by recommended action:
+  fix now / judgment call / skip. Use AFTER /code-review or any review that
+  produced a findings list, when the user wants output they can act on.
+  Triggers: "triage the findings", "reformat the review output", "which of
+  these should I fix".
 ---
 
 # Review triage

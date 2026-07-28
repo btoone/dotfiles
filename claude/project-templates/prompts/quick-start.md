@@ -48,22 +48,11 @@ I need you to create AI context documentation for this project. Please:
    - Component patterns
    - Spacing/layout conventions
 
-   **.claude/planning_guide.md**:
-   - Planning workflow (understand → validate → design → implement)
-   - User story format with acceptance criteria
-   - Questions to ask before building
-   - Anti-patterns to avoid
-   - Definition of done
-
    **.claude/tdd_guidelines.md**:
-   - Red-Green-Refactor cycle with examples
-   - What to test (behavior) vs NOT test (implementation)
-   - Anti-patterns and correct patterns
-   - Bug fix workflow (REPRODUCE → VERIFY → FIX → VERIFY)
-   - Acceptance test requirements for pages
-   - TDD checklist
+   - Seeded empty — it collects traps THIS repo's reviews find
+   - The cycle, mock anti-patterns, and bug-fix flow come from my:tdd
 
-**My philosophy**: TDD is non-negotiable. Red-Green-Refactor for everything. Test behavior not implementation. Every bug fix starts with a failing reproduction test. Every user-facing page needs an acceptance test.
+**My philosophy**: TDD is non-negotiable — the cycle and conventions are in the my:tdd skill, already loaded in this session. Don't restate them in the generated docs. Capture this project's test command, frameworks, and existing test patterns instead.
 
 Please start by exploring and asking questions.
 ```

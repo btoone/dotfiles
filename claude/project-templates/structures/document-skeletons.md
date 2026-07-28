@@ -15,9 +15,12 @@ Use these as structural references when generating AI context documents. These s
 ## AI Context Documents
 [Table linking to .claude/ files with "When to Reference" guidance]
 
-## TDD is Non-Negotiable
-[Brief statement + link to detailed TDD guidelines]
-[Quick Reference: RED-GREEN-REFACTOR summary]
+## Tests
+[Test command. One line: TDD is non-negotiable, see my:tdd for the cycle,
+repo-specific traps in .claude/tdd_guidelines.md]
+
+## Verification Gate
+[The single command that proves a change correct, and what it does NOT cover]
 
 ## Development Workflow
 [Code block with setup, run, test commands]
@@ -347,345 +350,69 @@ All features must:
 
 ---
 
-## .claude/planning_guide.md Structure
-
-```markdown
-# Planning & Story Guide
-
-**AI Context**: Reference this document BEFORE implementing any feature. This guide ensures
-work is properly scoped, aligned with project intent, and follows user-centered design.
-
----
-
-## Planning Workflow
-
-Before writing code for any feature, follow this sequence:
-
-### 1. Understand the Request
-- [ ] What user problem does this solve?
-- [ ] Which persona is this for?
-- [ ] What does success look like from the user's perspective?
-
-### 2. Validate Against Project Intent
-- [ ] Does this align with "What We Are"?
-- [ ] Does this conflict with "What We Are NOT"?
-- [ ] Does it pass the feature design guardrail question?
-
-### 3. Design the User Journey
-- [ ] What triggers this flow? (entry point)
-- [ ] What steps does the user take?
-- [ ] What feedback do they receive?
-- [ ] What's the success state?
-- [ ] What are the error/edge cases?
-
-### 4. Plan the Implementation
-- [ ] What tests will prove this works? (TDD: write these first)
-- [ ] What existing patterns apply?
-- [ ] What's the minimum viable implementation?
-
----
-
-## User Story Format
-
-Write stories from the user's perspective, focused on value:
-
-**Format:**
-> As a [persona], I want to [action] so that [value/outcome].
-
-**Acceptance Criteria:**
-- Given [context], when [action], then [expected result]
-- Given [edge case], when [action], then [graceful handling]
-
-**Example:**
-> As a rep, I want to see my win rate compared to peers so that I know if I'm performing well.
->
-> Acceptance Criteria:
-> - Given I'm on my dashboard, I see my win rate with percentile ranking
-> - Given insufficient data, I see a message explaining why benchmark isn't available
-> - Given I click the metric, I can drill into the details
-
----
-
-## Questions to Ask Before Building
-
-### Scope Questions
-- Is this the smallest version that delivers value?
-- What can we defer to a future iteration?
-- Are we solving the root problem or a symptom?
-
-### User Questions
-- Have we validated users actually want this?
-- What's the user's mental model for this task?
-- What existing patterns will users expect?
-
-### Technical Questions
-- What existing code/patterns can we reuse?
-- What are the authorization implications?
-- What data model changes are needed?
-
-### Risk Questions
-- What could go wrong?
-- What's the rollback plan?
-- Are there security or privacy implications?
-
----
-
-## Anti-Patterns to Avoid
-
-| Anti-Pattern | Problem | Better Approach |
-|--------------|---------|-----------------|
-| Feature factory | Building without validating value | Start with user problem, not solution |
-| Gold plating | Over-engineering before validating | Build minimum viable, iterate |
-| Assumption-driven | Guessing what users want | Validate with real scenarios |
-| Big bang | Large changes all at once | Small, incremental deliveries |
-| Tech-first thinking | "We should use X technology" | "Users need to accomplish Y" |
-
----
-
-## Definition of Done
-
-A feature is complete when:
-- [ ] Tests pass (written first, TDD)
-- [ ] Code reviewed against project intent
-- [ ] UX reviewed against ux_guidelines
-- [ ] Accessible (keyboard nav, screen reader, contrast)
-- [ ] Works for all relevant personas
-- [ ] Error states handled gracefully
-- [ ] No regressions in existing functionality
-```
-
----
-
 ## .claude/tdd_guidelines.md Structure
 
+Seed this empty on a new project. It collects traps THIS repo's reviews
+have hit — nothing that could have been written before the code existed.
+
 ```markdown
-# Test-Driven Development Guidelines
+# Testing Traps in [Project Name]
 
-**AI Context**: TDD is non-negotiable for this codebase. Every line of production code must be
-written in response to a failing test. Reference this document for TDD workflow, patterns, and
-anti-patterns.
-
----
-
-## The Red-Green-Refactor Cycle
-
-**ALWAYS follow this workflow**:
-
-1. **RED**: Write a failing test that describes the desired behavior
-2. **GREEN**: Write the minimum code to make the test pass
-3. **REFACTOR**: Clean up while keeping tests green
-
-[Code example in project's language]
+**AI Context**: Traps found in this codebase's own reviews. The TDD cycle,
+BDD conventions, and mock anti-patterns are universal and live in the
+my:tdd skill — do not restate them here.
 
 ---
 
-## Test Behavior, Not Implementation
+## [Trap name] (found in [review], [date])
 
-**Core Principle**: Test behavior through public APIs. Never test implementation details.
+[Where it bites.] [What goes wrong.] [The rule], so [consequence avoided].
 
-### What to Test (Behavior)
-
-| Component | Public API to Test |
-|-----------|-------------------|
-| [Component type] | [What to test] |
-
-### What NOT to Test (Implementation)
-
-- Private methods/functions
-- Internal data structures
-- Which collaborators get called
-- Order of internal operations
-
----
-
-## Anti-Patterns (Never Do These)
-
-### Testing internal state
-[BAD code example]
-
-### Testing private methods
-[BAD code example]
-
-### Mocking internal collaborators
-[BAD code example]
-
-### Testing order of operations
-[BAD code example]
-
----
-
-## Correct Patterns (Always Do These)
-
-### Test observable outcomes
-[GOOD code example]
-
-### Test state changes through public interface
-[GOOD code example]
-
-### Test HTTP response and side effects (for web apps)
-[GOOD code example]
-
-### Test error conditions through behavior
-[GOOD code example]
-
----
-
-## Bug Fix Workflow
-
-**Every bug fix MUST start with a failing test that reproduces the bug.**
-
-This is non-negotiable. Do NOT fix bugs by:
-1. Reading the error message and fixing the code
-2. Writing a fix and then adding a test afterward
-3. Skipping tests because "it's just a small fix"
-
-### Bug Fix Process
-
-1. **REPRODUCE** - Write a test that fails with the same error
-2. **VERIFY** - Run the test, confirm it fails for the right reason
-3. **FIX** - Make the minimal change to pass the test
-4. **VERIFY** - Run the test, confirm it passes
-
-### Why This Matters
-
-If you skip the reproduction test:
-- You can't verify the fix actually works
-- The bug can regress later
-- You might fix the wrong thing
-- You don't understand the root cause
-
----
-
-## Acceptance Test Requirements
-
-**Every user-facing page MUST have at least one high-level acceptance test.**
-
-Before a feature is considered "done", verify there's a system or integration test
-that proves a user can successfully use the feature. This catches:
-- Route/path mismatches
-- Missing templates or components
-- Authorization issues
-- Layout/rendering errors
-
-### Minimum Coverage Checklist
-
-For each route, ensure there's a test that:
-
-| Route Type | Minimum Test |
-|------------|--------------|
-| List pages | User can visit and see content |
-| Detail pages | User can view a specific record |
-| Create flows | User can submit form and see confirmation |
-| Update flows | User can edit and save changes |
-| Delete actions | User can delete and confirm removal |
-
-### Example: Page Smoke Test
-
-[Code example showing simple acceptance test]
-
----
-
-## Test Organization
-
-**Prefer high-level behavior tests**:
-
-1. **E2E/System Tests** - Full user scenarios with browser
-2. **Integration Tests** - Request/response or component interactions
-3. **Unit Tests** - Pure functions and edge cases
-
-Start with high-level tests, add lower-level tests for edge cases.
-
----
-
-## Test Smells
-
-Signs you're testing implementation:
-
-- Your test uses mocks/stubs for internal collaborators
-- Your test breaks when you refactor without changing behavior
-- Your test name describes HOW instead of WHAT
-- Your test accesses private methods/properties
-- You need to change tests when refactoring
-
----
-
-## TDD Workflow Checklist
-
-### Before Writing Production Code
-
-- [ ] Written a failing test first?
-- [ ] Test describes **behavior**, not implementation?
-- [ ] Test uses the **public API**?
-- [ ] Test would still pass if you rewrote the implementation?
-- [ ] Test confirmed to **fail** for the right reason?
-
-### After Writing Production Code
-
-- [ ] Code makes the test **pass**?
-- [ ] Wrote **minimum** code needed?
-- [ ] All tests still pass?
-
-### Before Committing
-
-- [ ] All tests pass?
-- [ ] Linter/type checks pass?
-
-### Red Flags
-
-- You wrote production code before a test -> DELETE it, write test first
-- Test passes immediately -> Not testing anything meaningful
-- Tests break when refactoring -> Coupled to implementation
-
----
-
-> **Every. Single. Line. Of. Production. Code. Must. Be. Written. In. Response. To. A. Failing. Test.**
+[Minimal code example, only if the trap is subtle]
 ```
+
+---
+
+## .claude/plans/ Structure
+
+No skeleton. Plan files carry their own format and lifecycle — see the
+global CLAUDE.md and the my:continue-plan skill. A project doesn't restate
+either; it just holds the directory.
 
 ---
 
 ## .claude/commands/ Structure
 
-Custom commands as lightweight checklists (not multi-phase workflows):
+Only commands specific to this repo. Anything already covered by a skill or
+built-in (`/tdd`, `/code-review`, `/plan`, `/commit`) does not belong here —
+see `inserts/workflow-commands.md`.
 
 ```
 .claude/commands/
-├── tdd.md            # TDD checklist with anti-patterns
-├── code-review.md    # Code review checklist
-└── <project-specific>.md  # e.g., new-activity.md, new-migration.md
+└── <project-specific>.md  # e.g., new-migration.md, deploy.md
 ```
-
-**Note**: Avoid multi-session workflow commands (like "write tests, then start new session"). Context clearing loses codebase understanding. Use native plan mode for complex planning.
 
 ### Command File Template
 
+Lightweight checklists, not multi-phase procedures. The "study an existing
+one" step is what earns the command.
+
 ```markdown
-# [Command Name]
+# [Command name]
 
-[One-line description of what this command does]
+[One line: what this scaffolds or checks]
 
-## Process
+## 1. Study an existing one
+[Paths to the simplest well-structured example]
+[What to notice: how it wires up, how its tests are structured]
 
-### Phase 1: [Phase Name]
-[Steps for this phase]
+## 2. Create the files, following that pattern
+[File structure]
 
-### Phase 2: [Phase Name]
-[Steps for this phase]
-
-## Rules
-
-- [Rule 1]
-- [Rule 2]
-
-## Checklist
-
-- [ ] [Check item]
-- [ ] [Check item]
-
-## Commands
-
-```bash
-[Relevant bash commands for this workflow]
-```
+## Done when
+- [ ] Tests written first
+- [ ] Matches the studied example's patterns
+- [ ] [the project's verification gate] passes
 ```
 
 ---

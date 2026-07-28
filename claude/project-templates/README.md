@@ -45,9 +45,9 @@ clarifying questions first.
 ├── structures/
 │   └── document-skeletons.md    # Section outlines for each document type
 └── inserts/
-    ├── tdd-philosophy.md        # Reusable TDD section (multi-language)
+    ├── tdd-philosophy.md        # What a project records vs. what my:tdd covers
     ├── verification-gate.md     # The one command that proves a change correct
-    └── workflow-commands.md     # Custom commands, changelog, permissions
+    └── workflow-commands.md     # When a project command earns its place
 ```
 
 ---
@@ -60,9 +60,9 @@ clarifying questions first.
 | **.claude/project_intent.md** | Strategic boundaries, "what we are/aren't", guardrails |
 | **.claude/ux_guidelines.md** | UX principles, terminology, accessibility, anti-patterns |
 | **.claude/design_system.md** | Colors, typography, components, spacing |
-| **.claude/planning_guide.md** | How to plan features: workflow, story format, questions, done criteria |
-| **.claude/tdd_guidelines.md** | TDD workflow, bug fix process, acceptance test requirements |
-| **.claude/commands/** | Workflow automation: /test, /review, /plan-feature |
+| **.claude/tdd_guidelines.md** | Testing traps found in THIS repo, dated and attributed (the cycle itself lives in my:tdd) |
+| **.claude/plans/** | In-flight plans with a status lifecycle, continued by my:continue-plan |
+| **.claude/commands/** | Only commands specific to this repo — not copies of skills or built-ins |
 | **CHANGELOG.md** | Track changes using Keep a Changelog format |
 | **.claude/settings.local.json** | Pre-approved permissions for common commands |
 
@@ -110,8 +110,9 @@ This is a FastAPI app with pytest and Tailwind (via templates).
 
 ### Key Principles Encoded
 
-- **TDD is non-negotiable**: Red-Green-Refactor for everything
-- **Test behavior, not implementation**: Focus on public APIs and outcomes
+- **One fact, one home**: philosophy that applies everywhere lives in the plugin's skills; a project doc records only what's true of *this* repo
+- **Nothing generic gets copied in**: a second copy drifts, and the drifted copy is the one the project reads
+- **Verifiability before autonomy**: every project names the command that proves a change correct, and what it doesn't cover
 - **"What we are NOT" is as important as "What we are"**: Explicit boundaries prevent scope creep
 - **Clarifying questions first**: AI should understand the product before generating
 

@@ -12,8 +12,9 @@ I need to update this project's AI context files (.claude/ folder) to incorporat
 ## Reference Templates
 
 Please read these template files for the latest patterns:
-- ~/.claude/project-templates/inserts/tdd-philosophy.md (TDD patterns, bug fix workflow, acceptance tests)
-- ~/.claude/project-templates/inserts/workflow-commands.md (custom commands, changelog, permissions)
+- ~/.claude/project-templates/inserts/tdd-philosophy.md (what the project records vs. what my:tdd already covers)
+- ~/.claude/project-templates/inserts/verification-gate.md (the command that proves a change correct)
+- ~/.claude/project-templates/inserts/workflow-commands.md (when a project command earns its place)
 - ~/.claude/project-templates/structures/document-skeletons.md (document structures)
 
 ## Files to Review and Update
@@ -22,28 +23,24 @@ Check these project files against the templates and update as needed:
 
 ### Context Documents
 
-1. **.claude/tdd_guidelines.md** - Ensure it includes:
-   - Bug Fix Workflow section (REPRODUCE → VERIFY → FIX → VERIFY)
-   - Acceptance Test Requirements section with coverage checklist
-   - Examples should use THIS project's tech stack
+1. **.claude/tdd_guidelines.md** - Should hold only what's specific to THIS
+   repo: traps its own reviews have found, dated and attributed. Flag any
+   generic TDD philosophy still in there (red-green-refactor, mock
+   anti-patterns, bug-fix cycle) — that's `my:tdd`'s job now, and the copy
+   here is the one that drifts.
 
 2. **CLAUDE.md** - Ensure it includes:
-   - TDD section referencing tdd_guidelines.md
-   - Custom Commands section documenting available /commands
+   - A Tests section naming the test command, pointing at my:tdd
+   - A Verification Gate section (see the insert) naming the one command
+     that proves a change correct, and what it does NOT cover
 
-3. **.claude/planning_guide.md** - Ensure Definition of Done includes:
-   - Tests pass (written first, TDD)
-   - Acceptance test exists for user-facing pages
+### Workflow Automation
 
-### Workflow Automation (New)
+3. **.claude/commands/** - Audit, don't just add. Delete any command
+   superseded by a skill or built-in (`/tdd`, `/code-review`, `/plan`,
+   `/commit`). Keep only commands specific to this repo.
 
-4. **.claude/commands/** - Create if missing:
-   - `test.md` - TDD workflow with this project's test runner
-   - `review.md` - Code review checklist with project-specific concerns
-   - `plan-feature.md` - Multi-phase feature planning
-   - Project-specific commands for repetitive tasks
-
-5. **CHANGELOG.md** - Create if missing:
+4. **CHANGELOG.md** - Create if missing:
    - Use Keep a Changelog format
    - Populate [Unreleased] section
    - Add recent history from git log
@@ -77,7 +74,7 @@ Important:
 For a faster update when you know what's changed:
 
 ```
-Update this project's .claude/tdd_guidelines.md to include the Bug Fix Workflow and Acceptance Test Requirements sections from ~/.claude/project-templates/inserts/tdd-philosophy.md. Adapt the examples to this project's tech stack.
+Add a Verification Gate section to this project's CLAUDE.md following ~/.claude/project-templates/inserts/verification-gate.md — name the command that proves a change correct, and what it doesn't cover.
 ```
 
 ---

@@ -59,39 +59,27 @@ A reference covering:
 - Spacing scale, border radius conventions
 - Quick reference table
 
-### 5. .claude/planning_guide.md (How to Build Features)
-A process guide covering:
-- Planning workflow (understand → validate → design → implement)
-- User story format with acceptance criteria
-- Questions to ask before building (scope, user, technical, risk)
-- Anti-patterns to avoid (feature factory, gold plating, etc.)
-- Definition of done checklist
+### 5. .claude/tdd_guidelines.md (Traps Found in This Repo)
+Seeded empty, or with only what's already been learned here:
+- Testing traps this repo's own reviews have hit, each dated and attributed
+- Nothing generic — the cycle, mock anti-patterns, and bug-fix flow come
+  from the my:tdd skill and must not be copied in
 
-### 6. .claude/tdd_guidelines.md (TDD Patterns & Practices)
-A comprehensive TDD guide covering:
-- The Red-Green-Refactor cycle with code examples
-- What to test (behavior) vs what NOT to test (implementation)
-- Anti-patterns with BAD code examples
-- Correct patterns with GOOD code examples
-- Bug fix workflow (REPRODUCE → VERIFY → FIX → VERIFY)
-- Acceptance test requirements for user-facing pages
-- Test organization and smells
-- TDD workflow checklist
+### 6. .claude/commands/ (Workflow Automation)
+Only commands specific to this repo — scaffolding steps, migration rituals,
+stack-specific verification (e.g. `/new-migration`, `/deploy`).
 
-### 7. .claude/commands/ (Workflow Automation)
-Custom commands for common workflows:
-- `/test` - TDD red-green-refactor workflow with project's test runner
-- `/review` - Whitebox code review checklist with project-specific concerns
-- `/plan-feature` - Multi-phase feature planning (understand → validate → design → scope → plan)
-- Project-specific commands for repetitive tasks (e.g., `/new-migration`, `/deploy`)
+Do NOT generate `/test`, `/review`, `/plan-feature`, or `/commit`. Each is
+superseded by a skill or built-in, and a local copy shadows better tooling
+with a worse checklist.
 
-### 8. CHANGELOG.md (Change Tracking)
+### 7. CHANGELOG.md (Change Tracking)
 A changelog using Keep a Changelog format:
 - [Unreleased] section for pending changes
 - Dated sections with Added/Changed/Fixed/Removed
 - Populated with recent history from git log
 
-### 9. .claude/settings.local.json (Permissions)
+### 8. .claude/settings.local.json (Permissions)
 Pre-approved commands for common operations:
 - Test runners (npm test, pytest, rspec, etc.)
 - Build commands
@@ -100,30 +88,15 @@ Pre-approved commands for common operations:
 
 ## My Development Philosophy
 
-**Test-Driven Development is Non-Negotiable**
+TDD is non-negotiable. The whole worldview — the cycle, BDD conventions,
+fakes over mocks, effects as ports, factories, the mutation-testing mindset
+— lives in the my:tdd skill and my global CLAUDE.md, both already loaded in
+this session. Do not restate any of it in the generated docs; a copy there
+is the one that drifts, and the drifted copy is what the project reads.
 
-I follow strict TDD with behavior-driven testing:
-- Red → Green → Refactor cycle for every change
-- Test behavior through public APIs, never implementation details
-- High-level tests first (system/integration), lower-level for edge cases
-- No production code without a failing test
-
-Key testing principles to encode:
-- Test what the code DOES, not HOW it does it
-- Tests should survive refactoring unchanged
-- Avoid mocking internal collaborators
-- Focus on observable outcomes and state changes
-- Never test private methods directly
-
-**Critical Bug Fix Rule:**
-- Every bug fix MUST start with a failing test that reproduces the bug
-- Do NOT fix bugs by reading the error and fixing the code
-- The reproduction test prevents regressions and validates the fix
-
-**Acceptance Test Requirements:**
-- Every user-facing page MUST have at least one acceptance/E2E test
-- This catches route mismatches, missing templates, authorization issues
-- Minimum: user can visit and see expected content
+What the generated docs SHOULD capture is this project's own testing
+reality: the test command, the frameworks and fixtures actually in use, and
+any traps already visible in the existing tests.
 
 ## How to Proceed
 

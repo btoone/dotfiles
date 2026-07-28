@@ -91,9 +91,16 @@ it?**
 - **Stays**: the trigger vocabulary — the literal words a user would
   type. This is the surface routing matches on, so it is the last thing
   to cut, never the first.
-- **Stays**: the disambiguating clause ("do NOT use for X, that's Y"),
-  but only where a sibling skill genuinely competes for the same trigger.
-  A "do NOT" naming no real rival is dead weight.
+- **Stays**: a negative clause doing either of two jobs. It **disambiguates**
+  from a sibling that genuinely competes for the same trigger ("do NOT use
+  for X, that's Y"), or it **bounds an over-broad trigger** — what stops
+  `capture-learnings`, which fires on "remember this", from catching every
+  mid-task scratch note, and `bounded-contexts`, which fires before the
+  first failing spec, from catching every bug fix. The second job names no
+  rival and is easy to mistake for dead weight; a skill whose triggers are
+  common phrases usually needs it more than a disambiguating one. A clause
+  doing neither — excluding nothing the triggers would otherwise catch —
+  is what gets cut.
 - **Moves to the body**: procedure, traps, worked detail, encoded
   technical knowledge. A description that teaches is paying always-on
   rates for on-demand content.

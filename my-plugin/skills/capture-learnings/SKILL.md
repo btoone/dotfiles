@@ -2,22 +2,15 @@
 name: capture-learnings
 description: >
   Route what a work session taught to its correct durable home, instead of
-  letting everything default into CLAUDE.md or evaporate. At the end of
-  significant work, ask "what do I wish I'd known at the start?" and file
-  each answer by KIND: durable how-to-work-here rules → project CLAUDE.md or
-  the narrowest .claude/ guideline doc it links; decisions with tradeoffs →
-  an ADR; personal preferences and cross-session project state → auto-memory;
-  knowledge valuable beyond the project (techniques, research, worldviews) →
-  the Obsidian vault via /my:vault; operational runbook facts → docs/ or
-  README per project convention; conversation-scoped context → nowhere,
-  deliberately. Guards the always-loaded context budget: nothing lands in
-  CLAUDE.md by default, and anything that doesn't apply to every turn belongs
-  in an on-demand doc or skill with a one-line pointer. Use when wrapping up
-  a feature, fix, migration, or investigation; when the user says "remember
-  this", "capture what we learned", "write that down", or "wrap up"; or
+  letting everything default into CLAUDE.md or evaporate. Files each answer by
+  KIND: repo rules to a .claude/ doc or CLAUDE.md, decisions with tradeoffs to
+  an ADR, personal preferences and project state to auto-memory, knowledge
+  valuable beyond the project to the Obsidian vault, runbook facts to docs/.
+  Use when wrapping up a feature, fix, migration, or investigation; when the
+  user says "remember this", "capture what we learned", or "wrap up"; or
   whenever about to append anything to a CLAUDE.md. Do NOT use for mid-task
-  scratch notes, for commit messages (git history is its own record), or to
-  re-document what the code, tests, or existing docs already say.
+  scratch notes, commit messages, or re-documenting what the code, tests, or
+  docs already say.
 ---
 
 # Capture learnings

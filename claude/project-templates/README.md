@@ -46,6 +46,7 @@ clarifying questions first.
 │   └── document-skeletons.md    # Section outlines for each document type
 └── inserts/
     ├── tdd-philosophy.md        # Reusable TDD section (multi-language)
+    ├── verification-gate.md     # The one command that proves a change correct
     └── workflow-commands.md     # Custom commands, changelog, permissions
 ```
 

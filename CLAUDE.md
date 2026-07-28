@@ -24,6 +24,18 @@ claude plugins marketplace add ~/dotfiles/my-plugin
 claude plugins install my
 ```
 
+## Verification
+
+```bash
+just test           # bats test/ — the gate; run before committing
+```
+
+Covers `tools/agent-board` + `tools/agent-board-hook` behavior and the routing
+surface every skill's frontmatter declares. It does **not** cover `script/setup`
+or `script/update`, symlink correctness, the shell configs (`zshrc`, `aliases`,
+`tmux.conf`), or the other tools — `plan-gate`, `flip`, `obsidian-open`,
+`tmux-help`, `eval_gist.rb`. Changes there need verifying by hand.
+
 ## Architecture
 
 ### File Installation Flow
@@ -31,7 +43,7 @@ claude plugins install my
 1. `MANIFEST` lists all config files to symlink as `~/.<filename>`
 2. `script/setup` creates the symlinks, deploys tools, and copies templates
 3. `templates/` files are **copied** (not symlinked) to allow machine-specific customization
-4. Each main config sources its `.local` variant if present (e.g., `~/.zshrc` sources `~/.zshrc.local`) — the same pattern covers zshrc, vimrc, tmux.conf, and aliases
+4. Each main config sources its `.local` variant if present (e.g., `~/.zshrc` sources `~/.zshrc.local`) — the same pattern covers zshrc, vimrc, tmux.conf, aliases, and gitconfig
 
 ### Key Directories
 
@@ -60,7 +72,7 @@ claude plugins install my
 Installs the prerequisites that install everything else: checks for Homebrew, installs mise, runs `mise install`. Run once on a fresh machine. Deliberately does **not** run `brew bundle` — that belongs to `script/update`, which runs after `script/setup` has created the `~/.Brewfile` symlink `brew bundle --global` depends on.
 
 ### script/setup
-Configures the local environment: symlinks dotfiles from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, deploys Claude Code config, installs tpm. Fast, idempotent, no network needed.
+Configures the local environment: symlinks dotfiles from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, arms the `plan-gate` pre-push hook, deploys Claude Code config, installs tpm. Fast, idempotent, no network needed.
 
 ### script/update
 Brings installed dependencies in line with the current checkout: `brew bundle --global`, vim plugins (`PlugInstall --sync` + `PlugClean!`), tmux plugins (tpm `install_plugins`). Needs network. Run after pulling changes — `just setup` runs it after `script/setup`, so a pull that adds a Brewfile entry or a `Plug` line lands without any manual follow-up. On macOS 13 and older, brew is report-only — the script's comments explain why.

@@ -45,6 +45,11 @@ for script in "$PWD"/tools/*; do
 done
 __results+="\n* Linked tool scripts into ~/.local/bin"
 
+# Arm the plan-file pre-push gate. .git/hooks isn't tracked, so every fresh
+# clone needs this wired again or the gate silently isn't there.
+"$PWD/tools/plan-gate" install > /dev/null
+__results+="\n* Armed the plan-gate pre-push hook"
+
 # Claude Code config — symlink into each profile dir that exists
 claude_dirs=()
 [ -d "$HOME/.claude-personal" ] && claude_dirs+=("$HOME/.claude-personal")

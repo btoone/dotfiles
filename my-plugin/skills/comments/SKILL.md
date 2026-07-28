@@ -1,25 +1,14 @@
 ---
 name: comments
 description: >
-  Write code comments deliberately — sparingly, only when they add real value,
-  in plain natural-language prose rather than dense justification. The default
-  is no comment: let names and structure speak. A comment earns its place only
-  when it tells a future reader something they could NOT infer from the code —
-  a non-obvious WHY, a gotcha, a load-bearing decision, or a grep anchor for a
-  source-of-truth table. Strips the recurring failure modes: restating the
-  method name, narrating mechanics the reader can see, baking in transient
-  snapshot facts (row counts, "for V1"), citing planning docs, sprinkling ADR
-  refs on routine code, and writing in a verbose PR-description register. Also
-  fixes the VOICE — terse, present-tense, stating the noun-fact or the
-  gotcha-with-"so". Use BEFORE writing or editing any inline/method/class
-  comment, and when reviewing or auditing comments in a changeset. If you are
-  about to type a `#` comment in Ruby (or `//`, `/* */`, `<%# %>` elsewhere),
-  this applies. Triggers: writing a new method/class and reaching for a doc
-  comment; explaining a query object; "this comment is verbose/low-value/not
-  useful"; "audit the comments we added"; "let the code speak"; any time you'd
-  narrate what the next line does. Can also be invoked manually against a
-  target — uncommitted working-copy changes (the default), the current
-  branch's diff vs its base, recent commits, or a specific file/path/symbol.
+  Write code comments deliberately — sparingly, in plain prose. The default is
+  no comment; one earns its place only for a non-obvious WHY or a gotcha the
+  code can't show. Use BEFORE writing or editing any inline/method/class
+  comment, and when auditing comments in a changeset. If you are about to type
+  a `#`, `//`, or `/* */` comment, this applies. Triggers: reaching for a doc
+  comment on a new method or class; "this comment is verbose/low-value";
+  "audit the comments we added"; "let the code speak". Accepts a target scope,
+  defaulting to uncommitted changes.
 ---
 
 # Comments that earn their place

@@ -5,15 +5,21 @@
 #
 # These tests cannot prove routing works — that is the model's job, not a shell
 # script's. What they own is narrower and still worth having: that a trim never
-# silently drops the vocabulary routing depends on, and that the surface does
-# not grow back once trimmed.
+# silently drops the vocabulary routing depends on, that every skill is covered
+# by such a check, and that the surface does not grow back once trimmed.
+#
+# The per-skill term lists are hand-authored on purpose. Nothing in the tree can
+# derive that someone looking for data-lineage types "source of truth" — that is
+# a judgment about how people ask, and it gets edited when the judgment changes.
 
 setup() {
-  # Overridable so the vocabulary tests can be mutation-checked against a
-  # perturbed copy of the tree.
+  # Overridable so the coverage and detection checks can run against a
+  # synthetic tree instead of mutating the real one.
   SKILLS="${MY_PLUGIN_SKILLS:-$BATS_TEST_DIRNAME/../my-plugin/skills}"
   # Ratchet, not an aspiration: lower it as skills get trimmed, never raise it.
   BUDGET=9039
+  # How far the budget may sit above the real surface before it has gone slack.
+  SLACK=200
 }
 
 # Whitespace-normalized description + when_to_use for one skill, or for every
@@ -60,12 +66,30 @@ assert_keeps_vocabulary() { # skill term...
   fi
 }
 
+# Skills this file declares a vocabulary check for.
+skills_with_vocabulary_test() {
+  grep -oE 'assert_keeps_vocabulary [a-z][a-z-]*' "$BATS_TEST_FILENAME" |
+    awk '{print $2}' | sort -u
+}
+
 @test "skill listing: total routing surface stays within the recorded budget" {
   local total
   total="$(routing_surface_chars)"
 
   [ "$total" -le "$BUDGET" ] || {
     echo "routing surface is $total chars, budget is $BUDGET"
+    false
+  }
+}
+
+@test "skill listing: the recorded budget stays tight against the real surface" {
+  local total drift
+  total="$(routing_surface_chars)"
+  drift=$(( BUDGET - total ))
+
+  [ "$drift" -le "$SLACK" ] || {
+    echo "budget $BUDGET sits $drift chars above the actual $total — a budget"
+    echo "this slack has stopped ratcheting; re-baseline it down to $total"
     false
   }
 }
@@ -81,6 +105,30 @@ assert_keeps_vocabulary() { # skill term...
     echo "skills with no description or when_to_use: ${empty[*]}"
     false
   }
+}
+
+@test "skill listing: every skill is covered by a vocabulary test" {
+  local declared dir skill uncovered=()
+  declared="$(skills_with_vocabulary_test)"
+
+  for dir in "$SKILLS"/*/; do
+    skill="$(basename "$dir")"
+    grep -qx -- "$skill" <<<"$declared" || uncovered+=("$skill")
+  done
+
+  [ "${#uncovered[@]}" -eq 0 ] || {
+    echo "skills with no vocabulary test: ${uncovered[*]}"
+    echo "a skill without one has no floor — the budget test alone rewards gutting it"
+    false
+  }
+}
+
+@test "vocabulary check: fails, naming the term, when a declared term is missing" {
+  run assert_keeps_vocabulary trim-context "phrasing no description contains"
+
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"trim-context dropped trigger vocabulary"* ]]
+  [[ "$output" == *"phrasing no description contains"* ]]
 }
 
 @test "maintenance-tasks: keeps the vocabulary a task request routes on" {

@@ -40,7 +40,7 @@ claude plugins install my
 - `prototypes/` - Experimental scripts and reference implementations (not symlinked or deployed)
 - `templates/` - Machine-specific config seeds (copied once, then customized per machine). Follows the [thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) `.local` override pattern
 - `git/` - Git ignore and attributes, symlinked into `~/.config/git/` (XDG standard location)
-- `claude/` - Claude Code config (settings, statusline, project-templates, user-level `CLAUDE.md`), symlinked into `~/.claude-personal` and/or `~/.claude-work` profile dirs
+- `claude/` - Claude Code config (settings, statusline, user-level `CLAUDE.md`), symlinked into `~/.claude-personal` and/or `~/.claude-work` profile dirs
 - `my-plugin/` - Claude Code personal plugin providing the `my:` namespace — skills in `my-plugin/skills/`, commands in `my-plugin/commands/`
 - `vim/` - Vim configuration, plugins managed by vim-plug (`Plug` lines in `vim/vimrc`), symlinked as `~/.vim`
 - `tmux/` - Tmux config, plugins managed by TPM (bottom of `tmux.conf`): catppuccin, resurrect. Symlinked as `~/.tmux`

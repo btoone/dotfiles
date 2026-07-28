@@ -84,8 +84,9 @@ fi
 for cdir in "${claude_dirs[@]}"; do
   mkdir -p "$cdir"
   ln -sf "$PWD/claude/statusline-command.sh" "$cdir/statusline-command.sh"
-  ln -sfn "$PWD/claude/project-templates" "$cdir/project-templates"
   ln -sf "$PWD/claude/settings.json" "$cdir/settings.json"
+  # project-templates was retired; drop the symlink left by older setups
+  rm -f "$cdir/project-templates"
   ln -sf "$PWD/claude/CLAUDE.md" "$cdir/CLAUDE.md"
   if [ ! -f "$cdir/settings.local.json" ]; then
     cp "$PWD/templates/claude-settings.local.json" "$cdir/settings.local.json"

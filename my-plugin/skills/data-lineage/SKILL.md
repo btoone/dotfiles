@@ -4,16 +4,8 @@ description: >
   Systematically answer "where does this data actually come from?" questions —
   is X the source of truth, why did Y stop updating, which table feeds this
   surface — by combining production-query evidence with code-path and
-  git-history tracing, then producing an evidence-grounded results document
-  where every claim cites a query result or a file:line. Enforces a strict
-  evidence-first discipline: frame competing hypotheses, trace write paths
-  before read paths, profile the grain BEFORE filtering, reconcile by a
-  globally-unique key, quantify coverage and leaks, and refute your own
-  hypotheses out loud. No claim ships without a citation; no number ships
-  without the query that produced it. Opportunistically uses any connected
-  MCP servers (read-only production DB, hosting/deploy logs, observability) to
-  deepen the evidence, and degrades gracefully to local tooling when they
-  aren't present.
+  git-history tracing. Produces a results document where every claim cites a
+  query result or a file:line.
 allowed-tools:
   - Read
   - Grep
@@ -30,15 +22,12 @@ allowed-tools:
   # "Available evidence sources" below. None of them are required.
 when_to_use: >
   Use whenever you must establish where data actually comes from, or which of
-  several stores is authoritative. Concrete triggers: "is X the source of
-  truth?", "why did table Y stop updating?", "which table feeds this
-  dashboard/report/API?", "are these two numbers measuring the same thing?",
-  "this surface reads A but we were told B is truth — which is right?", "did
-  this model ever have a live writer?", a migration or analytics cutover that
-  needs to re-point a surface from one table to another, or any reconciliation
-  where two stores disagree on a count and you need to know which is correct
-  and why. If the answer depends on what the data and code actually do (not on
-  a doc or a guess), this skill applies — gather evidence before you conclude.
+  several stores is authoritative. Triggers: "is X the source of truth?", "why
+  did table Y stop updating?", "which table feeds this dashboard/report/API?",
+  "are these two numbers measuring the same thing?", a migration or analytics
+  cutover that re-points a surface from one table to another, or any
+  reconciliation where two stores disagree on a count. Applies when the answer
+  depends on what the data and code actually do, not on a doc or a guess.
 ---
 
 # Data Lineage — source-of-truth audit by evidence, not assertion

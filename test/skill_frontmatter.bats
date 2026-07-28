@@ -13,7 +13,7 @@ setup() {
   # perturbed copy of the tree.
   SKILLS="${MY_PLUGIN_SKILLS:-$BATS_TEST_DIRNAME/../my-plugin/skills}"
   # Ratchet, not an aspiration: lower it as skills get trimmed, never raise it.
-  BUDGET=13000
+  BUDGET=12209
 }
 
 # Whitespace-normalized description + when_to_use for one skill, or for every
@@ -103,7 +103,7 @@ assert_keeps_vocabulary() { # skill term...
 @test "data-lineage: keeps the vocabulary a provenance question routes on" {
   assert_keeps_vocabulary data-lineage \
     "source of truth" "stop updating" "which table feeds" "file:line" \
-    "globally-unique key"
+    "reconciliation" "cutover"
 }
 
 @test "comments: keeps the vocabulary a comment-writing request routes on" {

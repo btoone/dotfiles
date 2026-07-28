@@ -1,25 +1,11 @@
 ---
 name: maintenance-tasks
 description: >
-  Build or refactor a great Shopify `maintenance_tasks` Task (Rails) — the full
-  design, not just batching. Starts from the decision that shapes everything —
-  which of the four collection shapes fits: an AR **Relation** (per-record
-  `process`), a **`Model.in_batches(of: N)`** batch enumerator (one set-based
-  bulk write per batch), a plain **Array** (small finite computed collections
-  like catalogs or date ranges), or **`no_collection`** (a single atomic SQL
-  statement, no iteration) — then layers on idempotency, large-table timeout
-  rules, callback/PaperTrail-aware writes, and the opt-in features (dry-run,
-  attributes, throttling, callbacks). Encodes the traps agents hit repeatedly:
-  a collection Relation must carry NO `ORDER BY`/`LIMIT` (the cursor adds its
-  own PK ordering and it raises at runtime); `find_each` ignores a custom
-  `order`; never override `count` for a batch enumerator; prefer the collection
-  API over `no_collection` so you get progress + pause/resume; data backfills
-  belong in a task, not a migration; use `update_all`/`update_columns` to skip
-  callbacks and avoid minting a spurious PaperTrail version; use `.delete` (not
-  `.destroy`) when a destroy callback would cascade to a shared external asset;
-  disable triggers inside `begin/ensure`; make every write idempotent so
-  cancel/re-run is safe; and delete the task once it has run. When the gem's
-  behavior is unclear, read the installed source.
+  Build or refactor a Shopify `maintenance_tasks` Task (Rails) — the full
+  design, not just batching: choosing among the four collection shapes,
+  idempotency and resumability, large-table statement timeouts, writes that
+  don't trip callbacks/triggers/PaperTrail, the opt-in features (dry-run,
+  attributes, throttling), and the traps that raise at runtime.
 allowed-tools:
   - Read
   - Edit
@@ -37,14 +23,12 @@ allowed-tools:
 when_to_use: >
   Use when building, refactoring, or reviewing a Shopify `maintenance_tasks`
   Task in a Rails app — a class under `app/tasks/**` that subclasses
-  `MaintenanceTasks::Task`. Concrete triggers: "write a maintenance task",
-  "backfill this column", "clean up / purge these rows", "re-process these
-  records in production", "this task is slow / not batching / shows 1 of 1",
-  "this task will take N hours", "the task raised 'cannot use ORDER BY or
-  LIMIT'", a data backfill someone wants to put in a migration, or any review
-  of `collection` / `process` / `count` / `no_collection` on a task. If you are
-  about to define `collection` or `process`, this skill applies — pick the
-  collection shape BEFORE writing `process`.
+  `MaintenanceTasks::Task`. Triggers: "backfill this column", "purge these
+  rows", "this task is slow / not batching / shows 1 of 1", "the task raised
+  'cannot use ORDER BY or LIMIT'", a data backfill someone wants to put in a
+  migration, or any review of `collection` / `process` / `count` /
+  `no_collection`. If you are about to define `collection` or `process`, this
+  skill applies.
 ---
 
 # Building a great `maintenance_tasks` Task

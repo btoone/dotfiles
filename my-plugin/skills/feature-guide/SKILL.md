@@ -1,15 +1,9 @@
 ---
 name: feature-guide
 description: >
-  Produce a shareable, non-technical feature guide as a published Artifact —
-  live screenshots of every surface in the feature's story, captured from the
-  running dev app with Playwright (including interaction states: open menus,
-  drawers, drill-downs), annotated with numbered callout dots and plain-language
-  legends, organized around the feature's own mental model (levels, flow, or
-  lifecycle), with "reading the numbers", "what it can't show (yet)", and
-  "who can see it" sections. Self-contained HTML (base64-embedded images,
-  light + dark themes, project brand tokens) published via the Artifact tool
-  and iterated in place at the same URL.
+  Produce a shareable, non-technical feature guide as a published Artifact:
+  annotated live screenshots of every surface in the feature's story, captured
+  from the running dev app with Playwright.
 allowed-tools:
   - Read
   - Write
@@ -35,10 +29,9 @@ when_to_use: >
   Use when the user wants a shareable, screenshot-driven explanation of a
   shipped UI feature for an audience beyond the codebase — teammates,
   stakeholders, non-technical readers. Triggers: "make a report for my team
-  showing X", "document the new X feature with screenshots", "create a feature
-  walkthrough I can share", "write up the X feature for the team", "make an
-  announcement page for X". Applies whenever the deliverable is a standalone
-  guide/report with images of the app, not code docs or a README.
+  showing X", "create a feature walkthrough I can share", "make an
+  announcement page for X". Applies when the deliverable is a standalone guide
+  with images of the app, not code docs or a README.
 argument-hint: "<feature name or short description>"
 arguments:
   - feature

@@ -13,7 +13,7 @@ setup() {
   # perturbed copy of the tree.
   SKILLS="${MY_PLUGIN_SKILLS:-$BATS_TEST_DIRNAME/../my-plugin/skills}"
   # Ratchet, not an aspiration: lower it as skills get trimmed, never raise it.
-  BUDGET=10339
+  BUDGET=9797
 }
 
 # Whitespace-normalized description + when_to_use for one skill, or for every

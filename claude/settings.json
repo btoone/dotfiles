@@ -123,5 +123,6 @@
   "skipDangerousModePermissionPrompt": true,
   "autoCompactEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "agentPushNotifEnabled": true
 }

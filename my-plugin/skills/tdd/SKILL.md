@@ -178,17 +178,37 @@ Write the simplest code that makes the failing test pass. Run the test.
 **Success criteria:** the new test passes, no other tests break, the
 implementation is the simplest thing that works.
 
-## Step 4 — Refactor (optional)
+## Step 4 — Refactor (required)
 
-If the code benefits from restructuring, do it now. Tests are the safety net.
+Green is not the end of the cycle. Before you commit, look at what you just
+wrote with the tests as a safety net.
+
+The *restructuring* is conditional — often the right answer is that the code is
+already clean. The *decision* is not. You must state a verdict:
+
+- **"Refactored: <what and why>"** — you restructured; say what moved.
+- **"No refactor: <reason>"** — nothing earned it; say what you considered.
+
+An unstated verdict means the step didn't happen. Do not commit without one.
+
+**What to look at** — the code you touched this cycle, not the whole file:
+
+- Duplication that has now reached its third use (Rule of Three)
+- Names that drifted from the domain while you were making the test pass
+- A method that grew past one job, or a conditional that wants to be a value
+- Anything you'd flag if this arrived as someone else's pull request
+
+**Rules while refactoring:**
 
 - No behavior changes; tests should not change during refactoring
-- Extract only when the pattern is clear (Rule of Three)
+- Extract only when the pattern is clear — three similar uses, not two
 - If a refactor breaks a test, the test was testing implementation — fix the
   test first
+- If you find a bug, stop and start a new RED → GREEN cycle for it. A bug fix
+  is a behavior change, not a refactor.
 
-**Success criteria:** all tests still pass, code is cleaner, no behavior
-changed.
+**Success criteria:** a verdict is stated, all tests still pass, and no
+behavior changed.
 
 ## Step 5 — Repeat
 
@@ -200,7 +220,7 @@ change.
 ```
 Cycle 1 → feat: display transaction list
 Cycle 2 → feat: add date range filter
-Cycle 3 → refactor: extract query scope (optional)
+Cycle 3 → refactor: extract query scope
 Cycle 4 → feat: add pagination
 ```
 
@@ -256,6 +276,7 @@ If you catch yourself doing any of these, stop and correct:
 | Extracting an abstraction on first use | Wait for the third use |
 | Multiple writes between entry and return, atomicity undecided | Wrap the unit in a transaction; add a rollback test that fails a *later* record |
 | Adding a retry to silence a flaky test | Find the cause — a flake is a false negative. See Flaky tests |
+| Going green straight into the next failing test | Step 4 is not optional. State a refactor verdict before you commit |
 | Several green cycles stacked up uncommitted | Commit each as it closes |
 | Splitting a finished blob into commits you never ran | Run each boundary, or write one honest green commit |
 

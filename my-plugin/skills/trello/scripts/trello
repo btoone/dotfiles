@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# Authenticated curl wrapper for the Trello REST API.
+#
+#   trello whoami                                          # which credentials are live
+#   trello /members/me/boards fields=name,shortLink        # GET
+#   trello POST /cards idList=<id> name="Fix the thing"     # POST
+#   trello PUT /cards/<id> idList=<other-list-id>           # PUT
+#
+# Credentials resolve at call time, environment first, then a credentials file
+# that sets TRELLO_API_KEY and TRELLO_TOKEN. Nothing about the key or the
+# account is baked in, so rotating either one needs no change here.
+set -euo pipefail
+
+CRED_FILE="${TRELLO_CREDENTIALS:-$HOME/.config/trello/credentials}"
+cred_source="environment"
+
+if [[ -z "${TRELLO_API_KEY:-}" || -z "${TRELLO_TOKEN:-}" ]] && [[ -r "$CRED_FILE" ]]; then
+  # shellcheck disable=SC1090
+  source "$CRED_FILE"
+  cred_source="$CRED_FILE"
+fi
+
+: "${TRELLO_API_KEY:?no Trello API key: set TRELLO_API_KEY or populate $CRED_FILE}"
+: "${TRELLO_TOKEN:?no Trello token: set TRELLO_TOKEN or populate $CRED_FILE}"
+
+request() {
+  local method=$1 endpoint=$2 pair
+  shift 2
+
+  local args=(
+    --silent --show-error --fail-with-body
+    --request "$method"
+    --header "Accept: application/json"
+    --data-urlencode "key=$TRELLO_API_KEY"
+    --data-urlencode "token=$TRELLO_TOKEN"
+  )
+
+  for pair in "$@"; do
+    args+=(--data-urlencode "$pair")
+  done
+
+  # GET and DELETE carry their params in the query string; POST/PUT in the body.
+  if [[ "$method" == GET || "$method" == DELETE ]]; then
+    args+=(--get)
+  fi
+
+  curl "${args[@]}" "https://api.trello.com/1${endpoint}"
+}
+
+# Report which credentials are live and what they can reach. Each probe is
+# independent so a partial failure still tells you something useful.
+whoami() {
+  local status=0 body
+
+  printf 'key      …%s (from %s)\n' "${TRELLO_API_KEY: -4}" "$cred_source"
+
+  if body=$(request GET /members/me fields=fullName,username,email 2>&1); then
+    if command -v jq >/dev/null; then
+      printf 'account  %s\n' "$(jq -r '"\(.fullName) (@\(.username))" + (if .email then " <\(.email)>" else "" end)' <<<"$body")"
+    else
+      printf 'account  %s\n' "$body"
+    fi
+  else
+    printf 'account  FAILED: %s\n' "$body"
+    status=1
+  fi
+
+  if body=$(request GET "/tokens/$TRELLO_TOKEN" fields=permissions,dateExpires 2>&1); then
+    if command -v jq >/dev/null; then
+      printf 'scopes   %s\n' "$(jq -r '"read=\(any(.permissions[]?; .read)) write=\(any(.permissions[]?; .write))"' <<<"$body")"
+      printf 'expires  %s\n' "$(jq -r '.dateExpires // "never"' <<<"$body")"
+    else
+      printf 'token    %s\n' "$body"
+    fi
+  else
+    printf 'scopes   FAILED: %s\n' "$body"
+    status=1
+  fi
+
+  if body=$(request GET /members/me/boards fields=name filter=open 2>&1); then
+    if command -v jq >/dev/null; then
+      printf 'boards   %s open\n' "$(jq -r 'length' <<<"$body")"
+    fi
+  else
+    printf 'boards   FAILED: %s\n' "$body"
+    status=1
+  fi
+
+  return "$status"
+}
+
+case "${1:-}" in
+  whoami | check)
+    whoami
+    exit
+    ;;
+esac
+
+method=GET
+if [[ "${1:-}" =~ ^(GET|POST|PUT|DELETE)$ ]]; then
+  method=$1
+  shift
+fi
+
+endpoint="${1:?usage: trello [whoami|GET|POST|PUT|DELETE] [/endpoint] [key=value ...]}"
+shift
+
+request "$method" "$endpoint" "$@"

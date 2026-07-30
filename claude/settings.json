@@ -82,11 +82,12 @@
     "command": "$CLAUDE_CONFIG_DIR/statusline-command.sh"
   },
   "enabledPlugins": {
-    "skillify@claude-skillify": true,
+    "skillify@claude-skillify": false,
     "my@my-plugin": true,
     "humanizer@humanizer": true,
     "commit-commands@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-skillify": {
@@ -122,7 +123,7 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "autoCompactEnabled": true,
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "agentPushNotifEnabled": true
+  "voiceEnabled": true
 }

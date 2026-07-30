@@ -114,13 +114,56 @@ BLOCKED
   return 1
 }
 
-cmd_install() {
-  local hook="$root/.git/hooks/pre-push"
+# Where git will actually look for hooks. `core.hooksPath` wins outright when
+# set — git ignores .git/hooks entirely — and a relative value is resolved
+# against the working tree root.
+hooks_dir() {
+  local configured
+  configured=$(git -C "$root" config core.hooksPath 2>/dev/null) || configured=""
 
-  if [ ! -d "$root/.git" ]; then
-    echo "plan-gate: $root is not a git repository" >&2
-    return 1
+  if [ -z "$configured" ]; then
+    echo "$(git -C "$root" rev-parse --git-dir)/hooks"
+    return
   fi
+
+  case "$configured" in
+    /*) echo "$configured" ;;
+    *) echo "$root/$configured" ;;
+  esac
+}
+
+# A repo whose hooks are a dispatcher over <hook>.d/ directories gets a numbered
+# script rather than an edit to a dispatcher this tool doesn't own. 05 so the
+# check — milliseconds — runs before whatever suite the repo gates on.
+install_dropin() {
+  local dir="$1"
+  local script="$dir/05-plan-gate"
+
+  if grep -rlq plan-gate "$dir" 2>/dev/null; then
+    echo "plan-gate: already wired into $dir"
+    return 0
+  fi
+
+  cat > "$script" <<'HOOK'
+#!/usr/bin/env bash
+set -e
+
+# plan-gate: refuse to push while a plan is marked shipped but not yet deleted.
+# No-op where the tool isn't installed, so a fresh clone still pushes.
+# Does not read stdin — later hooks may need the ref list.
+# Skip once with: SKIP=plan-gate git push
+
+command -v plan-gate >/dev/null 2>&1 || exit 0
+
+plan-gate check
+HOOK
+
+  chmod +x "$script"
+  echo "plan-gate: wired into ${script#$root/} — commit it if that directory is tracked"
+}
+
+install_single() {
+  local hook="$1"
 
   if [ -f "$hook" ] && grep -q plan-gate "$hook"; then
     echo "plan-gate: already wired into $hook"
@@ -146,11 +189,36 @@ HOOK
       tail -n +2 "$hook"
     } > "$tmp" && mv "$tmp" "$hook"
   else
+    mkdir -p "$(dirname "$hook")"
     printf '#!/bin/sh\n\n%s\n' "$block" > "$hook"
   fi
 
   chmod +x "$hook"
   echo "plan-gate: wired into $hook"
+}
+
+cmd_install() {
+  if ! git -C "$root" rev-parse --git-dir >/dev/null 2>&1; then
+    echo "plan-gate: $root is not a git repository" >&2
+    return 1
+  fi
+
+  local dir
+  dir=$(hooks_dir)
+
+  # An earlier install may have written into .git/hooks before this repo
+  # adopted core.hooksPath, leaving a check git no longer runs. Say so — a
+  # silently inert gate is worse than no gate.
+  local bypassed="$(git -C "$root" rev-parse --git-dir)/hooks/pre-push"
+  if [ "$dir" != "$(dirname "$bypassed")" ] && [ -f "$bypassed" ] && grep -q plan-gate "$bypassed"; then
+    echo "plan-gate: $bypassed has a check git no longer runs (core.hooksPath is set); it can be deleted"
+  fi
+
+  if [ -d "$dir/pre-push.d" ]; then
+    install_dropin "$dir/pre-push.d"
+  else
+    install_single "$dir/pre-push"
+  fi
 }
 
 case "${1:-list}" in

@@ -196,6 +196,10 @@ An unstated verdict means the step didn't happen. Do not commit without one.
 - Duplication that has now reached its third use (Rule of Three)
 - Names that drifted from the domain while you were making the test pass
 - A method that grew past one job, or a conditional that wants to be a value
+- Comments this cycle added — the default is none, so each one is a decision to
+  re-examine. If the diff added any, load **my:comments** and apply it to them
+  before you commit; a comment that restates the code goes, and one that exists
+  because a name is unclear becomes a rename.
 - Anything you'd flag if this arrived as someone else's pull request
 
 **Rules while refactoring:**

@@ -34,6 +34,7 @@ These rules shape all code I write, review, or design. Each is stated tersely he
 - Manage dependencies at the boundary — collaborators reachable through simple, stubbable seams.
 - Declarative domain, imperative orchestration: the model reads as a specification of the business; step-by-step control flow lives at the edges.
 - Name with nouns; an "-er" class (`Resolver`, `Manager`, `Processor`) is a prompt to ask what noun or entity behavior it's hiding — not a verdict.
+- Default to **no comment** — names and structure carry the meaning. One earns its place only for a non-obvious WHY or a gotcha the code can't show; if the comment exists because a name is unclear, fix the name instead. Never restate what the code already says. The **my:comments** skill holds the full rules — load it when auditing the comments in a changeset.
 
 ## Delivery
 

@@ -9,9 +9,11 @@
 #   plan-gate install       wire `check` into this repo's pre-push hook
 #
 # Status lives in each plan's frontmatter: active | queued | blocked | shipped.
-# At most one plan may be `active`; new plans start `queued` so writing one
-# mid-flight can't displace the work in progress. A plan with no frontmatter is
-# unknown, not broken — nothing here nags about it or rewrites it.
+# At most one plan may be `active` per working tree; new plans start `queued` so
+# writing one mid-flight can't displace the work in progress. Parallel worktrees
+# each own an active plan, so a checkout that has merged two of their branches
+# legitimately sees more than one. A plan with no frontmatter is unknown, not
+# broken — nothing here nags about it or rewrites it.
 
 set -uo pipefail
 
@@ -82,14 +84,15 @@ cmd_list() {
   if [ "$active" -eq 0 ]; then
     echo "No active plan — ask which to promote before resuming; never pick by age."
   elif [ "$active" -gt 1 ]; then
-    echo "More than one plan is active. That is a state bug: demote all but one."
+    printf '%s plans are active — the rule is one per working tree. Run `git worktree list`: fine if a live tree owns each, otherwise demote the orphans.\n' "$active"
   fi
 
   cat <<'CONTRACT'
-Plans are temporary: at most one `active`, new plans start `queued`. When a
-plan's last phase/PR lands, set `status: shipped` right then, route its durable
-learnings out (my:capture-learnings), and delete the file — never archive it.
-Git history is the archive.
+Plans are temporary: at most one `active` per working tree (parallel worktrees
+may each own one), new plans start `queued`. When a plan's last phase/PR lands,
+set `status: shipped` right then, route its durable learnings out
+(my:capture-learnings), and delete the file — never archive it. Git history is
+the archive.
 CONTRACT
 }
 

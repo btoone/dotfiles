@@ -26,13 +26,13 @@ Count the plans whose status is `active`, then follow the matching case exactly.
 
 2. **Zero `active`** — nothing is in flight. List every `queued` and `blocked` plan with its `created` date and its goal line (one line each), then ask which to promote. For a `blocked` plan, say what it's blocked on. Wait for an answer; do not start work.
 
-3. **Two or more `active`** — a state bug, not a choice. Show them, explain that only one plan may be active, and ask which to keep. Demote the others to `queued` before doing any work.
+3. **Two or more `active`** — one active plan per *working tree* is the rule, so this is normal in a checkout that has merged parallel worktree branches. Run `git worktree list`. If exactly one active plan is plausibly this tree's — its name matches the branch, or it's the only one no other tree owns — that's the work; say which you picked and why. Otherwise show them alongside the worktrees and ask. Demote only orphans (active plans whose worktree is gone) to `queued`; never demote a plan another live tree is working.
 
 If `.claude/plans/` is empty or missing, say so and stop — don't offer to create a plan unless asked.
 
 ## Promoting a plan
 
-When the user picks one: set its `status: active`, and demote any previously active plan to `queued` in the same edit. Say out loud what was demoted — a silent swap is how work gets orphaned.
+When the user picks one: set its `status: active`, and demote **this working tree's** previously active plan to `queued` in the same edit — leave other trees' active plans alone. Say out loud what was demoted — a silent swap is how work gets orphaned.
 
 ## Continuing the work
 

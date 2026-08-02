@@ -35,15 +35,66 @@ plan_status() {
   ' "$1"
 }
 
-# Sorts action-needed to the top: active, shipped, blocked, queued, unknown.
-status_rank() {
-  case "$1" in
-    active) echo 0 ;;
-    shipped) echo 1 ;;
-    blocked) echo 2 ;;
-    queued) echo 3 ;;
-    *) echo 4 ;;
-  esac
+# Color states how much attention a section wants, and nothing else — same
+# scale agent-board uses, so a glance means the same thing in both tools:
+# red blocks you now, yellow wants a decision, cyan is in flight, magenta is
+# parked, dim is nothing to do. Only the header line is colored; items stay
+# plain so a name is copyable and a command inside a note stays readable.
+#
+# Both callers are hooks that capture this output — SessionStart reads `list`,
+# pre-push reads `check` — and escape codes there are noise an agent reads
+# past, so the palette arms only against a terminal. Set on the fd each command
+# actually writes to: `list` is stdout, `check` is stderr.
+palette() {
+  c_reset='' c_title='' c_active='' c_shipped='' c_blocked='' c_idle='' c_warn='' c_stop=''
+  [ -t "$1" ] && [ -z "${NO_COLOR:-}" ] || return 0
+
+  c_reset=$'\033[0m'
+  c_title=$'\033[1m'
+  c_active=$'\033[1;36m'   # in flight
+  c_shipped=$'\033[1;33m'  # wants a decision
+  c_blocked=$'\033[1;35m'  # parked
+  c_idle=$'\033[1;90m'     # nothing to do
+  c_warn=$'\033[1;33m'     # the invariant is off
+  c_stop=$'\033[1;31m'     # blocking a push right now
+}
+
+# Every section renders the same shape, so nothing drifts as sections are added:
+#
+#   ■ Title  (summary)
+#     note line
+#
+#     item
+#     item
+#
+# Notes carry the action for the whole section — never repeated per item. ■ is
+# informational, ⚠ needs a decision. Mirrors the renderer in card-flipping's
+# `flip status` (flip/cli/status.py).
+section() {
+  local color=$1 symbol=$2 title=$3 summary=$4 notes=$5 items=$6
+
+  if [ -n "$summary" ]; then
+    printf '\n%s%s %s  (%s)%s\n' "$color" "$symbol" "$title" "$summary" "$c_reset"
+  else
+    printf '\n%s%s %s%s\n' "$color" "$symbol" "$title" "$c_reset"
+  fi
+
+  [ -n "$notes" ] && indent "$notes"
+
+  if [ -n "$items" ]; then
+    printf '\n'
+    indent "$(printf '%s' "$items" | sort)"
+  fi
+}
+
+indent() {
+  while IFS= read -r line; do
+    [ -n "$line" ] && printf '  %s\n' "$line" || printf '\n'
+  done <<< "$1"
+}
+
+plural() {
+  if [ "$1" -eq 1 ]; then printf '%s' "$2"; else printf '%ss' "$2"; fi
 }
 
 each_plan() {
@@ -54,46 +105,72 @@ each_plan() {
   done
 }
 
+# One section per status, most-actionable first. The status contract lives in
+# the section notes rather than in a closing paragraph, so each rule sits next
+# to the plans it governs; only the rule that belongs to no single status is
+# left to the footer.
 cmd_list() {
-  local rows=""
-  local count=0
-  local active=0
+  local active="" shipped="" blocked="" queued="" unknown=""
+  local count=0 n_active=0 n_shipped=0 n_blocked=0 n_queued=0 n_unknown=0
 
   while IFS= read -r plan; do
     [ -n "$plan" ] || continue
-    local status
+    local status name
     status=$(plan_status "$plan")
-    [ -n "$status" ] || status="no status"
-    [ "$status" = active ] && active=$((active + 1))
+    name=$(basename "$plan" .md)
     count=$((count + 1))
-    rows+="$(status_rank "$status")|$status|$(basename "$plan" .md)"$'\n'
+    case "$status" in
+      active) active+="$name"$'\n'; n_active=$((n_active + 1)) ;;
+      shipped) shipped+="$name"$'\n'; n_shipped=$((n_shipped + 1)) ;;
+      blocked) blocked+="$name"$'\n'; n_blocked=$((n_blocked + 1)) ;;
+      queued) queued+="$name"$'\n'; n_queued=$((n_queued + 1)) ;;
+      *) unknown+="$name"$'\n'; n_unknown=$((n_unknown + 1)) ;;
+    esac
   done < <(each_plan)
 
   [ "$count" -gt 0 ] || return 0
 
-  echo "Plans in .claude/plans ($count):"
-  printf '%s' "$rows" | sort -t'|' -k1,1n -k3,3 | while IFS='|' read -r _ status name; do
-    [ -n "$name" ] || continue
-    if [ "$status" = shipped ]; then
-      printf '  %-9s %s  <- drain and delete\n' "$status" "$name"
-    else
-      printf '  %-9s %s\n' "$status" "$name"
-    fi
-  done
+  printf '%splan-gate — %s %s in .claude/plans%s\n' \
+    "$c_title" "$count" "$(plural "$count" plan)" "$c_reset"
 
-  if [ "$active" -eq 0 ]; then
-    echo "No active plan — ask which to promote before resuming; never pick by age."
-  elif [ "$active" -gt 1 ]; then
-    printf '%s plans are active — the rule is one per working tree. Run `git worktree list`: fine if a live tree owns each, otherwise demote the orphans.\n' "$active"
+  [ -n "$active" ] && section "$c_active" "■" "Active" "$n_active $(plural "$n_active" plan)" \
+    "In flight. At most one per working tree — parallel worktrees may each own one." \
+    "$active"
+
+  [ -n "$shipped" ] && section "$c_shipped" "⚠" "Shipped" "$n_shipped $(plural "$n_shipped" plan)" \
+    "Landed but not drained, and the pre-push gate blocks until they are.
+Route the durable parts out (my:capture-learnings), then delete the file." \
+    "$shipped"
+
+  [ -n "$blocked" ] && section "$c_blocked" "■" "Blocked" "$n_blocked $(plural "$n_blocked" plan)" \
+    "Waiting on something outside the plan." \
+    "$blocked"
+
+  [ -n "$queued" ] && section "$c_idle" "■" "Queued" "$n_queued $(plural "$n_queued" plan)" \
+    "Where new plans start, so writing one mid-flight can't displace the work in progress." \
+    "$queued"
+
+  [ -n "$unknown" ] && section "$c_idle" "■" "No status" "$n_unknown $(plural "$n_unknown" plan)" \
+    "No frontmatter — unknown, not broken. Add a \`status:\` line when you next touch one." \
+    "$unknown"
+
+  if [ "$n_active" -eq 0 ]; then
+    section "$c_warn" "⚠" "No active plan" "" \
+      "Ask which queued plan to promote before resuming — never pick by age." ""
+  elif [ "$n_active" -gt 1 ]; then
+    section "$c_warn" "⚠" "$n_active plans active" "" \
+      "The rule is one per working tree. Run \`git worktree list\`: fine if a live tree
+owns each, otherwise demote the orphans." ""
   fi
 
-  cat <<'CONTRACT'
-Plans are temporary: at most one `active` per working tree (parallel worktrees
-may each own one), new plans start `queued`. When a plan's last phase/PR lands,
-set `status: shipped` right then, route its durable learnings out
-(my:capture-learnings), and delete the file — never archive it. Git history is
-the archive.
+  local contract
+  contract=$(cat <<'CONTRACT'
+Plans are temporary artifacts. Set `status: shipped` the moment a plan's last
+phase or PR lands, and delete the file once it's drained. Never archive a plan —
+git history is the archive.
 CONTRACT
+  )
+  printf '\n%s%s%s\n' "$c_idle" "$contract" "$c_reset"
 }
 
 cmd_check() {
@@ -106,14 +183,15 @@ cmd_check() {
 
   [ "${#shipped[@]}" -eq 0 ] && return 0
 
-  echo "plan-gate: ${#shipped[@]} plan(s) marked shipped, still on disk:" >&2
-  printf '  %s\n' "${shipped[@]#$root/}" >&2
-  cat >&2 <<'BLOCKED'
-
-A shipped plan is a plan that has not been drained. Route its durable parts to
-their homes (my:capture-learnings), delete the file, commit, then push.
-Bypass once with: git push --no-verify
-BLOCKED
+  {
+    printf '%splan-gate — push blocked%s\n' "$c_title" "$c_reset"
+    section "$c_stop" "⚠" "Marked shipped, still on disk" \
+      "${#shipped[@]} $(plural "${#shipped[@]}" plan)" \
+      "A shipped plan is a plan that has not been drained. Route its durable parts
+to their homes (my:capture-learnings), delete the file, commit, then push.
+Bypass once with: git push --no-verify" \
+      "$(printf '%s\n' "${shipped[@]#$root/}")"
+  } >&2
   return 1
 }
 
@@ -225,8 +303,8 @@ cmd_install() {
 }
 
 case "${1:-list}" in
-  list) cmd_list ;;
-  check) cmd_check ;;
+  list) palette 1; cmd_list ;;
+  check) palette 2; cmd_check ;;
   install) cmd_install ;;
   *)
     echo "usage: plan-gate [list|check|install]" >&2

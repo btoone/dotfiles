@@ -39,9 +39,10 @@ When the user picks one: set its `status: active`, and demote **this working tre
 1. Read the plan fully before touching code.
 2. If it has no lifecycle footer, add one now (see below). A plan should carry its own termination condition, so an agent reading only the file still knows the thing is disposable.
 3. Reconcile it against reality — `git log` since the plan's `created` date, and the code it names. Plans go stale; say what no longer holds rather than implementing a premise that's already been overtaken.
-4. Work the next unfinished step under the normal TDD cycle (my:tdd).
-5. As steps land, append to the plan's `## Progress` section (create it if absent): a dated one-liner per completed step. This is what the next session reads.
-6. After each step, check whether any unfinished phase, part, or PR remains. When none does, the plan is finished — go straight to Finishing in the same session. Don't wait to be asked.
+4. If the repo declares a delivery workflow (a doc covering branch naming, PR conventions, board automation — check CLAUDE.md's doc table), read it **before the first commit** and let it override this file's defaults. It decides where commits go — often a fresh issue branch, never the worktree's placeholder branch — when a PR opens (possibly as a draft at first commit), and which steps stay human. Board tracking usually rides on those conventions mechanically, so following them *is* the board sync.
+5. Work the next unfinished step under the normal TDD cycle (my:tdd).
+6. As steps land, append to the plan's `## Progress` section (create it if absent): a dated one-liner per completed step. This is what the next session reads.
+7. After each step, check whether any unfinished phase, part, or PR remains. When none does, the plan is finished — go straight to Finishing in the same session. Don't wait to be asked.
 
 ## Orchestrating slices
 
@@ -62,12 +63,16 @@ ephemeral:
 A single-slice plan or a trivial step doesn't need the ceremony — work it
 directly.
 
-**The review gate:** after the last slice of a multi-slice plan — before the
-push that ships it — run `/code-review` on the accumulated diff, then
-`my:review-triage` on its findings; the triage's Handoff spawns fresh
-implementers for accepted fixes. Running the review from a fresh session is
-hygiene (cheap context, a triage untainted by having defended the slices),
-not a requirement — the finders and fixers are fresh agents either way.
+**The review gate:** after the last slice of a unit of work — before whatever
+ships it (the push, or marking its PR ready to merge) — the accumulated diff
+gets `/code-review`, then `my:review-triage` on its findings; the triage's
+Handoff spawns fresh implementers for accepted fixes. In a PR-based repo the
+unit is each PR, findings are posted on the PR, and the repo's rules may make
+the review kickoff itself a human step — an unattended session then announces
+the PR is ready and names the command, rather than reviewing. Running the
+review from a fresh session is hygiene (cheap context, a triage untainted by
+having defended the slices), not a requirement — the finders and fixers are
+fresh agents either way.
 
 ## The lifecycle footer
 

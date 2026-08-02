@@ -14,6 +14,12 @@
 # each own an active plan, so a checkout that has merged two of their branches
 # legitimately sees more than one. A plan with no frontmatter is unknown, not
 # broken — nothing here nags about it or rewrites it.
+#
+# The frontmatter is not the only evidence, because it is written inside the
+# worktree building the plan and stays on that branch until it merges. Every
+# other checkout therefore reads a stale status. A live worktree named for a
+# plan promotes it to active here regardless — `blocked` and `shipped` excepted,
+# being deliberate signals a tree does not refute.
 
 set -uo pipefail
 
@@ -105,6 +111,36 @@ each_plan() {
   done
 }
 
+# Directory basenames of every live worktree except this checkout.
+#
+# A plan is promoted to active inside its own worktree, on that tree's branch,
+# so every other checkout keeps seeing the pre-promotion copy of the file. From
+# the main checkout a plan being built right now still reads `queued`, and the
+# gate would report "no active plan" while a tree is sitting there building it.
+# The tree is the fact that does not lag: if one exists for a plan, the plan is
+# in flight regardless of what this checkout's copy says.
+worktree_names() {
+  git -C "$root" worktree list --porcelain 2>/dev/null \
+    | awk '/^worktree /{ print substr($0, 10) }' \
+    | while IFS= read -r path; do
+        [ "$path" = "$root" ] && continue
+        basename "$path"
+      done
+}
+
+# `just worktree <name> FNDR-12` names the tree `fndr-12-<name>` for Linear's
+# benefit, while the plan is named for the work — so an issue-id prefix has to
+# come off before the two can be compared.
+plan_has_worktree() { # plan-name; reads $wt_names from the caller
+  local tree
+  while IFS= read -r tree; do
+    [ -n "$tree" ] || continue
+    [ "$tree" = "$1" ] && return 0
+    [ "$(printf '%s' "$tree" | sed -E 's/^[a-z]+-[0-9]+-//')" = "$1" ] && return 0
+  done <<< "$wt_names"
+  return 1
+}
+
 # One section per status, most-actionable first. The status contract lives in
 # the section notes rather than in a closing paragraph, so each rule sits next
 # to the plans it governs; only the rule that belongs to no single status is
@@ -112,15 +148,35 @@ each_plan() {
 cmd_list() {
   local active="" shipped="" blocked="" queued="" unknown=""
   local count=0 n_active=0 n_shipped=0 n_blocked=0 n_queued=0 n_unknown=0
+  local n_orphan_active=0
+  local wt_names
+  wt_names=$(worktree_names)
 
   while IFS= read -r plan; do
     [ -n "$plan" ] || continue
-    local status name
+    local status name owned
     status=$(plan_status "$plan")
     name=$(basename "$plan" .md)
     count=$((count + 1))
+    owned=no
+    plan_has_worktree "$name" && owned=yes
+
+    # A live tree outranks a stale `queued` or a missing status, and only those:
+    # `blocked` and `shipped` are deliberate signals that a tree does not refute
+    # — a blocked plan with a tree is still blocked, and a shipped one still owes
+    # a drain. The file's own claim rides along so nobody reads the promotion as
+    # something the frontmatter says.
+    if [ "$owned" = yes ] && { [ "$status" = queued ] || [ -z "$status" ]; }; then
+      active+="$name  · worktree, file says ${status:-no status}"$'\n'
+      n_active=$((n_active + 1))
+      continue
+    fi
+
     case "$status" in
-      active) active+="$name"$'\n'; n_active=$((n_active + 1)) ;;
+      active)
+        active+="$name"$'\n'; n_active=$((n_active + 1))
+        [ "$owned" = yes ] || n_orphan_active=$((n_orphan_active + 1))
+        ;;
       shipped) shipped+="$name"$'\n'; n_shipped=$((n_shipped + 1)) ;;
       blocked) blocked+="$name"$'\n'; n_blocked=$((n_blocked + 1)) ;;
       queued) queued+="$name"$'\n'; n_queued=$((n_queued + 1)) ;;
@@ -134,7 +190,9 @@ cmd_list() {
     "$c_title" "$count" "$(plural "$count" plan)" "$c_reset"
 
   [ -n "$active" ] && section "$c_active" "■" "Active" "$n_active $(plural "$n_active" plan)" \
-    "In flight. At most one per working tree — parallel worktrees may each own one." \
+    "In flight. At most one per working tree — parallel worktrees may each own one.
+A plan with a live worktree counts as active however its file reads here: the
+status flips inside the tree, so this checkout's copy lags until that branch lands." \
     "$active"
 
   [ -n "$shipped" ] && section "$c_shipped" "⚠" "Shipped" "$n_shipped $(plural "$n_shipped" plan)" \
@@ -157,10 +215,10 @@ Route the durable parts out (my:capture-learnings), then delete the file." \
   if [ "$n_active" -eq 0 ]; then
     section "$c_warn" "⚠" "No active plan" "" \
       "Ask which queued plan to promote before resuming — never pick by age." ""
-  elif [ "$n_active" -gt 1 ]; then
-    section "$c_warn" "⚠" "$n_active plans active" "" \
-      "The rule is one per working tree. Run \`git worktree list\`: fine if a live tree
-owns each, otherwise demote the orphans." ""
+  elif [ "$n_orphan_active" -gt 1 ]; then
+    section "$c_warn" "⚠" "$n_orphan_active plans active" "" \
+      "The rule is one per working tree, and no live tree owns these — so they are
+this checkout's, and it can only have one. Demote the ones you are not building." ""
   fi
 
   local contract

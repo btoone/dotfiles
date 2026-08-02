@@ -132,14 +132,17 @@ worktree_paths() {
 #
 # `just worktree <name> FNDR-12` names the tree `fndr-12-<name>` for Linear's
 # benefit, while the plan is named for the work — so an issue-id prefix has to
-# come off before the two can be compared.
+# come off before the two can be compared. The Claude Code harness cuts its own
+# trees and appends a session id, `<name>-567459`, so a suffix has to come off
+# too. Four digits is the floor: a plan may well end in `-2`, and stripping that
+# would hand one plan's tree to another.
 plan_worktree() { # plan-name; reads $wt_paths from the caller
   local path tree
   while IFS= read -r path; do
     [ -n "$path" ] || continue
     tree=$(basename "$path")
     if [ "$tree" = "$1" ] \
-      || [ "$(printf '%s' "$tree" | sed -E 's/^[a-z]+-[0-9]+-//')" = "$1" ]; then
+      || [ "$(printf '%s' "$tree" | sed -E 's/-[0-9]{4,}$//; s/^[a-z]+-[0-9]+-//')" = "$1" ]; then
       printf '%s\n' "$path"
       return 0
     fi

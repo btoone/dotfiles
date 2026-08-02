@@ -135,6 +135,24 @@ section() { # output title
   refute_contains "$(section "$output" Queued)" rep-directory
 }
 
+@test "list: a worktree the Claude Code harness cut matches its plan" {
+  make_plan marketplace-rep-directory queued
+  make_worktree marketplace-rep-directory-567459
+
+  run "$GATE" list
+  assert_contains "$(section "$output" Active)" marketplace-rep-directory
+  refute_contains "$(section "$output" Queued)" marketplace-rep-directory
+}
+
+@test "list: a short trailing number is part of the name, not a session id" {
+  make_plan slice queued
+  make_worktree slice-2
+
+  run "$GATE" list
+  assert_contains "$(section "$output" Queued)" slice
+  refute_contains "$(section "$output" Active)" slice
+}
+
 @test "list: the main checkout is not a worktree that activates a plan" {
   make_plan repo queued
 

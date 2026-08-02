@@ -16,8 +16,10 @@ setup() {
   # Overridable so the coverage and detection checks can run against a
   # synthetic tree instead of mutating the real one.
   SKILLS="${MY_PLUGIN_SKILLS:-$BATS_TEST_DIRNAME/../my-plugin/skills}"
-  # Ratchet, not an aspiration: lower it as skills get trimmed, never raise it.
-  BUDGET=9039
+  # Ratchet, not an aspiration: trimming a skill lowers it. The only thing that
+  # may raise it is a new skill, and only by that skill's own surface — an
+  # existing description growing back is the regression this exists to catch.
+  BUDGET=9848
   # How far the budget may sit above the real surface before it has gone slack.
   SLACK=200
 }
@@ -202,4 +204,10 @@ skills_with_vocabulary_test() {
 @test "tdd: keeps the vocabulary an implementation request routes on" {
   assert_keeps_vocabulary tdd \
     "TDD" "BDD" "add a spec" "TDD this" "go ahead"
+}
+
+@test "trello: keeps the vocabulary a board request routes on" {
+  assert_keeps_vocabulary trello \
+    "what's on the board" "what does card X say" "move it to Done" \
+    "short link" "scripts/trello" "Jira"
 }

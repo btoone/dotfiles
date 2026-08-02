@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 # card-flipping CLI launcher. Wraps the project venv's `flip` Typer app.
-# Invokes the venv python explicitly against the console script: this
-# bypasses .venv/bin/flip's shebang (pinned to the iCloud-synced
-# ~/Documents/... path, a sync-conflict risk) while keeping argv[0] as
-# `flip` so --help renders the correct program name.
+# Invokes the venv python explicitly against the console script rather than
+# running .venv/bin/flip directly: that file's shebang is an absolute path
+# baked in at venv-creation time, so moving the repo breaks it until the venv
+# is rebuilt. Passing the python explicitly survives the move, and argv[0]
+# stays `flip` so --help renders the correct program name.
+
+repo="$HOME/code/card-flipping"
 
 # Pin the data root so `flip` works from any cwd, not just the project
 # dir. Respect an explicit override if the caller already set FLIP_ROOT
 # (e.g. to point at a test copy).
-export FLIP_ROOT="${FLIP_ROOT:-$HOME/Projects/card-flipping}"
+export FLIP_ROOT="${FLIP_ROOT:-$repo}"
 
-venv="$HOME/Projects/card-flipping/.venv"
-exec "$venv/bin/python" "$venv/bin/flip" "$@"
+exec "$repo/.venv/bin/python" "$repo/.venv/bin/flip" "$@"

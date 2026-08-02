@@ -51,6 +51,14 @@ make_worktree() { # dirname
   git -C "$REPO" worktree add -q -b "$1" "$TREES/$1" main
 }
 
+# The copy of a plan that lives inside a worktree — the authoritative one while
+# that tree is building it, since promotion happens on the tree's branch.
+make_tree_plan() { # tree plan-name status
+  mkdir -p "$TREES/$1/.claude/plans"
+  printf -- '---\nplan: %s\nstatus: %s\n---\n\n# Plan: %s\n' "$2" "$3" "$2" \
+    > "$TREES/$1/.claude/plans/$2.md"
+}
+
 # Everything from a section header up to the next one. Lets a test assert *where*
 # a plan is reported, not merely that its name appears somewhere in the output.
 section() { # output title
@@ -71,12 +79,43 @@ section() { # output title
   refute_contains "$(section "$output" Queued)" worktree-aging-view
 }
 
-@test "list: a worktree-derived active plan says what its file still claims" {
+@test "list: a worktree whose plan is still unpromoted says so" {
   make_plan worktree-aging-view queued
   make_worktree worktree-aging-view
+  make_tree_plan worktree-aging-view worktree-aging-view queued
 
   run "$GATE" list
-  assert_contains "$(section "$output" Active)" "file says queued"
+  assert_contains "$(section "$output" Active)" "still says queued"
+}
+
+@test "list: status comes from the worktree's own copy, not this checkout's" {
+  make_plan worktree-aging-view queued
+  make_worktree worktree-aging-view
+  make_tree_plan worktree-aging-view worktree-aging-view active
+
+  run "$GATE" list
+  assert_contains "$(section "$output" Active)" worktree-aging-view
+  # Promoted in its tree, so it is listed plainly — no stale-file marker at all.
+  refute_contains "$(section "$output" Active)" "worktree-aging-view  ·"
+}
+
+@test "list: the worktree's copy wins even when it disagrees downward" {
+  make_plan stalled queued
+  make_worktree stalled
+  make_tree_plan stalled stalled blocked
+
+  run "$GATE" list
+  assert_contains "$(section "$output" Blocked)" stalled
+  refute_contains "$(section "$output" Active)" stalled
+}
+
+@test "list: falls back to this checkout when the tree has no copy of the plan" {
+  make_plan hero-consistency queued
+  make_worktree hero-consistency
+
+  run "$GATE" list
+  assert_contains "$(section "$output" Active)" hero-consistency
+  assert_contains "$(section "$output" Active)" "still says queued"
 }
 
 @test "list: a queued plan with no worktree stays queued" {

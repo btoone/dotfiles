@@ -15,11 +15,11 @@
 # legitimately sees more than one. A plan with no frontmatter is unknown, not
 # broken — nothing here nags about it or rewrites it.
 #
-# The frontmatter is not the only evidence, because it is written inside the
-# worktree building the plan and stays on that branch until it merges. Every
-# other checkout therefore reads a stale status. A live worktree named for a
-# plan promotes it to active here regardless — `blocked` and `shipped` excepted,
-# being deliberate signals a tree does not refute.
+# This checkout's frontmatter is not the last word, because status is written
+# inside the worktree building the plan and stays on that branch until it merges.
+# So a plan with a live worktree is read from that tree's copy instead, and a
+# tree that exists at all promotes a still-`queued` plan to active — `blocked`
+# and `shipped` excepted, being deliberate signals a tree does not refute.
 
 set -uo pipefail
 
@@ -111,7 +111,7 @@ each_plan() {
   done
 }
 
-# Directory basenames of every live worktree except this checkout.
+# Paths of every live worktree except this checkout.
 #
 # A plan is promoted to active inside its own worktree, on that tree's branch,
 # so every other checkout keeps seeing the pre-promotion copy of the file. From
@@ -119,25 +119,31 @@ each_plan() {
 # gate would report "no active plan" while a tree is sitting there building it.
 # The tree is the fact that does not lag: if one exists for a plan, the plan is
 # in flight regardless of what this checkout's copy says.
-worktree_names() {
+worktree_paths() {
   git -C "$root" worktree list --porcelain 2>/dev/null \
     | awk '/^worktree /{ print substr($0, 10) }' \
     | while IFS= read -r path; do
         [ "$path" = "$root" ] && continue
-        basename "$path"
+        printf '%s\n' "$path"
       done
 }
 
+# The worktree building this plan, if one exists.
+#
 # `just worktree <name> FNDR-12` names the tree `fndr-12-<name>` for Linear's
 # benefit, while the plan is named for the work — so an issue-id prefix has to
 # come off before the two can be compared.
-plan_has_worktree() { # plan-name; reads $wt_names from the caller
-  local tree
-  while IFS= read -r tree; do
-    [ -n "$tree" ] || continue
-    [ "$tree" = "$1" ] && return 0
-    [ "$(printf '%s' "$tree" | sed -E 's/^[a-z]+-[0-9]+-//')" = "$1" ] && return 0
-  done <<< "$wt_names"
+plan_worktree() { # plan-name; reads $wt_paths from the caller
+  local path tree
+  while IFS= read -r path; do
+    [ -n "$path" ] || continue
+    tree=$(basename "$path")
+    if [ "$tree" = "$1" ] \
+      || [ "$(printf '%s' "$tree" | sed -E 's/^[a-z]+-[0-9]+-//')" = "$1" ]; then
+      printf '%s\n' "$path"
+      return 0
+    fi
+  done <<< "$wt_paths"
   return 1
 }
 
@@ -149,25 +155,36 @@ cmd_list() {
   local active="" shipped="" blocked="" queued="" unknown=""
   local count=0 n_active=0 n_shipped=0 n_blocked=0 n_queued=0 n_unknown=0
   local n_orphan_active=0
-  local wt_names
-  wt_names=$(worktree_names)
+  local wt_paths wt_path
+  wt_paths=$(worktree_paths)
 
   while IFS= read -r plan; do
     [ -n "$plan" ] || continue
     local status name owned
-    status=$(plan_status "$plan")
     name=$(basename "$plan" .md)
     count=$((count + 1))
     owned=no
-    plan_has_worktree "$name" && owned=yes
+    wt_path=$(plan_worktree "$name") && owned=yes
 
-    # A live tree outranks a stale `queued` or a missing status, and only those:
-    # `blocked` and `shipped` are deliberate signals that a tree does not refute
-    # — a blocked plan with a tree is still blocked, and a shipped one still owes
-    # a drain. The file's own claim rides along so nobody reads the promotion as
-    # something the frontmatter says.
+    # Read the tree's own copy when there is one. That copy is where promotion
+    # actually happens, so it is authoritative and this checkout's is merely the
+    # last version to have merged. Without this the gate reports a plan being
+    # built right now as `queued` and calls it stale, when the true status was
+    # readable on disk the whole time. A tree cut before the plan file existed
+    # has no copy, so fall back to this checkout's.
+    if [ "$owned" = yes ] && [ -f "$wt_path/.claude/plans/$name.md" ]; then
+      status=$(plan_status "$wt_path/.claude/plans/$name.md")
+    else
+      status=$(plan_status "$plan")
+    fi
+
+    # A live tree outranks `queued` or a missing status, and only those:
+    # `blocked` and `shipped` are deliberate signals a tree does not refute — a
+    # blocked plan with a tree is still blocked, and a shipped one still owes a
+    # drain. Reaching here means the tree exists but nobody promoted the plan,
+    # which is worth saying rather than papering over.
     if [ "$owned" = yes ] && { [ "$status" = queued ] || [ -z "$status" ]; }; then
-      active+="$name  · worktree, file says ${status:-no status}"$'\n'
+      active+="$name  · worktree open, file still says ${status:-nothing}"$'\n'
       n_active=$((n_active + 1))
       continue
     fi
@@ -191,8 +208,8 @@ cmd_list() {
 
   [ -n "$active" ] && section "$c_active" "■" "Active" "$n_active $(plural "$n_active" plan)" \
     "In flight. At most one per working tree — parallel worktrees may each own one.
-A plan with a live worktree counts as active however its file reads here: the
-status flips inside the tree, so this checkout's copy lags until that branch lands." \
+A plan with a worktree is read from that tree's own copy, where promotion happens;
+a marked one has a tree open but was never promoted in it." \
     "$active"
 
   [ -n "$shipped" ] && section "$c_shipped" "⚠" "Shipped" "$n_shipped $(plural "$n_shipped" plan)" \

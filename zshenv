@@ -16,6 +16,10 @@ fi
 ## PATH
 export PATH="./bin:$PATH"                                                       # project binstubs
 export PATH="/Applications/MacVim.app/Contents/bin:$PATH"                       # enable mvim from terminal
+# mise shims for non-interactive shells (GUI-launched agents, scripts, git
+# hooks): `mise activate` in .zshrc only reaches interactive prompts. Shims
+# resolve the right tool per-directory and load mise.toml [env] at exec time.
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 ## Editor
 export EDITOR=$(which vim)

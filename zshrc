@@ -18,8 +18,9 @@ bindkey -M vicmd 'vv' edit-command-line
 bindkey -M viins '^P' up-history
 bindkey -M viins '^N' down-history
 
-# Mise (runtime version manager)
-export PATH="$HOME/.local/bin:$PATH"
+# Mise (runtime version manager). Shims in .zshenv/.zprofile cover shells that
+# never reach this file; activate is what loads mise.toml [env] into the shell,
+# which shims cannot do — pbx relies on it for `_.path` binstubs.
 if command -v mise &> /dev/null; then
   eval "$(mise activate zsh)"
 fi
@@ -30,11 +31,26 @@ fi
 # Include aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
-# Set PATH, MANPATH, etc., for Homebrew.
+# Set MANPATH, INFOPATH, HOMEBREW_* etc. for Homebrew. Its PATH entries are
+# positioned by path_precedence below rather than by this prepend.
 eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
-# /etc/paths.d/homebrew already puts homebrew in PATH (after /usr/bin), which
-# makes `brew shellenv` skip its prepend — force homebrew ahead of system dirs.
-path=($HOMEBREW_PREFIX/bin $HOMEBREW_PREFIX/sbin ${path:#$HOMEBREW_PREFIX/(bin|sbin)})
+
+# One owner for PATH precedence, declared in priority order. Prepend order can't
+# express this: macOS path_helper rewrites PATH after .zshenv, and mise's
+# precmd/chpwd hooks rebuild it from an activation snapshot on every prompt and
+# directory change — so any one-shot ordering here survives only until the next
+# `cd`. Re-asserting from a hook registered after mise's makes it stick.
+# Subtracting with :| keeps this idempotent and drops duplicates.
+typeset -ga _path_priority=(
+  $HOME/.local/share/mise/shims   # runtimes mise.toml pins beat everything else
+  $HOME/.local/bin                # tool scripts deployed by script/setup
+  $HOMEBREW_PREFIX/bin            # brew's tools beat the BSD ones (e.g. ctags)
+  $HOMEBREW_PREFIX/sbin
+)
+path_precedence() { path=($_path_priority ${path:|_path_priority}) }
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd path_precedence
+path_precedence
 
 # case insensitive path-completion
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'

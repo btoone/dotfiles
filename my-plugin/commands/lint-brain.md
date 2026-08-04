@@ -74,6 +74,8 @@ Find `*.md` files at the vault root that aren't part of the brain's reserved set
 
 **Fix:** Move each straggler to the correct folder, rename if the title is generic (`Untitled.md`, `Untitled 1.md`), add frontmatter, link from at least one related note, and add to `index.md`.
 
+Non-`.md` files at root are attachments, handled by check #12.
+
 ### 9. Schema Drift
 Compare the folder structure defined in `_Schema.md` against what actually exists on the filesystem. Flag:
 
@@ -83,6 +85,42 @@ Compare the folder structure defined in `_Schema.md` against what actually exist
 - **Empty folders** — schema-defined categories with zero notes.
 
 **Fix:** Update `_Schema.md` to reflect the current reality. The filesystem wins — the schema describes the brain, not the other way around.
+
+### 10. Sync Conflict Copies
+Find files whose basename is another file's basename plus a trailing ` <n>` (`index 2.md` beside `index.md`, `log 3.md` beside `log.md`). iCloud and Dropbox name a losing write this way instead of failing it, so the copy appears silently and both versions then diverge on their own. `index.md` and `log.md` are the usual victims — every maintenance run touches them.
+
+Do **not** assume the newer file is complete. Diff the pair on link targets, not on lines:
+
+```
+comm -13 <(grep -o '\[\[[^]]*\]\]' index.md | sort -u) \
+         <(grep -o '\[\[[^]]*\]\]' 'index 2.md' | sort -u)
+```
+
+Content unique to each side is normal — the live file kept accumulating after the fork, and the copy holds whatever the losing write contributed.
+
+**Fix:** Merge each entry the copy uniquely has into the live file, but only after confirming its target note still exists — a conflict copy predates any later deletion, so it can reference notes that are now gone. Report those separately rather than reintroducing a broken link. Deleting the copy is destructive and needs the user (see guardrails).
+
+### 11. Unescaped Pseudo-HTML Tags
+Find bare `<placeholder>` text outside backticks and fenced blocks — `<commit>`, `<path>`, `<persona>`. Obsidian parses `<foo>` as an HTML open tag; since it never closes, markdown rendering stops for **the rest of the file**, so `[[wiki links]]` below it render as literal brackets. One unescaped tag in a shell snippet can silently unlink hundreds of lines, which makes this cheap to miss and worth checking on every pass.
+
+Skip `_sources/` — those exports are immutable.
+
+**Fix:** Wrap the placeholder in backticks. Verify by confirming links below it resolve again.
+
+### 12. Stray and Orphaned Attachments
+Check the attachment convention in three places:
+
+1. **The setting.** Read `attachmentFolderPath` in `.obsidian/app.json`. If the key is *absent*, Obsidian silently defaults to the vault root and every paste lands there — the setting existing matters more than its value. It should name the folder `_Schema.md` designates for attachments.
+2. **Strays.** Non-`.md` files outside that folder and outside `_sources/`. Vault root is the usual pile.
+3. **Orphans.** Files in the attachment folder that no note embeds.
+
+Before moving anything, check which embed form points at it. `![[name.png]]` resolves by filename from anywhere in the vault, so those files move freely. `![](some/path.png)` is position-dependent and breaks — rewrite it to the wikilink form rather than fixing the path, so it survives the next reorganization.
+
+**Fix:** Move strays into the attachment folder, then re-verify every embed resolves. Report orphans rather than deleting them — an unreferenced image is often a paste that was never embedded, and it's the user's call whether the bytes are worth keeping.
+
+Establish "orphan" by building the set of every embedded filename across the vault and subtracting it from the files on disk. Do not decide it per-file with a shell search: a quoting or globbing mistake makes the search return nothing, which is indistinguishable from a genuine zero and reads as "safe to delete." Before trusting any empty result, confirm the same search finds a reference you know exists. Attachments live in `_sources/` too — a clipping note embedding its own screenshots is exactly the case a brain-layer-only scan misses.
+
+Path-based embeds are worth a standalone sweep even when nothing is stray: a folder rename breaks all of them at once, and check #2 only inspects `[[wikilinks]]`, so they can sit broken across many lint passes without ever being reported.
 
 ## Lint Policies (defaults)
 
@@ -98,7 +136,7 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 | Broken links — folder/path-only reference (e.g., `[[Acme]]` meaning the project) | Strip markers; preserve text | No |
 | Missing index entries | Add to `index.md` under the matching folder section, with a one-line description derived from the note's first heading or paragraph | No |
 | Stale content | Report only | Yes — judgment call |
-| Empty notes (0 words after frontmatter) | If file mtime >7 days old AND no incoming links → delete. Else flag and skip. | No (delete or flag, no ask) |
+| Empty notes (0 words after frontmatter) | Report under "Proposed deletions" with incoming-link count and mtime as the evidence | Yes — the user deletes |
 | Stub notes (1–49 words) | Report only | Yes — judgment call |
 | Duplicate coverage | Report only | Yes — judgment call |
 | Missing frontmatter | Add YAML: `created` from file mtime (formatted `YYYY-MM-DD`), `source: manual`, `tags: []` | No |
@@ -109,12 +147,23 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 | Schema drift — folder in schema, missing from filesystem, but notes are referenced under that section name in index | Create the folder and move the matching notes in | No |
 | Schema drift — folder in schema, missing from filesystem, no matching notes | Remove from schema | No |
 | Schema drift — empty schema-defined folder (zero notes) | Leave alone (folder may be aspirational) | No |
+| Sync conflict copy — entries unique to the copy | Merge into the live file (skip any whose target note no longer exists, and report those) | No |
+| Sync conflict copy — deleting the copy once merged | Report under "Proposed deletions" once the merge is verified | Yes — the user deletes |
+| Unescaped pseudo-HTML tag outside `_sources/` | Wrap the placeholder in backticks | No |
+| `attachmentFolderPath` missing from `.obsidian/app.json` | Set it to the attachment folder named in `_Schema.md`; warn that Obsidian must restart to pick it up | No |
+| Stray attachment outside the attachment folder | Move it in, then re-verify its embed resolves | No |
+| Broken `![](path)` embed whose target exists elsewhere | Rewrite as `![[filename]]` rather than repairing the path | No |
+| Orphaned attachment (in the folder, embedded nowhere) | Report only — never delete | Yes |
 
 ### Destructive-action guardrails
 
-`rm` is the only action that's not reversible from inside the lint. Apply it only for empty notes (0 words after frontmatter) that meet **all** of: no incoming links, mtime older than 7 days, no `tags` indicating draft/wip status. Anything else, even if 100% redundant, gets reported — never deleted.
+**The lint never deletes anything.** Collect every deletion candidate — empty notes, orphaned attachments, merged conflict copies — into a "Proposed deletions" section of the report: path, one-line reason, and the evidence behind it. The user runs the deletions.
 
-`mv` is always reversible (the user can move the file back). Apply moves freely under policy without prompting.
+This isn't caution about edge cases, it's about what the lint can actually know. Every deletion rests on a claim the lint derived itself ("no incoming links", "embedded nowhere"), and a search that silently failed produces the same empty result as a genuine zero. The `deletion-guard` hook blocks `rm` outside scratch space, so attempting one fails anyway.
+
+Renaming or moving a file out of the way is not a lighter-weight deletion — it breaks references identically. `mv` is for relocating a file to where it belongs, and the embeds and links pointing at it get re-verified afterward.
+
+Before reporting anything as unreferenced, confirm the search that found nothing does find a reference that exists. State that check in the report.
 
 ### When to ask
 
@@ -143,13 +192,22 @@ Date: YYYY-MM-DD
 - X missing frontmatter
 - X root stragglers
 - X schema drift issues
+- X stray/orphaned attachments
 
 ### Details
 (each section with specific files and recommended fixes)
 
 ### Auto-fixable
 (list items that can be fixed automatically)
+
+### Proposed deletions
+(nothing was deleted — these are for you to run)
+| Path | Why | Evidence |
+|---|---|---|
+| `path/to/file` | empty note, no incoming links | 0 words after frontmatter; link scan found 0 referrers, same scan finds N for a known-linked note |
 ```
+
+Leave the "Proposed deletions" table out entirely when there's nothing in it. An empty table reads as a completed cleanup.
 
 ## Interaction
 
@@ -157,7 +215,7 @@ The lint runs in one shot:
 1. Present the full report.
 2. Apply all auto-fixes per the Lint Policies (above) without asking. Show what was applied as part of the report.
 3. Group any genuinely judgment-dependent findings (stale content, stubs, duplicates, ambiguous-folder stragglers) into a single batched multi-question prompt at the end. Skip this step entirely if there's nothing to ask.
-4. After all fixes, append a `[LINT]` entry to `log.md` summarizing what was found, what was auto-fixed, and any user-decided actions.
+4. After all fixes, add a `[LINT]` entry to `log.md` summarizing what was found, what was auto-fixed, and any user-decided actions. `log.md` runs newest first — insert directly above the current top entry, don't append to the bottom.
 
 Do **not** ask "should I auto-fix?" before applying policy-driven fixes. The user invoked `/my:lint-brain` to have it run, not to decide whether it should run.
 

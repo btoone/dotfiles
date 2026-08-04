@@ -65,7 +65,7 @@ Add the note to `index.md` under the section matching its folder. Include a brie
 
 ### 4. Update the log
 
-Append to `log.md`:
+`log.md` runs **newest first**. Insert directly above the current top entry — do not append to the bottom:
 
 ```
 [INGEST] YYYY-MM-DD — Brief description of what was added and where it was filed
@@ -73,10 +73,16 @@ Append to `log.md`:
 
 Get the date from `date +%F` rather than assuming today.
 
+Keep literal `<placeholder>` text inside backticks. Bare `<foo>` is parsed as an
+unclosed HTML tag, and Obsidian stops rendering markdown — including `[[wiki
+links]]` — for the whole rest of the file, not just that line.
+
 ### 5. Report
 
 Return a short summary — where the note is filed, which backlinks you added and into which notes, what else you touched, and anything you deliberately left for lint. When this runs in a background subagent the report is the only thing the user sees, so it carries the whole result.
 
 ## Concurrency
 
-`index.md` and `log.md` are shared, and two maintenance runs overlapping on them can clobber each other. Before editing either, re-read it — don't write from a copy you read minutes ago. If you're appending to `log.md`, append; never rewrite the file wholesale.
+`index.md` and `log.md` are shared, and two maintenance runs overlapping on them can clobber each other. Before editing either, re-read it — don't write from a copy you read minutes ago. Insert your one `log.md` line at the top and leave the rest untouched; never rewrite the file wholesale.
+
+In an iCloud-backed vault a clobber doesn't always announce itself — iCloud resolves the losing write into a sibling copy (`index 2.md`) and both diverge silently from there. `lint-brain` check #10 catches those.

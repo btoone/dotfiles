@@ -45,3 +45,5 @@ These rules shape all code I write, review, or design. Each is stated tersely he
 
 - DRY is about knowledge, not code — don't merge coincidental similarity.
 - Keep components orthogonal; build tracer bullets (thin end-to-end slices of real code) first; keep decisions reversible; know when good enough ships.
+
+- A search that returns nothing has to earn it: before reporting zero hits, confirm the same search finds a match you know exists. A quoting or glob error yields an empty result indistinguishable from a real one, and "no references" is what gets acted on destructively. Say how you checked.

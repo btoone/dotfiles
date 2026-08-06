@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+"""Measure Claude Code session startup and exit latency, and say why exit is slow.
+
+Run it from a directory Claude already trusts (a repo you use it in):
+
+    prototypes/claude-latency-probe
+
+Each iteration launches a real Claude session over a pty, waits for the input
+prompt, sends /exit, and times both halves. On the slowest exit it also records
+CPU time consumed during the hang -- that is the measurement that separates
+"blocked on a lock" (no CPU) from "doing work" (CPU climbs).
+
+Paste the whole REPORT block back.
+"""
+
+import argparse
+import fcntl
+import os
+import platform
+import pty
+import re
+import select
+import shutil
+import signal
+import statistics
+import struct
+import subprocess
+import termios
+import time
+
+READY = re.compile(rb'\xe2\x9d\xaf')                    # ❯ input prompt
+TRUST = re.compile(rb'trust this folder|Do you trust', re.I)
+
+# Claude Code inherits these when the probe is launched from inside a session;
+# leaving them set makes the child believe it is a nested agent run.
+INHERITED = ('CLAUDECODE', 'CLAUDE_CODE_ENTRYPOINT', 'CLAUDE_CODE_CHILD_SESSION',
+             'CLAUDE_CODE_SESSION_ID', 'CLAUDE_PID', 'AI_AGENT', 'CLAUDE_CODE_EXECPATH')
+
+
+def child_env():
+    env = {k: v for k, v in os.environ.items() if k not in INHERITED}
+    env['TERM'] = 'xterm-256color'
+    return env
+
+
+def cpu_seconds(pid):
+    try:
+        out = subprocess.run(['ps', '-p', str(pid), '-o', 'time='],
+                             capture_output=True, text=True, timeout=5).stdout.strip()
+        if not out:
+            return None
+        mins, secs = out.split(':')[-2:]
+        return int(mins) * 60 + float(secs)
+    except Exception:
+        return None
+
+
+def one_run(cmd, timeout=180, watch_cpu=False):
+    """Launch a session, wait for the prompt, send /exit, time both halves."""
+    started = time.monotonic()
+    pid, fd = pty.fork()
+    if pid == 0:
+        os.execvpe(cmd[0], cmd, child_env())
+    fcntl.ioctl(fd, termios.TIOCSWINSZ, struct.pack('HHHH', 40, 120, 0, 0))
+
+    buf = b''
+    ready_at = exit_sent_at = None
+    cpu_at_exit = cpu_samples = None
+    next_sample = 2.0
+
+    while time.monotonic() < started + timeout:
+        if select.select([fd], [], [], 0.05)[0]:
+            try:
+                chunk = os.read(fd, 65536)
+            except OSError:
+                chunk = b''
+            if chunk:
+                buf += chunk
+                if ready_at is None and TRUST.search(buf):
+                    os.kill(pid, signal.SIGKILL)
+                    os.waitpid(pid, 0)
+                    os.close(fd)
+                    return {'untrusted': True}
+                if ready_at is None and READY.search(buf):
+                    ready_at = time.monotonic()
+                    time.sleep(0.35)          # let the UI settle before quitting
+                    if watch_cpu:
+                        cpu_at_exit = cpu_seconds(pid)
+                        cpu_samples = []
+                    os.write(fd, b'/exit\r')
+                    exit_sent_at = time.monotonic()
+
+        if watch_cpu and exit_sent_at and time.monotonic() - exit_sent_at >= next_sample:
+            cpu_samples.append((round(next_sample, 1), cpu_seconds(pid)))
+            next_sample += 2.0
+
+        try:
+            reaped, _ = os.waitpid(pid, os.WNOHANG)
+        except ChildProcessError:
+            reaped = pid
+        if reaped == pid:
+            ended = time.monotonic()
+            try:
+                os.close(fd)
+            except Exception:
+                pass
+            return {'startup': round(ready_at - started, 3) if ready_at else None,
+                    'exit': round(ended - exit_sent_at, 3) if exit_sent_at else None,
+                    'cpu_start': cpu_at_exit, 'cpu_samples': cpu_samples}
+
+    try:
+        os.kill(pid, signal.SIGKILL)
+        os.waitpid(pid, 0)
+        os.close(fd)
+    except Exception:
+        pass
+    return {'timeout': True}
+
+
+def spread(values):
+    if not values:
+        return 'n/a'
+    return (f'median={statistics.median(values):6.2f}s  min={min(values):6.2f}s  '
+            f'max={max(values):6.2f}s')
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--n', type=int, default=6, help='iterations (default 6)')
+    ap.add_argument('--cmd', default='claude', help='claude executable to test')
+    args = ap.parse_args()
+
+    if not shutil.which(args.cmd):
+        raise SystemExit(f'{args.cmd!r} not found on PATH')
+
+    version = subprocess.run([args.cmd, '--version'], capture_output=True,
+                             text=True).stdout.strip()
+    binary = os.path.realpath(shutil.which(args.cmd))
+    file_out = subprocess.run(['file', '-b', binary], capture_output=True,
+                              text=True).stdout.strip()[:60]
+
+    print('Running %d iterations from %s ...' % (args.n, os.getcwd()), flush=True)
+    runs = []
+    for i in range(args.n):
+        # Watch CPU on every run; it is cheap and we only report the worst one.
+        r = one_run([args.cmd], watch_cpu=True)
+        if r.get('untrusted'):
+            raise SystemExit('This directory is not trusted by Claude yet, so the run '
+                             'stops at the trust prompt.\nRe-run from a repo you '
+                             'already use Claude in.')
+        runs.append(r)
+        print('  run %d/%d  startup=%s  exit=%s'
+              % (i + 1, args.n, r.get('startup'), r.get('exit')), flush=True)
+
+    ok = [r for r in runs if r.get('exit') is not None]
+    startups = [r['startup'] for r in ok]
+    exits = [r['exit'] for r in ok]
+
+    print('\n===== REPORT =====')
+    print('host      :', platform.node())
+    print('machine   :', platform.machine(), '/', platform.platform())
+    print('claude    :', version)
+    print('binary    :', file_out)
+    print('config dir:', os.environ.get('CLAUDE_CONFIG_DIR', '(default ~/.claude)'))
+    print('cwd       :', os.getcwd())
+    print('runs      : %d of %d completed' % (len(ok), args.n))
+    print('startup   :', spread(startups))
+    print('exit      :', spread(exits))
+
+    worst = max(ok, key=lambda r: r['exit'], default=None)
+    if worst and worst['exit'] >= 3 and worst.get('cpu_samples'):
+        burned = [(t, c) for t, c in worst['cpu_samples'] if c is not None]
+        print('\nslowest exit was %.2fs; CPU time during that hang:' % worst['exit'])
+        print('   at +0.0s: %s' % worst.get('cpu_start'))
+        for t, c in burned:
+            print('   at +%.1fs: %s' % (t, c))
+        if burned and worst.get('cpu_start') is not None:
+            delta = burned[-1][1] - worst['cpu_start']
+            verdict = ('IDLE WAIT (stalled event loop / lock)' if delta < 0.5
+                       else 'BURNING CPU (real work)')
+            print('   CPU consumed during hang: %.2fs  -> %s' % (delta, verdict))
+    elif worst:
+        print('\nno exit slow enough (>3s) to profile -- this machine looks healthy.')
+    print('==================')
+
+
+main()

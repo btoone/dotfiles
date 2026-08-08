@@ -85,8 +85,9 @@ enumerated by name anywhere.
 
 ### 4. Verification gate
 
-Whether the project names a single command that proves a change correct
-(see the `handoff` skill for why this gates unattended work):
+Whether the project names a single command that proves a change correct —
+the thing that lets unattended work be trusted, since an agent's own report
+of success and the work come from the same place:
 
 - Is one named at all?
 - Does it still exist and run?

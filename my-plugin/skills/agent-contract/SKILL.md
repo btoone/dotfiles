@@ -9,8 +9,8 @@ description: >
   repos must agree on a contract and each has its own agent session: "design the
   contract with the other repo's agent", "get the two agents to agree on the
   payload", a producer/consumer API, an ingestion format, or an event schema
-  crossing a repo boundary. Do NOT use for one agent's autonomy on a task
-  (that's handoff) or for subagents inside one session.
+  crossing a repo boundary. Do NOT use for one agent's autonomy on a task, or
+  for subagents inside one session.
 ---
 
 # Agent Contract
@@ -146,8 +146,8 @@ the door open. A gatekeeper that rules often has stopped negotiating.
 
 The doc ends with a per-side **work orders** section — a numbered task list for
 each tag — so the negotiation produces two executable briefs rather than an
-agreement nobody can act on. Hand each side its own list; `my:handoff` covers
-turning one into an unattended run.
+agreement nobody can act on. Hand each side its own list; each side's session
+runs its own list from there.
 
 Mark the status `SETTLED <date>` when every decision is AGREED.
 

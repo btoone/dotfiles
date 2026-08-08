@@ -19,7 +19,7 @@ setup() {
   # Ratchet, not an aspiration: trimming a skill lowers it. The only thing that
   # may raise it is a new skill, and only by that skill's own surface — an
   # existing description growing back is the regression this exists to catch.
-  BUDGET=9848
+  BUDGET=10581
   # How far the budget may sit above the real surface before it has gone slack.
   SLACK=200
 }
@@ -189,6 +189,12 @@ skills_with_vocabulary_test() {
   assert_keeps_vocabulary review-triage \
     "triage the findings" "/code-review" "ReportFindings" "fix now" \
     "reformat the review output"
+}
+
+@test "agent-contract: keeps the vocabulary a two-agent design request routes on" {
+  assert_keeps_vocabulary agent-contract \
+    "two agents" "the other repo's agent" "producer/consumer" "gatekeeper" \
+    "SendMessage" "AGREED" "handoff"
 }
 
 @test "handoff: keeps the vocabulary an autonomy question routes on" {

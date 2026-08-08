@@ -30,11 +30,12 @@ claude plugins install my
 just test           # bats test/ — the gate; run before committing
 ```
 
-Covers `tools/agent-board` + `tools/agent-board-hook` behavior and the routing
-surface every skill's frontmatter declares. It does **not** cover `script/setup`
-or `script/update`, symlink correctness, the shell configs (`zshrc`, `aliases`,
-`tmux.conf`), or the other tools — `plan-gate`, `flip`, `obsidian-open`,
-`tmux-help`, `eval_gist.rb`. Changes there need verifying by hand.
+Covers `tools/agent-board` + `tools/agent-board-hook`, `tools/plan-gate`,
+`tools/skill-usage`, and the routing surface every skill's frontmatter declares.
+It does **not** cover `script/setup` or `script/update`, symlink correctness,
+the shell configs (`zshrc`, `aliases`, `tmux.conf`), or the other tools —
+`flip`, `obsidian-open`, `tmux-help`, `eval_gist.rb`. Changes there need
+verifying by hand.
 
 ## Architecture
 

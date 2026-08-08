@@ -1,0 +1,216 @@
+#!/usr/bin/env bash
+# Which skills are earning the context they cost. Reads real evidence only —
+# git history for when a skill was written, Claude Code transcripts for when it
+# actually fired — so there is no inventory file to drift out of date.
+#
+#   skill-usage                 report on every skill in the plugin
+#   skill-usage --weeks 6       widen the window a new skill gets to prove out
+#
+# The verdict that matters is not "unused". A skill can be unused because the
+# work it covers is episodic — a cross-repo contract negotiation may not come up
+# for months without that skill being a mistake. It can also be unused because
+# the work came up repeatedly and something else won every time. Those need
+# opposite responses, and usage counts alone cannot tell them apart.
+#
+# So for a skill that has never fired we ask a second question: did the
+# situation arise? Each skill's trigger vocabulary is already curated by hand in
+# test/skill_frontmatter.bats, so we search the user's own prompts for those
+# phrases. Phrases present and the skill still never fired means it lost a race
+# it entered — displaced. No phrases at all means the work simply has not come
+# up — unexercised, and silence proves nothing about its worth.
+#
+# Only prompts the user typed count as evidence. Tool output scrolling past in a
+# transcript is not the user asking for something.
+#
+# The evidence is per-machine and per-profile. A skill used constantly from a
+# work laptop reads as never fired on a personal one, so every run names the
+# corpora it read; judge a verdict against that list, not on its own.
+
+set -uo pipefail
+
+weeks=3          # a skill that never fires in its first three weeks was a guess
+dormant_days=180 # past six months the harness has moved; re-decide, don't trim
+now=$(date +%Y-%m-%d)
+here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+skills_dir="$here/../my-plugin/skills"
+vocab_file="$here/../test/skill_frontmatter.bats"
+corpus_dirs=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --weeks)  weeks=$2;       shift 2 ;;
+    --now)    now=$2;         shift 2 ;;
+    --skills) skills_dir=$2;  shift 2 ;;
+    --vocab)  vocab_file=$2;  shift 2 ;;
+    --corpus) corpus_dirs+=("$2"); shift 2 ;;
+    -h|--help) sed -n '2,26p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) printf 'skill-usage: unknown option %s\n' "$1" >&2; exit 2 ;;
+  esac
+done
+
+if [ ${#corpus_dirs[@]} -eq 0 ]; then
+  for profile in "$HOME"/.claude-personal "$HOME"/.claude-work "$HOME"/.claude; do
+    [ -d "$profile/projects" ] && corpus_dirs+=("$profile/projects")
+  done
+fi
+
+for dir in "${corpus_dirs[@]}"; do
+  [ -d "$dir" ] || { printf 'skill-usage: no such corpus directory: %s\n' "$dir" >&2; exit 1; }
+done
+[ -d "$skills_dir" ] || { printf 'skill-usage: no such skills directory: %s\n' "$skills_dir" >&2; exit 1; }
+
+# Date arithmetic differs between BSD (macOS) and GNU; pick once.
+days_before() { # date days -> the date that many days earlier
+  if date -j -v-1d -f %Y-%m-%d "$1" +%Y-%m-%d >/dev/null 2>&1; then
+    date -j -v-"$2"d -f %Y-%m-%d "$1" +%Y-%m-%d
+  else
+    date -d "$1 - $2 days" +%Y-%m-%d
+  fi
+}
+
+new_before=$(days_before "$now" $(( weeks * 7 )))
+dormant_before=$(days_before "$now" "$dormant_days")
+
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+# Every transcript line, and separately every line the user actually typed. A
+# user-role line whose content is an array is tool output being replayed, not
+# speech; the string-valued form is the only thing a person wrote.
+find "${corpus_dirs[@]}" -name '*.jsonl' -type f > "$work/files" 2>/dev/null
+transcripts=$(wc -l < "$work/files" | tr -d ' ')
+
+if [ "$transcripts" -eq 0 ]; then
+  printf 'skill-usage: no transcripts found under %s\n' "${corpus_dirs[*]}"
+  printf 'Nothing can be concluded about any skill without them.\n'
+  exit 0
+fi
+
+# The corpus runs to hundreds of megabytes, so it is read exactly once: one
+# pass pulls out both kinds of interesting line, and every per-skill question
+# is then asked of that much smaller extract. LC_ALL=C keeps grep off the
+# UTF-8 decoding path, which dominates the runtime at this size.
+tr '\n' '\0' < "$work/files" \
+  | LC_ALL=C xargs -0 grep -hE '"skill":"my:|"message":\{"role":"user","content":"' \
+  > "$work/relevant" 2>/dev/null
+
+LC_ALL=C grep -h '"skill":"my:' "$work/relevant" > "$work/all_fires" 2>/dev/null
+LC_ALL=C grep -h '"message":{"role":"user","content":"' "$work/relevant" \
+  > "$work/prompts" 2>/dev/null
+
+# The phrases a skill routes on, as declared in the frontmatter test. Continues
+# across the backslash-continued lines of one assert_keeps_vocabulary call.
+vocabulary_for() { # skill
+  [ -f "$vocab_file" ] || return 0
+  awk -v want="$1" '
+    $1 == "assert_keeps_vocabulary" && $2 == want { collecting = 1 }
+    collecting {
+      line = $0
+      while (match(line, /"[^"]+"/)) {
+        phrase = substr(line, RSTART + 1, RLENGTH - 2)
+        print phrase
+        line = substr(line, RSTART + RLENGTH)
+      }
+      if ($0 !~ /\\$/) exit
+    }
+  ' "$vocab_file"
+}
+
+printf '%-22s %6s  %-12s  %-12s  %s\n' SKILL FIRES 'LAST FIRED' CREATED VERDICT
+printf '%-22s %6s  %-12s  %-12s  %s\n' '----------------------' '-----' \
+  '------------' '------------' '-------'
+
+displaced=() unexercised=() commandish=()
+
+for skill_md in "$skills_dir"/*/SKILL.md; do
+  [ -f "$skill_md" ] || continue
+  dir=$(dirname "$skill_md")
+  slug=$(basename "$dir")
+  name=$(awk -F': *' '/^name: */ { print $2; exit }' "$skill_md")
+  name=${name:-$slug}
+
+  created=$(git -C "$skills_dir" log --diff-filter=A --format=%as -- \
+    "$skill_md" 2>/dev/null | tail -1)
+  created=${created:-unknown}
+
+  LC_ALL=C grep -h -F "\"skill\":\"my:$name\"" "$work/all_fires" \
+    > "$work/fires" 2>/dev/null
+  fires=$(grep -c . < "$work/fires" | tr -d ' ')
+
+  last=''
+  if [ "$fires" -gt 0 ]; then
+    last=$(grep -o '"timestamp":"[0-9-]\{10\}' "$work/fires" \
+      | sed 's/.*"//' | sort | tail -1)
+  fi
+
+  typed=$(grep -c -F "/my:$name" "$work/prompts" 2>/dev/null | tr -d ' ')
+  typed=${typed:-0}
+
+  if [ "$fires" -eq 0 ]; then
+    if [ "$created" != unknown ] && [ "$created" \> "$new_before" ]; then
+      verdict='too new to judge'
+    else
+      # Two distinct phrases, not one. A skill's vocabulary always contains a
+      # word generic enough to show up on its own — "Artifact", "backfill",
+      # "source of truth" — and convicting on a single hit turns every such
+      # skill into a false positive. Needing two independent phrases is what
+      # separates the work actually coming up from a word coinciding.
+      matched=()
+      while IFS= read -r phrase; do
+        [ -n "$phrase" ] || continue
+        if LC_ALL=C grep -q -F -i "$phrase" "$work/prompts" 2>/dev/null; then
+          matched+=("$phrase")
+        fi
+      done < <(vocabulary_for "$name")
+
+      if [ ${#matched[@]} -ge 2 ]; then
+        verdict="displaced (\"${matched[0]}\", \"${matched[1]}\" came up)"
+        displaced+=("$name")
+      else
+        verdict='unexercised'
+        unexercised+=("$name")
+      fi
+    fi
+  elif [ -n "$last" ] && [ "$last" \< "$dormant_before" ]; then
+    verdict='dormant'
+  else
+    verdict='active'
+    # Below a handful of uses, "every time was typed" is a coincidence rather
+    # than a pattern — one invocation cannot distinguish the two.
+    if [ "$fires" -ge 3 ] && [ "$typed" -ge "$fires" ]; then
+      verdict='active, typed-only'
+      commandish+=("$name")
+    fi
+  fi
+
+  printf '%-22s %6s  %-12s  %-12s  %s\n' \
+    "$name" "$fires" "${last:---}" "$created" "$verdict"
+done
+
+> "$work/scope"
+for dir in "${corpus_dirs[@]}"; do
+  printf '  %s\n' "$dir" >> "$work/scope"
+done
+
+# Naming the corpus is not decoration. Transcripts are per-machine and
+# per-profile, so a skill leaned on daily from another workstation is
+# indistinguishable here from one nobody ever wanted. Anyone reading a verdict
+# needs to see which evidence was and was not in front of it.
+printf '\nRead across %s transcripts in:\n' "$transcripts"
+cat "$work/scope"
+
+if [ ${#displaced[@]} -gt 0 ]; then
+  printf '\nNever fired though the work appears to have come up. Phrase overlap is\n'
+  printf 'suggestive, not proof — check what won instead, then remove or fold in:\n'
+  printf '  %s\n' "${displaced[*]}"
+fi
+
+if [ ${#unexercised[@]} -gt 0 ]; then
+  printf '\nNever fired and the work never came up. Silence is not a verdict here;\n'
+  printf 'ask whether you would write it again today: %s\n' "${unexercised[*]}"
+fi
+
+if [ ${#commandish[@]} -gt 0 ]; then
+  printf '\nOnly ever reached by typing the name — routing earns nothing, so this\n'
+  printf 'is a slash command wearing a skill: %s\n' "${commandish[*]}"
+fi

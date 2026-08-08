@@ -45,6 +45,16 @@ default — always-loaded lines are a tax on every future turn.
 - **Guard the always-loaded budget.** Before adding to any CLAUDE.md, ask
   "does this apply to every single turn in this repo?" If not, it belongs in
   an on-demand doc or skill, with at most a one-line pointer from CLAUDE.md.
+- **A new skill is the most expensive home.** It bills its description to
+  every session forever, competes with existing skills for the same triggers,
+  and has to be maintained. Before proposing one, both must hold: the
+  situation has come up **at least three times** in real work, and no existing
+  skill has a section that is its natural home. When only the second fails,
+  add the section — a paragraph inside a skill that already fires beats a new
+  skill that has to win routing from scratch. When only the first fails, write
+  it down as a plain note and let recurrence make the case. What a skill will
+  be *useful* for is a guess; what it has *already been needed for* is
+  evidence. Run `skill-usage` to see how earlier guesses turned out.
 - **Route, then report.** Tell the user what was captured and where, in one
   or two lines per item, so misfiled knowledge gets caught immediately.
 - **Don't capture what's already recorded** by the code, the tests, git

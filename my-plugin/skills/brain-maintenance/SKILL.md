@@ -65,11 +65,11 @@ Add the note to `index.md` under the section matching its folder. Include a brie
 
 ### 4. Update the log
 
-`log.md` runs **newest first**. Insert directly above the current top entry — do not append to the bottom:
-
 ```
 [INGEST] YYYY-MM-DD — Brief description of what was added and where it was filed
 ```
+
+Ordering differs by vault, so read `log.md` before writing to it. Its header prose declares which: "newest first" means insert directly above the current top entry; "append-only chronological" means append to the bottom. If the header is silent, compare the dates on the first and last entries. Don't assume a direction — writing an entry against the file's order buries it in the wrong decade of the log.
 
 Get the date from `date +%F` rather than assuming today.
 

@@ -57,7 +57,7 @@ Flag notes that:
 ### 5. Empty or Stub Notes
 Find notes with fewer than 50 words of content (excluding frontmatter). These are placeholders that never got filled in.
 
-**Fix:** Either flesh them out with available context or remove them and clean up references.
+**Fix:** Flesh them out where there's enough context to work with. Otherwise report only — empty notes go under "Proposed deletions" with their evidence and the user runs the deletion (see guardrails).
 
 ### 6. Duplicate Coverage
 Find notes with very similar titles or content that likely cover the same topic and could be consolidated.
@@ -114,6 +114,31 @@ Check the attachment convention in three places:
 2. **Strays.** Non-`.md` files outside that folder and outside `_sources/`. Vault root is the usual pile.
 3. **Orphans.** Files in the attachment folder that no note embeds.
 
+A stray is a file the vault would embed — not merely a file that isn't `.md`. Two filters, both required.
+
+**It has to be embeddable.** Obsidian embeds images (`png` `jpg` `jpeg` `gif` `bmp` `svg` `webp` `avif`), audio (`mp3` `wav` `m4a` `ogg` `flac`), video (`mp4` `webm` `mov` `mkv`), and `pdf`. Nothing else is an attachment. Source files, archives, and configs are content someone deliberately filed, and they usually arrive as a tree — the `Developer` vault holds an unpacked repo under `projects/Code Samples/`, whose `Gemfile`, `bin/`, and `lib/` a flat move would scatter into one folder.
+
+**Something has to embed it.** An embedded file can be moved and the embed re-verified afterward; a file nothing references is a guess about intent. Report those instead of moving them, alongside the check #12 point 3 orphans.
+
+Three kinds of file match "not `.md`" without being an attachment at all, and moving them breaks things:
+
+- **Dot-directories and dotfiles** — `.obsidian/`, `.git/`, `.claude/`, `.DS_Store`. Configuration and OS litter. `.obsidian/app.json` is the file point 1 above reads, so a sweep without this exclusion relocates the setting it just checked. `open-note.md` carries the same `-not -path '*/.obsidian/*'` guard.
+- **Obsidian's other note formats** — `.canvas` is a note, not an attachment.
+- **`.DS_Store`** — ignore it; don't file it.
+
+```
+find -L <vault> -type f \
+  \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' \
+     -o -iname '*.bmp' -o -iname '*.svg' -o -iname '*.webp' -o -iname '*.avif' \
+     -o -iname '*.mp3' -o -iname '*.wav' -o -iname '*.m4a' -o -iname '*.ogg' \
+     -o -iname '*.flac' -o -iname '*.mp4' -o -iname '*.webm' -o -iname '*.mov' \
+     -o -iname '*.mkv' -o -iname '*.pdf' \) \
+  ! -path '*/.*/*' ! -name '.*' \
+  ! -path '*/_sources/*' ! -path '*/<attachment-folder>/*'
+```
+
+Sanity-check the result before acting on it: if this returns nothing, confirm the same command finds an attachment you know is misplaced.
+
 Before moving anything, check which embed form points at it. `![[name.png]]` resolves by filename from anywhere in the vault, so those files move freely. `![](some/path.png)` is position-dependent and breaks — rewrite it to the wikilink form rather than fixing the path, so it survives the next reorganization.
 
 **Fix:** Move strays into the attachment folder, then re-verify every embed resolves. Report orphans rather than deleting them — an unreferenced image is often a paste that was never embedded, and it's the user's call whether the bytes are worth keeping.
@@ -151,7 +176,9 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 | Sync conflict copy — deleting the copy once merged | Report under "Proposed deletions" once the merge is verified | Yes — the user deletes |
 | Unescaped pseudo-HTML tag outside `_sources/` | Wrap the placeholder in backticks | No |
 | `attachmentFolderPath` missing from `.obsidian/app.json` | Set it to the attachment folder named in `_Schema.md`; warn that Obsidian must restart to pick it up | No |
-| Stray attachment outside the attachment folder | Move it in, then re-verify its embed resolves | No |
+| Stray attachment outside the attachment folder, embedded by some note | Move it in, then re-verify its embed resolves | No |
+| Stray attachment outside the attachment folder, embedded nowhere | Report only — moving it is a guess about intent | Yes |
+| Non-embeddable file outside the attachment folder (source, archive, config, `.canvas`, dotfile) | Not an attachment — leave it alone | No |
 | Broken `![](path)` embed whose target exists elsewhere | Rewrite as `![[filename]]` rather than repairing the path | No |
 | Orphaned attachment (in the folder, embedded nowhere) | Report only — never delete | Yes |
 
@@ -215,7 +242,9 @@ The lint runs in one shot:
 1. Present the full report.
 2. Apply all auto-fixes per the Lint Policies (above) without asking. Show what was applied as part of the report.
 3. Group any genuinely judgment-dependent findings (stale content, stubs, duplicates, ambiguous-folder stragglers) into a single batched multi-question prompt at the end. Skip this step entirely if there's nothing to ask.
-4. After all fixes, add a `[LINT]` entry to `log.md` summarizing what was found, what was auto-fixed, and any user-decided actions. `log.md` runs newest first — insert directly above the current top entry, don't append to the bottom.
+4. After all fixes, add a `[LINT]` entry to `log.md` summarizing what was found, what was auto-fixed, and any user-decided actions.
+
+Ordering differs by vault, so read `log.md` before writing to it. Its header prose declares which: "newest first" means insert directly above the current top entry; "append-only chronological" means append to the bottom. If the header is silent, compare the dates on the first and last entries. Don't assume a direction — writing an entry against the file's order buries it in the wrong decade of the log.
 
 Do **not** ask "should I auto-fix?" before applying policy-driven fixes. The user invoked `/my:lint-brain` to have it run, not to decide whether it should run.
 

@@ -32,7 +32,9 @@ Brain vaults are often in iCloud, Obsidian Sync, or another cloud-backed directo
 Run all checks, then present a single report. Read `index.md` and `log.md` first, then scan all `.md` files in the vault.
 
 ### 1. Orphan Notes
-Find notes with **no incoming links** from any other note in the vault. Every note should be reachable from at least one other note (usually `index.md`).
+Take the definition from the schema's Lint section — both existing vaults define an orphan there as **no incoming or outgoing links**, which is narrower than no-incoming-only and selects a different set of notes. Use **no incoming links** only when the schema is silent.
+
+Notes the schema exempts are not orphans. Every note should otherwise be reachable from at least one other note (usually `index.md`).
 
 **Fix:** Add the orphan to `index.md` under the appropriate category, and add contextual links from related notes.
 
@@ -70,7 +72,9 @@ Find notes outside `_sources/` that are missing the required YAML frontmatter (`
 **Fix:** Add frontmatter with best-guess `created` date (from file metadata) and `source: manual`.
 
 ### 8. Root Stragglers
-Find `*.md` files at the vault root that aren't part of the brain's reserved set: `_Schema.md`, `index.md`, `log.md`, `README.md`. Anything else at root is a straggler — created in Obsidian without a folder, dropped from clipboard, or left behind by a rename. These bypass every other check (no folder = not in any category, often no frontmatter, often "Untitled").
+Find `*.md` files at the vault root that aren't reserved. The reserved set is `_Schema.md`, `index.md`, `log.md`, `README.md` **plus every root-level file the schema's Architecture block names** — `Brain/_Schema.md` registers `Scratch.md` there as a "deliberate root scratchpad — no frontmatter, no index entry, not linted for orphan status," and a vault that declares a root file has already answered this check. Treat ` <n>` variants of reserved names as reserved too; those are check #10's business, not stragglers.
+
+Anything else at root is a straggler — created in Obsidian without a folder, dropped from clipboard, or left behind by a rename. These bypass every other check (no folder = not in any category, often no frontmatter, often "Untitled").
 
 **Fix:** Move each straggler to the correct folder, rename if the title is generic (`Untitled.md`, `Untitled 1.md`), add frontmatter, link from at least one related note, and add to `index.md`.
 
@@ -166,7 +170,15 @@ Path-based embeds are worth a standalone sweep even when nothing is stray: a fol
 
 The lint is **agentic, not interactive**. For each finding, apply a default action without asking. Only escalate to the user when the policy says ASK or when the rule genuinely has no clear answer (e.g., a root straggler whose target folder is ambiguous).
 
-**Vault-specific overrides:** before applying defaults, check `_Schema.md` for a `## Lint Policies` section. Apply those overrides first; fall back to the defaults below for anything the schema doesn't cover.
+**Vault-specific overrides:** the schema outranks this file wherever it speaks, and it speaks in three places — not just one. Read all three before applying any default:
+
+- **`## Lint Policies`** — per-finding actions. `Developer/_Schema.md` has this section; `Brain/_Schema.md` does not, so a lint that reads only here treats Brain as having declared nothing.
+- **The Architecture block** — folder structure and root-level files, including exemptions written as prose beside an entry.
+- **The `### Lint` section** — what the vault means by each finding (its orphan definition, for one).
+
+Anything the schema doesn't cover falls back to the defaults below. A declaration the lint doesn't read is worse than no declaration: the vault records a decision, the lint overrides it, and the next run reverses it again. When a schema states something this file contradicts, the schema wins and the contradiction is worth reporting.
+
+**Except the guardrails.** The destructive-action rules below are not overridable — see the note there.
 
 | Check | Default action | Asks user? |
 |---|---|---|
@@ -201,7 +213,9 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 
 ### Destructive-action guardrails
 
-**The lint never deletes anything.** Collect every deletion candidate — empty notes, orphaned attachments, merged conflict copies — into a "Proposed deletions" section of the report: path, one-line reason, and the evidence behind it. The user runs the deletions.
+**The lint never deletes anything, and no schema can authorize it to.** This is the one place a vault's `_Schema.md` does not win. `Developer/_Schema.md` currently carries an auto-fix reading "Empty notes → if mtime >7 days old AND no incoming links AND no `draft`/`wip` tag, delete"; treat that as a report-only rule and say so in the report. The user can delete from the proposed list in one step, and cannot un-delete a note the lint was wrong about.
+
+Collect every deletion candidate — empty notes, orphaned attachments, merged conflict copies — into a "Proposed deletions" section of the report: path, one-line reason, and the evidence behind it. The user runs the deletions.
 
 This isn't caution about edge cases, it's about what the lint can actually know. Every deletion rests on a claim the lint derived itself ("no incoming links", "embedded nowhere"), and a search that silently failed produces the same empty result as a genuine zero. The `deletion-guard` hook blocks `rm` outside scratch space, so attempting one fails anyway.
 

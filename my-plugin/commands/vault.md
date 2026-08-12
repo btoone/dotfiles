@@ -56,7 +56,11 @@ Write the note with no `[[wiki links]]` unless you already know a target exists.
 - Use the title (provided or generated) as the filename
 - Natural titles with spaces — Obsidian handles them fine
 - Example: `~/Vaults/Developer/projects/Glow app/Sentry Plugin Workflow.md`
-- Do NOT overwrite existing files. If a file with the same name exists, append a number: `Title 2.md`
+- Do NOT overwrite existing files.
+
+If the name is taken, the new note needs a title that says how it differs — `Sentry Plugin Workflow` beside an existing one becomes `Sentry Plugin Workflow for Release Builds`, not a counter. Fall back to a dated title (`Title (2026-08-12).md`) only when nothing in the content distinguishes them.
+
+Never resolve a collision by appending a bare number. ` 2.md` is the shape iCloud and Obsidian Sync give a losing write, and `/my:lint-brain` check #10 reads it as a sync artifact — it would merge the note's links into the unrelated original and propose the note for deletion.
 
 ## Examples
 

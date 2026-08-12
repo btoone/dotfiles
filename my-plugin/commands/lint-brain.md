@@ -89,6 +89,13 @@ Compare the folder structure defined in `_Schema.md` against what actually exist
 ### 10. Sync Conflict Copies
 Find files whose basename is another file's basename plus a trailing ` <n>` (`index 2.md` beside `index.md`, `log 3.md` beside `log.md`). iCloud and Dropbox name a losing write this way instead of failing it, so the copy appears silently and both versions then diverge on their own. `index.md` and `log.md` are the usual victims — every maintenance run touches them.
 
+**The filename is a candidate signal, not a verdict.** A conflict copy is a *fork*: it was the same file seconds before the losing write, so it still carries the original's frontmatter `created` value and most of its prose. A deliberately distinct note that merely landed on a similar name shares neither. Confirm the fork before treating the pair as a conflict:
+
+- Same frontmatter `created` value in both files.
+- Substantial prose overlap, not just a shared heading or topic.
+
+If either fails, this is two different notes. Leave them alone and let checks #3 and #8 give the newer one an index entry and a home. Merging is unrecoverable in the direction that matters — it copies one note's links into another and then proposes deleting the source.
+
 Do **not** assume the newer file is complete. Diff the pair on link targets, not on lines:
 
 ```
@@ -103,7 +110,15 @@ Content unique to each side is normal — the live file kept accumulating after 
 ### 11. Unescaped Pseudo-HTML Tags
 Find bare `<placeholder>` text outside backticks and fenced blocks — `<commit>`, `<path>`, `<persona>`. Obsidian parses `<foo>` as an HTML open tag; since it never closes, markdown rendering stops for **the rest of the file**, so `[[wiki links]]` below it render as literal brackets. One unescaped tag in a shell snippet can silently unlink hundreds of lines, which makes this cheap to miss and worth checking on every pass.
 
-Skip `_sources/` — those exports are immutable.
+The damage comes from the tag never closing, so test that rather than the angle brackets. Three forms are angle-bracketed and render correctly — backticking them is itself the corruption:
+
+- **Void elements** — `<br>`, `<img>`, `<hr>`, `<wbr>`. They close nothing because they have no content. A `Brain` travel note uses `<br>` inside a markdown table for line breaks; backticked, the cell renders the literal text `` `<br>` ``.
+- **Balanced pairs** — a `<sup>` with a `</sup>` later in the file, `<a>`, `<td>`, inline SVG. These are HTML the author meant.
+- **Markdown autolinks** — `<https://example.com>`, `<user@example.com>`. Obsidian renders these as links.
+
+So flag `<foo>` only when the file contains no matching `</foo>` and `foo` is not a void element or an autolink. That keeps the real targets, which are unclosed by construction: placeholders like `<commit>`, and Ruby inspect output pasted from a console (`<Fleetio::Client>`, `<Affiliates::Commission:0x4e1d8>`).
+
+Skip `_sources/` — those exports are immutable. Scope the scan with `-not -path '*/_sources/*'` on the file list; a `grep -v _sources` over match output filters the matched text, not the path, and silently does nothing.
 
 **Fix:** Wrap the placeholder in backticks. Verify by confirming links below it resolve again.
 
@@ -172,9 +187,11 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 | Schema drift — folder in schema, missing from filesystem, but notes are referenced under that section name in index | Create the folder and move the matching notes in | No |
 | Schema drift — folder in schema, missing from filesystem, no matching notes | Remove from schema | No |
 | Schema drift — empty schema-defined folder (zero notes) | Leave alone (folder may be aspirational) | No |
+| ` <n>` filename pair that fails the fork test (differing `created`, no prose overlap) | Not a conflict copy — two distinct notes; leave both, index the newer | No |
 | Sync conflict copy — entries unique to the copy | Merge into the live file (skip any whose target note no longer exists, and report those) | No |
 | Sync conflict copy — deleting the copy once merged | Report under "Proposed deletions" once the merge is verified | Yes — the user deletes |
-| Unescaped pseudo-HTML tag outside `_sources/` | Wrap the placeholder in backticks | No |
+| Unclosed pseudo-HTML tag outside `_sources/` | Wrap the placeholder in backticks | No |
+| Angle-bracketed token that is a void element, half of a balanced pair, or an autolink | Renders correctly — leave it alone | No |
 | `attachmentFolderPath` missing from `.obsidian/app.json` | Set it to the attachment folder named in `_Schema.md`; warn that Obsidian must restart to pick it up | No |
 | Stray attachment outside the attachment folder, embedded by some note | Move it in, then re-verify its embed resolves | No |
 | Stray attachment outside the attachment folder, embedded nowhere | Report only — moving it is a guess about intent | Yes |

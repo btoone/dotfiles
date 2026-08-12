@@ -76,7 +76,18 @@ Find `*.md` files at the vault root that aren't reserved. The reserved set is `_
 
 Anything else at root is a straggler — created in Obsidian without a folder, dropped from clipboard, or left behind by a rename. These bypass every other check (no folder = not in any category, often no frontmatter, often "Untitled").
 
-**Fix:** Move each straggler to the correct folder, rename if the title is generic (`Untitled.md`, `Untitled 1.md`), add frontmatter, link from at least one related note, and add to `index.md`.
+**A root straggler with no frontmatter is a scratch pad, and a scratch pad is not a source.** The user makes new root files to paste into, sometimes clearing them afterward and sometimes not. Either way the content was never filed as raw input, so `_sources/` is the wrong destination — filing it there makes it immutable, drops it out of checks #3 and #7, and asserts a decision the lint isn't in a position to make. Never auto-file a root straggler into `_sources/`.
+
+**Fix:** Ask, and offer both real outcomes:
+
+- **Promote** — it was a draft worth keeping. Give it a title, frontmatter, a folder, a link from a related note, and an `index.md` entry. This is the path a quick idea takes to become a real note.
+- **Propose deletion** — leftover scratch. It goes in the "Proposed deletions" table with its evidence; the user runs it.
+
+An empty straggler (0 bytes, or 0 words with no frontmatter) has nothing to promote, so propose deletion and don't offer the first option. Don't try to name it either — a generated slug needs a first heading, a first sentence, or a detectable subject, and an empty file has none of the three.
+
+Leave these out of check #7's frontmatter auto-fix. Stamping `created`/`source`/`tags` onto an empty scratch file doesn't make it a note; it makes an empty file look maintained and pushes it out of the one check that would have surfaced it.
+
+A root straggler that *does* carry frontmatter was filed deliberately and just landed in the wrong place — move it to the folder its content maps to, as below.
 
 Non-`.md` files at root are attachments, handled by check #12.
 
@@ -131,7 +142,9 @@ Check the attachment convention in three places:
 
 1. **The setting.** Read `attachmentFolderPath` in `.obsidian/app.json`. If the key is *absent*, Obsidian silently defaults to the vault root and every paste lands there — the setting existing matters more than its value. It should name the folder `_Schema.md` designates for attachments.
 2. **Strays.** Non-`.md` files outside that folder and outside `_sources/`. Vault root is the usual pile.
-3. **Orphans.** Files in the attachment folder that no note embeds.
+3. **Orphans.** Files in the attachment folder that no note embeds. The attachment folder sits *inside* `_sources/`, so this is the one place the lint reaches past the `_sources/` exclusion — deliberately. Everything else under `_sources/` is filed raw input and out of scope for both strays and orphans.
+
+The attachment folder is also the one part of `_sources/` that is not immutable. Every Obsidian paste writes there and the lint moves strays in, so "files in `_sources/` don't get edited after filing" describes the export and clipping folders, not this one.
 
 A stray is a file the vault would embed — not merely a file that isn't `.md`. Two filters, both required.
 
@@ -162,9 +175,13 @@ Before moving anything, check which embed form points at it. `![[name.png]]` res
 
 **Fix:** Move strays into the attachment folder, then re-verify every embed resolves. Report orphans rather than deleting them — an unreferenced image is often a paste that was never embedded, and it's the user's call whether the bytes are worth keeping.
 
-Establish "orphan" by building the set of every embedded filename across the vault and subtracting it from the files on disk. Do not decide it per-file with a shell search: a quoting or globbing mistake makes the search return nothing, which is indistinguishable from a genuine zero and reads as "safe to delete." Before trusting any empty result, confirm the same search finds a reference you know exists. Attachments live in `_sources/` too — a clipping note embedding its own screenshots is exactly the case a brain-layer-only scan misses.
+Establish "orphan" by building the set of every embedded filename across the vault and subtracting it from the files on disk. Do not decide it per-file with a shell search: a quoting or globbing mistake makes the search return nothing, which is indistinguishable from a genuine zero and reads as "safe to delete." Before trusting any empty result, confirm the same search finds a reference you know exists.
+
+**Scan every note for embeds, `_sources/` included.** The files being checked are brain-layer plus the attachment folder, but the notes doing the embedding are the whole vault — a conversation or clipping filed as raw input still embeds attachments, and an embed scan that skips `_sources/` reports those attachments as orphaned. That is not hypothetical: of the 17 files across both attachment folders, 2 are embedded only from `_sources/conversations/`, so skipping `_sources/` puts a 12% false-positive rate straight onto a deletion list.
 
 Path-based embeds are worth a standalone sweep even when nothing is stray: a folder rename breaks all of them at once, and check #2 only inspects `[[wikilinks]]`, so they can sit broken across many lint passes without ever being reported.
+
+Scope that sweep to the brain layer. Bulk exports use path embeds throughout and are immutable, which is the whole of the difference: 800 of this vault's 807 path embeds sit inside `_sources/` and must not be rewritten, leaving 7 in the brain layer that should be. An unscoped sweep reports the 800 and buries the 7.
 
 ## Lint Policies (defaults)
 
@@ -192,9 +209,11 @@ Anything the schema doesn't cover falls back to the defaults below. A declaratio
 | Stub notes (1–49 words) | Report only | Yes — judgment call |
 | Duplicate coverage | Report only | Yes — judgment call |
 | Missing frontmatter | Add YAML: `created` from file mtime (formatted `YYYY-MM-DD`), `source: manual`, `tags: []` | No |
-| Root straggler — `Untitled*.md` | Move to `_sources/conversations/` with name `YYYY-MM-<topic-slug>.md`. Date from frontmatter `created` if present else file mtime. Topic slug derived from first heading, the first sentence, or detectable subject (max 6 words, kebab-cased). | No |
-| Root straggler — content clearly maps to a project (e.g., project-tagged, mentions a specific project repeatedly) | Move into that `projects/<name>/` folder, add frontmatter, add to `index.md` | No |
-| Root straggler — content is ambiguous | Report only | Yes |
+| Root straggler — no frontmatter, has content (scratch pad) | Offer both: promote to a real note (title, frontmatter, folder, link, index entry), or propose deletion | Yes — the user's call |
+| Root straggler — no frontmatter, empty | Propose deletion only; nothing to promote, and no slug can be derived | Yes — the user deletes |
+| Root straggler — scratch pad, missing frontmatter | Exempt from the frontmatter auto-fix; don't stamp YAML on a scratch file | No |
+| Root straggler — has frontmatter, content clearly maps to a project | Move into that `projects/<name>/` folder, add to `index.md` | No |
+| Root straggler — has frontmatter, destination ambiguous | Report only | Yes |
 | Schema drift — folder exists, not in schema | Add it to `_Schema.md` (filesystem wins) | No |
 | Schema drift — folder in schema, missing from filesystem, but notes are referenced under that section name in index | Create the folder and move the matching notes in | No |
 | Schema drift — folder in schema, missing from filesystem, no matching notes | Remove from schema | No |

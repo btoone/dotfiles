@@ -20,7 +20,7 @@ bindkey -M viins '^N' down-history
 
 # Mise (runtime version manager). Shims in .zshenv/.zprofile cover shells that
 # never reach this file; activate is what loads mise.toml [env] into the shell,
-# which shims cannot do — pbx relies on it for `_.path` binstubs.
+# which shims cannot do — some repos rely on it for `_.path` binstubs.
 if command -v mise &> /dev/null; then
   eval "$(mise activate zsh)"
 fi

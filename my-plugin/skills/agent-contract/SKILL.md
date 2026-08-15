@@ -30,9 +30,9 @@ here is transport.
 and a one-line ownership claim:
 
 ```
-- **[outreach-agent]** — works in `/Users/brandon/code/agents` (TypeScript).
+- **[outreach-agent]** — works in `~/code/outreach-agent` (TypeScript).
   Owns the producer side: prospect data, milestone derivation, the push run.
-- **[sales_board]** — works in `/Users/brandon/code/sales_board` (Rails).
+- **[order_board]** — works in `~/code/order_board` (Rails).
   Owns the consumer side: the endpoint, the anti-corruption layer, reporting.
 ```
 
@@ -70,7 +70,7 @@ the doc carries the substance.
    to read them.
 
 ```
-Round 4 is in docs/design/sales-board-ingestion.md at HEAD.
+Round 4 is in docs/design/order-ingestion.md at HEAD.
 D23 PROPOSED, D24 AGREED, Q7 answered. Your turn.
 ```
 

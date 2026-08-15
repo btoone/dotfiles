@@ -8,7 +8,7 @@ Resume work from this repo's plan files. Plans live in `<repo root>/.claude/plan
 
 ```yaml
 ---
-plan: hoodz-onboarding
+plan: client-onboarding
 status: active        # active | queued | blocked | shipped
 created: 2026-06-15
 ---
@@ -63,16 +63,21 @@ ephemeral:
 A single-slice plan or a trivial step doesn't need the ceremony — work it
 directly.
 
-**The review gate:** after the last slice of a unit of work — before whatever
-ships it (the push, or marking its PR ready to merge) — the accumulated diff
-gets `/code-review`, then `my:review-triage` on its findings; the triage's
-Handoff spawns fresh implementers for accepted fixes. In a PR-based repo the
-unit is each PR, findings are posted on the PR, and the repo's rules may make
-the review kickoff itself a human step — an unattended session then announces
-the PR is ready and names the command, rather than reviewing. Running the
-review from a fresh session is hygiene (cheap context, a triage untainted by
-having defended the slices), not a requirement — the finders and fixers are
-fresh agents either way.
+**The review gate:** never start a review from this session. After the last
+slice of a unit of work — before whatever ships it (the push, or marking its
+PR ready to merge) — stop and hand off: announce the unit is ready and name
+the review mechanism this repo declares. A review belongs to a fresh session
+either way, whether you invoke it or the repo triggers an agent for it; a
+triage from the session that just defended the slices is the thing worth
+avoiding.
+
+Which mechanism, and where findings land, is the repo's call — its delivery
+workflow doc decides (step 4). If it declares none, say so and stop; don't
+substitute `/code-review`, and don't guess a destination.
+
+When findings come back here, `my:review-triage` sorts them and its Handoff
+spawns fresh implementers for the accepted fixes — unchanged, just starting
+from findings someone else produced.
 
 ## The lifecycle footer
 

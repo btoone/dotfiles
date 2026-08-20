@@ -78,18 +78,21 @@ the fact or the gotcha** — not narrating actions.
 - **Lead with what it returns/is, as a noun phrase:**
   `# Views, unique visitors, and bounce rate per page for one site over a date range.`
 - **State the gotcha as the reason, joined with "so":**
-  `# View counts come from the sessions table only — the events table repeats a row per page-load, so summing it double-counts.`
+  `# View counts come from the sessions table only: the events table repeats a row per page-load, so summing it double-counts.`
 - **Define null-vs-zero / state semantics plainly:**
   `# zero means "measured, none found"; the rate columns stay null until analytics data is imported.`
 - **Contrast behavior crisply, caps only on the load-bearing word:**
-  `# Admin-only — unlike show?, a regular member does NOT get this for their own account.`
+  `# Admin-only. Unlike show?, a regular member does NOT get this for their own account.`
 - **Name the source-of-truth table for grep:**
   `# Reads the daily_rollups table (the analytics source of truth).`
 - **Prefer a concrete current limitation over a label:**
   `# rate columns stay null until analytics data is imported` (not "null for V1").
 
-A single em-dash inside a comment is fine — the comment voice is more relaxed
-than user-facing copy.
+Comment prose is held to the same standard as any other prose: write it
+against the `humanizer` skill's patterns, and run that skill over the comments
+when auditing. The tells that recur in comments are em and en dashes joining
+clauses (use a period, comma, or colon instead), the "X, never Y" punchline,
+and stacked short fragments for drama. A comment states its fact plainly.
 
 ## Worked example — the canonical bad comment
 

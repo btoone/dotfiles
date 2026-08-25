@@ -81,6 +81,10 @@
     "type": "command",
     "command": "$CLAUDE_CONFIG_DIR/statusline-command.sh"
   },
+  "skillOverrides": {
+    "my:trello": "off",
+    "trello": "off"
+  },
   "enabledPlugins": {
     "skillify@claude-skillify": false,
     "my@my-plugin": true,

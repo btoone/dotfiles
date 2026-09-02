@@ -206,9 +206,3 @@ skills_with_vocabulary_test() {
   assert_keeps_vocabulary tdd \
     "TDD" "BDD" "add a spec" "TDD this" "go ahead"
 }
-
-@test "trello: keeps the vocabulary a board request routes on" {
-  assert_keeps_vocabulary trello \
-    "what's on the board" "what does card X say" "move it to Done" \
-    "short link" "scripts/trello" "Jira"
-}

@@ -25,7 +25,7 @@ Resolve a vault only when there's a search query to scope, or an explicit vault 
 
 Arguments after the vault are a search query.
 
-**No query** — open the note the user most recently saved. This is the common case right after `/my:vault`, and it should feel instant: the whole path is **two shell commands** — this find, then `obsidian-open`. No vault resolution, no checking other vaults, no `date` conversions, no extra `stat`s.
+**No query** — open the note the user most recently saved. This is the common case right after `/my:vault`, and it should feel instant: the whole path is **two shell commands**, this find and then `obsidian-open`.
 
 ```bash
 find -L ~/Vaults -type f -name '*.md' \

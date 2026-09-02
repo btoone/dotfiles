@@ -625,7 +625,7 @@ aggregates tell, now made auditable. Paste the three results into the doc as a
 worked trace. If the entity does NOT show up where you expected, that's a
 finding: your join key or grain assumption is wrong — go back to P2/P3.
 
-## Hard-won traps the skill MUST warn about
+## Traps that produce a wrong number
 
 Each of these is a documented way a lineage audit produces a wrong number.
 Check every one.

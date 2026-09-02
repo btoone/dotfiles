@@ -72,7 +72,7 @@ Find notes outside `_sources/` that are missing the required YAML frontmatter (`
 **Fix:** Add frontmatter with best-guess `created` date (from file metadata) and `source: manual`.
 
 ### 8. Root Stragglers
-Find `*.md` files at the vault root that aren't reserved. The reserved set is `_Schema.md`, `index.md`, `log.md`, `README.md` **plus every root-level file the schema's Architecture block names** — `Brain/_Schema.md` registers `Scratch.md` there as a "deliberate root scratchpad — no frontmatter, no index entry, not linted for orphan status," and a vault that declares a root file has already answered this check. Treat ` <n>` variants of reserved names as reserved too; those are check #10's business, not stragglers.
+Find `*.md` files at the vault root that aren't reserved. The reserved set is `_Schema.md`, `index.md`, `log.md`, `README.md` **plus every root-level file the schema's Architecture block names**. A schema can register a root file (a deliberate scratchpad with no frontmatter and no index entry, say), and a vault that declares one has already answered this check. Treat ` <n>` variants of reserved names as reserved too; those are check #10's business, not stragglers.
 
 Anything else at root is a straggler — created in Obsidian without a folder, dropped from clipboard, or left behind by a rename. These bypass every other check (no folder = not in any category, often no frontmatter, often "Untitled").
 
@@ -127,11 +127,11 @@ Find bare `<placeholder>` text outside backticks and fenced blocks — `<commit>
 
 The damage comes from the tag never closing, so test that rather than the angle brackets. Three forms are angle-bracketed and render correctly — backticking them is itself the corruption:
 
-- **Void elements** — `<br>`, `<img>`, `<hr>`, `<wbr>`. They close nothing because they have no content. A `Brain` travel note uses `<br>` inside a markdown table for line breaks; backticked, the cell renders the literal text `` `<br>` ``.
+- **Void elements** — `<br>`, `<img>`, `<hr>`, `<wbr>`. They close nothing because they have no content. A note may use `<br>` inside a markdown table for line breaks; backticked, the cell renders the literal text `` `<br>` ``.
 - **Balanced pairs** — a `<sup>` with a `</sup>` later in the file, `<a>`, `<td>`, inline SVG. These are HTML the author meant.
 - **Markdown autolinks** — `<https://example.com>`, `<user@example.com>`. Obsidian renders these as links.
 
-So flag `<foo>` only when the file contains no matching `</foo>` and `foo` is not a void element or an autolink. That keeps the real targets, which are unclosed by construction: placeholders like `<commit>`, and Ruby inspect output pasted from a console (`<Fleetio::Client>`, `<Affiliates::Commission:0x4e1d8>`).
+So flag `<foo>` only when the file contains no matching `</foo>` and `foo` is not a void element or an autolink. That keeps the real targets, which are unclosed by construction: placeholders like `<commit>`, and Ruby inspect output pasted from a console (`<Billing::Client>`, `<Affiliates::Commission:0x4e1d8>`).
 
 Skip `_sources/` — those exports are immutable. Scope the scan with `-not -path '*/_sources/*'` on the file list; a `grep -v _sources` over match output filters the matched text, not the path, and silently does nothing.
 
@@ -148,7 +148,7 @@ The attachment folder is also the one part of `_sources/` that is not immutable.
 
 A stray is a file the vault would embed — not merely a file that isn't `.md`. Two filters, both required.
 
-**It has to be embeddable.** Obsidian embeds images (`png` `jpg` `jpeg` `gif` `bmp` `svg` `webp` `avif`), audio (`mp3` `wav` `m4a` `ogg` `flac`), video (`mp4` `webm` `mov` `mkv`), and `pdf`. Nothing else is an attachment. Source files, archives, and configs are content someone deliberately filed, and they usually arrive as a tree — the `Developer` vault holds an unpacked repo under `projects/Code Samples/`, whose `Gemfile`, `bin/`, and `lib/` a flat move would scatter into one folder.
+**It has to be embeddable.** Obsidian embeds images (`png` `jpg` `jpeg` `gif` `bmp` `svg` `webp` `avif`), audio (`mp3` `wav` `m4a` `ogg` `flac`), video (`mp4` `webm` `mov` `mkv`), and `pdf`. Nothing else is an attachment. Source files, archives, and configs are content someone deliberately filed, and they usually arrive as a tree — a vault may hold an unpacked repo under a project folder, whose `Gemfile`, `bin/`, and `lib/` a flat move would scatter into one folder.
 
 **Something has to embed it.** An embedded file can be moved and the embed re-verified afterward; a file nothing references is a guess about intent. Report those instead of moving them, alongside the check #12 point 3 orphans.
 
@@ -177,11 +177,11 @@ Before moving anything, check which embed form points at it. `![[name.png]]` res
 
 Establish "orphan" by building the set of every embedded filename across the vault and subtracting it from the files on disk. Do not decide it per-file with a shell search: a quoting or globbing mistake makes the search return nothing, which is indistinguishable from a genuine zero and reads as "safe to delete." Before trusting any empty result, confirm the same search finds a reference you know exists.
 
-**Scan every note for embeds, `_sources/` included.** The files being checked are brain-layer plus the attachment folder, but the notes doing the embedding are the whole vault — a conversation or clipping filed as raw input still embeds attachments, and an embed scan that skips `_sources/` reports those attachments as orphaned. That is not hypothetical: of the 17 files across both attachment folders, 2 are embedded only from `_sources/conversations/`, so skipping `_sources/` puts a 12% false-positive rate straight onto a deletion list.
+**Scan every note for embeds, `_sources/` included.** The files being checked are brain-layer plus the attachment folder, but the notes doing the embedding are the whole vault — a conversation or clipping filed as raw input still embeds attachments, and an embed scan that skips `_sources/` reports those attachments as orphaned. Attachments embedded only from a filed conversation are common, so skipping `_sources/` puts false positives straight onto a deletion list.
 
 Path-based embeds are worth a standalone sweep even when nothing is stray: a folder rename breaks all of them at once, and check #2 only inspects `[[wikilinks]]`, so they can sit broken across many lint passes without ever being reported.
 
-Scope that sweep to the brain layer. Bulk exports use path embeds throughout and are immutable, which is the whole of the difference: 800 of this vault's 807 path embeds sit inside `_sources/` and must not be rewritten, leaving 7 in the brain layer that should be. An unscoped sweep reports the 800 and buries the 7.
+Scope that sweep to the brain layer. Bulk exports use path embeds throughout and are immutable, so nearly every path embed in a vault sits inside `_sources/` and must not be rewritten. An unscoped sweep reports those by the hundreds and buries the handful in the brain layer that should be rewritten.
 
 ## Lint Policies (defaults)
 
@@ -189,7 +189,7 @@ The lint is **agentic, not interactive**. For each finding, apply a default acti
 
 **Vault-specific overrides:** the schema outranks this file wherever it speaks, and it speaks in three places — not just one. Read all three before applying any default:
 
-- **`## Lint Policies`** — per-finding actions. `Developer/_Schema.md` has this section; `Brain/_Schema.md` does not, so a lint that reads only here treats Brain as having declared nothing.
+- **`## Lint Policies`** — per-finding actions. Not every vault has this section; a lint that reads only here treats a vault without it as having declared nothing, when its other two sections may still speak.
 - **The Architecture block** — folder structure and root-level files, including exemptions written as prose beside an entry.
 - **The `### Lint` section** — what the vault means by each finding (its orphan definition, for one).
 
@@ -232,7 +232,7 @@ Anything the schema doesn't cover falls back to the defaults below. A declaratio
 
 ### Destructive-action guardrails
 
-**The lint never deletes anything, and no schema can authorize it to.** This is the one place a vault's `_Schema.md` does not win. `Developer/_Schema.md` currently carries an auto-fix reading "Empty notes → if mtime >7 days old AND no incoming links AND no `draft`/`wip` tag, delete"; treat that as a report-only rule and say so in the report. The user can delete from the proposed list in one step, and cannot un-delete a note the lint was wrong about.
+**The lint never deletes anything, and no schema can authorize it to.** This is the one place a vault's `_Schema.md` does not win. If a schema carries an auto-delete rule (empty notes past some age with no incoming links, say), treat it as report-only and say so in the report. The user can delete from the proposed list in one step, and cannot un-delete a note the lint was wrong about.
 
 Collect every deletion candidate — empty notes, orphaned attachments, merged conflict copies — into a "Proposed deletions" section of the report: path, one-line reason, and the evidence behind it. The user runs the deletions.
 

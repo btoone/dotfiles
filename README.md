@@ -103,7 +103,7 @@ claude plugins marketplace add ~/dotfiles/my-plugin
 claude plugins install my
 ```
 
-This registers the `my:` namespace with commands like `/my:vault`, `/my:dennis`, `/my:lint-brain`, `/my:init-brain` and the `my:tdd` skill (auto-loads during TDD work).
+This registers the `my:` namespace with commands like `/my:vault`, `/my:lint-brain`, `/my:init-brain` and the `my:tdd` skill (auto-loads during TDD work).
 
 ### Mise
 

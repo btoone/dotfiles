@@ -32,7 +32,7 @@ Get this right on the first write. Nothing downstream moves the note, so the pat
 
 **If the vault has a `_Schema.md`,** read it first. Its Architecture block is the authoritative folder map, and it wins over any guess about where a topic goes.
 
-Resolve the folder argument against that map: match it case-insensitively against folder basenames in the Architecture block (cross-checked against the filesystem), including prefix matches, and expand to the full path. `glow` resolves to `projects/Glow app`, `fleetio` to `projects/Fleetio Code Challenge`, `craft` to `craft/`. A shorthand that resolves to a nested folder must be written to the nested path — never to a new top-level folder of the same basename.
+Resolve the folder argument against that map: match it case-insensitively against folder basenames in the Architecture block (cross-checked against the filesystem), including prefix matches, and expand to the full path. `onboarding` resolves to `projects/Client Onboarding`, `challenge` to `projects/Billing Code Challenge`, `craft` to `craft/`. A shorthand that resolves to a nested folder must be written to the nested path — never to a new top-level folder of the same basename.
 
 If the folder argument doesn't resolve, or none was given, choose the schema category that fits the content. Create a folder only when the content genuinely has no home; say so when you do.
 
@@ -55,7 +55,7 @@ Write the note with no `[[wiki links]]` unless you already know a target exists.
 
 - Use the title (provided or generated) as the filename
 - Natural titles with spaces — Obsidian handles them fine
-- Example: `~/Vaults/Developer/projects/Glow app/Sentry Plugin Workflow.md`
+- Example: `~/Vaults/Developer/projects/Client Onboarding/Sentry Plugin Workflow.md`
 - Do NOT overwrite existing files.
 
 If the name is taken, the new note needs a title that says how it differs — `Sentry Plugin Workflow` beside an existing one becomes `Sentry Plugin Workflow for Release Builds`, not a counter. Fall back to a dated title (`Title (2026-08-12).md`) only when nothing in the content distinguishes them.
@@ -67,7 +67,7 @@ Never resolve a collision by appending a bare number. ` 2.md` is the shape iClou
 | Command | Vault | File |
 |---------|-------|------|
 | `/my:vault craft/Code Review Gates` | Developer (default) | `~/Vaults/Developer/craft/Code Review Gates.md` |
-| `/my:vault glow/Sentry Workflow` | Developer (default) | `~/Vaults/Developer/projects/Glow app/Sentry Workflow.md` |
+| `/my:vault onboarding/Sentry Workflow` | Developer (default) | `~/Vaults/Developer/projects/Client Onboarding/Sentry Workflow.md` |
 | `/my:vault brain personal/Reading List` | Brain | `~/Vaults/Brain/personal/Reading List.md` |
 | `/my:vault craft` | Developer (default) | `~/Vaults/Developer/craft/<generated title>.md` |
 

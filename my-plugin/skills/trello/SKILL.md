@@ -1,5 +1,6 @@
 ---
 name: trello
+disable-model-invocation: true
 description: >
   Read and write a Trello board from a coding session: look up what a card
   actually says, find the card for the work in progress, create cards from

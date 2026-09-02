@@ -27,7 +27,8 @@ default — always-loaded lines are a tax on every future turn.
 | A durable rule for working in this repo (command, convention, gotcha any contributor will hit) | The narrowest existing `.claude/` guideline doc; project CLAUDE.md only if it applies to every session and no linked doc fits |
 | A defect a review or production caught that generalizes — the implementation looked right and no test objected | The project's test-guideline doc, as an entry in a named trap catalogue (see **Trap catalogues**) |
 | A decision with tradeoffs someone might revisit or relitigate | An ADR in `docs/adr/` (or the project's decision-record convention; create `docs/` note if none) |
-| About the user: preferences, corrections, how they like to work | Auto-memory (`type: user` or `feedback`) |
+| A preference or correction that would hold in any repo (how the user likes to work, review, name things, write) | The global CLAUDE.md in dotfiles, or a `~/.claude/rules/` file; these travel between machines, auto-memory does not. Dotfiles is public, so keep the wording generic |
+| A preference or correction specific to this project or codebase | Auto-memory (`type: user` or `feedback`) |
 | Cross-session project state not derivable from code or git (goals, in-flight threads, external constraints) | Auto-memory (`type: project`), relative dates made absolute |
 | Valuable beyond this project: a technique, a research finding, a worldview, reusable playbook | Obsidian vault via `/my:vault` (Developer Brain for craft/tooling) |
 | An operational fact the team needs (runbook step, deploy gotcha, credential location pointer) | `docs/` or README, wherever the project keeps runbooks |

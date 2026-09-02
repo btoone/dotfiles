@@ -19,7 +19,7 @@ setup() {
   # Ratchet, not an aspiration: trimming a skill lowers it. The only thing that
   # may raise it is a new skill, and only by that skill's own surface — an
   # existing description growing back is the regression this exists to catch.
-  BUDGET=9997
+  BUDGET=9188
   # How far the budget may sit above the real surface before it has gone slack.
   SLACK=200
 }

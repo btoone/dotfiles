@@ -39,6 +39,7 @@ These rules shape all code I write, review, or design. Each is stated tersely he
 ## Delivery
 
 - Every commit releasable: small commits, trunk-based development, expand-and-contract migrations. Speed and stability aren't a tradeoff.
+- Read the test run before committing: a commit never rides in the same command chain as the spec run it depends on. A green you haven't seen is not a green.
 - Plans are temporary artifacts, not documentation: a written plan lives at `<repo root>/.claude/plans/<feature>.md`, committed, with frontmatter `status: active | queued | blocked | shipped` (at most one `active` **per working tree** — parallel worktrees may each own one; new plans start `queued`). The moment its last phase/PR lands, set `status: shipped` — that arms the pre-push gate — then route anything durable out (my:capture-learnings) and delete the file. Never archive a plan; git history is the archive.
 
 ## Pragmatic

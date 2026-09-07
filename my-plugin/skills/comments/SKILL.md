@@ -30,6 +30,21 @@ deliberate decision a future dev would otherwise "fix," or a grep anchor.
 If the comment exists because the *name* is unclear — **fix the name instead.**
 A clearer name beats a clarifying comment every time.
 
+## The substance test
+
+A comment can pass the one test on shape and still say nothing. So, for every
+noun the comment keeps, ask:
+
+> Is this a term the code or the domain already has?
+
+A noun that needs defining ("history", "figures", "the numbers") is a vague
+idea dressed as a fact, and a frame the class has nothing to do with (a
+timeline in a class about scope, a workflow in a class about a calculation)
+is a tell that the comment is describing something other than the code. When
+a comment fails this test, one of two things is true: there is one concrete
+decision hiding inside it, which belongs on the method that embodies it, or
+there is nothing, and the comment goes.
+
 ## When a comment IS worth writing
 
 - **A non-obvious WHY** — why this reads the pre-aggregate and not the source
@@ -40,8 +55,10 @@ A clearer name beats a clarifying comment every time.
 - **A crisp behavioral contrast** — how this branch differs from a sibling.
 - **A grep anchor for a source-of-truth table** — naming the table by name so a
   future reader can find what feeds a surface.
-- **A short class-level sentence** on what a query/service object *answers*.
-  (Durable design detail belongs in an ADR, not a comment.)
+- **A class-level sentence, only when it clears a bar:** the class name and its
+  public method names together do not already say what the object answers.
+  This is not a default. If they do say it, no class comment. (Durable design
+  detail belongs in an ADR, not a comment.)
 
 ## DON'T
 
@@ -127,6 +144,33 @@ def page_author_names(posts)
 Often the honest answer is **no comment** — the method name and body already say
 everything, and the perf rationale is visible from mapping over `posts`.
 
+## Worked example — the well-formed vague comment
+
+```ruby
+# The accounts whose usage counts toward an invoice. A cancelled account's
+# history belongs in last quarter's numbers, so exclusion is a deny-list of
+# what was never a customer's, not an allow-list of active accounts.
+class BillableAccounts
+  def excluded_account_ids
+    Account.where(internal: true).or(Account.where(status: :trial)).select(:id)
+  end
+end
+```
+
+This one has the voice right and still fails. The class name and its method
+already say it is the billable population defined by exclusion. "History" and
+"last quarter's numbers" are nouns the code does not have, and they drag a
+timeline into a class that is about scope. The single fact the code cannot
+show is that cancelled accounts are deliberately left in, and that belongs on
+the method that declares the list:
+
+```ruby
+class BillableAccounts
+  # Cancelled accounts are not excluded: their usage was a customer's while
+  # they were one.
+  def excluded_account_ids
+```
+
 ## Before / after (the shape of the edit)
 
 | Before | After |
@@ -151,17 +195,27 @@ first, then audit only the comments inside that scope.
 | a path (`app/foo.rb`, `lib/`) | that file or directory | `git diff HEAD -- <path>`, or read the file directly if auditing all of it |
 | a symbol (`SomeClass#method`) | that definition | `grep`/`rg` for it, then read the surrounding block |
 
+When the work behind a change spans more than one session, audit the **branch**
+scope, not the commits of the current session. The comment that escapes is the
+one written before the session began.
+
 **Audit only what the scope touched, not the whole file.** For a diff or commit
 range, look at the comments on **added/changed lines** (the `+` lines, plus a
 comment directly above a changed method). A pre-existing comment elsewhere in
 the file is out of scope unless explicitly asked. This keeps the review focused
 on what the change introduced.
 
-**Then, for each comment in scope:** read it against the one test. Delete the
-ones that restate code; strip snapshot facts, planning-doc citations, and
-collaboration narration from the rest; condense survivors to the voice above;
-and keep the genuine value-adds (the WHY, the gotcha, the grep anchor) — don't
-over-trim those away.
+**Then, for each comment in scope:** read it against the one test and the
+substance test. Delete the ones that restate code; strip snapshot facts,
+planning-doc citations, and collaboration narration from the rest; condense
+survivors to the voice above; and keep the genuine value-adds (the WHY, the
+gotcha, the grep anchor) — don't over-trim those away.
+
+**Then re-run both tests on the rewritten text.** Reshaping a comment into the
+voice is not an audit; a well-formed sentence with undefined nouns is the
+failure mode that survives a structure-only pass. Where a class-level comment
+keeps one concrete fact, move that fact onto the method it is about and drop
+the class comment.
 
 **Output:** by default, report findings as a list (file:line → why it's
 low-value → the suggested rewrite, or "delete") and let the user confirm before

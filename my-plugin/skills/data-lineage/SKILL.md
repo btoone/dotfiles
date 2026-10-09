@@ -640,6 +640,8 @@ Check every one.
 | **Rows are actions, not events** | `COUNT(*)` counts postings/openings/reversals, not the entity | Profile grain first (P2); count `DISTINCT <natural_key>` or filter to one-row-per-entity |
 | **Confirmation bias** | You expect a coverage leak, find 0%, and bury it | Refute your own hypotheses out loud — when a query kills your favorite argument (the leak was 0%), say so and re-base |
 | **Laundering estimates into facts** | "~55k" quietly becomes "55,000" | Label pending/approximate numbers as approximate until a clean query confirms them |
+| **Validating against the wrong artifact** | A source checked against the vendor's own report of the same feed proves you parse it, not that it holds everything the consumer is billed or paid. A mid-period sample also misses period-end charges and boundary spill | Tie out against the document the consumer reconciles to (a statement, an invoice, a bank deposit) over a whole period, boundaries included |
+| **Waving off a gap between two sources** | Two feeds that should describe the same money disagree by "~2%", and the gap gets recorded as noise. It is usually a category one of them omits | Explain the gap, line by line, before declaring either source the truth. An unexplained difference is a finding, not rounding |
 
 ## Results-document template
 

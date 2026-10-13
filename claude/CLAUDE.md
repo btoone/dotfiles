@@ -45,6 +45,7 @@ These rules shape all code I write, review, or design. Each is stated tersely he
 ## Delegation
 
 - Running as Fable: Fable orchestrates and reviews; Opus subagents implement from a brief with the red spec in place. Fable reads the diff, re-runs the gates, commits.
+- A brief tells the implementer to invoke the tdd skill and to report every RED → GREEN → REFACTOR cycle with its red message and refactor verdict. A report without that list was batch-written; treat it as such in review.
 
 ## Pragmatic
 

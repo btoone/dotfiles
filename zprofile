@@ -3,4 +3,7 @@
 # shims here so GUI-launched login shells (desktop agents) resolve tools before
 # /usr/bin. Interactive shells get the same result later via `mise activate`
 # in .zshrc; this covers the non-interactive login case that never reaches it.
+# ~/.local/bin holds the mise binary: without it here, path_helper has demoted
+# it by the time .zshrc's `command -v mise` runs, and activate is skipped.
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/share/mise/shims:$PATH"

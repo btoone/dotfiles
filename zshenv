@@ -19,6 +19,9 @@ export PATH="/Applications/MacVim.app/Contents/bin:$PATH"                       
 # mise shims for non-interactive shells (GUI-launched agents, scripts, git
 # hooks): `mise activate` in .zshrc only reaches interactive prompts. Shims
 # resolve the right tool per-directory and load mise.toml [env] at exec time.
+# The mise binary itself lives in ~/.local/bin, which .zshrc's activate needs
+# on PATH before path_precedence has run.
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 ## Editor

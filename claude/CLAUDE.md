@@ -40,11 +40,12 @@ These rules shape all code I write, review, or design. Each is stated tersely he
 
 - Every commit releasable: small commits, trunk-based development, expand-and-contract migrations. Speed and stability aren't a tradeoff.
 - Read the test run before committing: a commit never rides in the same command chain as the spec run it depends on. A green you haven't seen is not a green.
+- Understanding sets the pace, not just correctness: a PR goes to others for review only after I've passed its my:explain-diff quiz. Code I can't explain is cognitive debt even when every gate is green.
 - Plans are temporary artifacts, not documentation: a written plan lives at `<repo root>/.claude/plans/<feature>.md`, committed, with frontmatter `status: active | queued | blocked | shipped` (at most one `active` **per working tree** — parallel worktrees may each own one; new plans start `queued`). The moment its last phase/PR lands, set `status: shipped` — that arms the pre-push gate — then route anything durable out (my:capture-learnings) and delete the file. Never archive a plan; git history is the archive.
 
 ## Delegation
 
-- Running as Fable: Fable orchestrates and reviews; Opus subagents implement from a brief with the red spec in place. Fable reads the diff, re-runs the gates, commits.
+- Running as Fable: Fable orchestrates and reviews; Opus subagents implement from a brief with the red spec in place. Fable reads the diff, re-runs the gates, commits. Fable reading the diff doesn't mean I've understood it — before a PR goes up, offer my:explain-diff.
 - A brief tells the implementer to invoke the tdd skill and to report every RED → GREEN → REFACTOR cycle with its red message and refactor verdict. A report without that list was batch-written; treat it as such in review.
 
 ## Pragmatic

@@ -19,7 +19,7 @@ setup() {
   # Ratchet, not an aspiration: trimming a skill lowers it. The only thing that
   # may raise it is a new skill, and only by that skill's own surface — an
   # existing description growing back is the regression this exists to catch.
-  BUDGET=9188
+  BUDGET=9520
   # How far the budget may sit above the real surface before it has gone slack.
   SLACK=200
 }
@@ -205,4 +205,9 @@ skills_with_vocabulary_test() {
 @test "tdd: keeps the vocabulary an implementation request routes on" {
   assert_keeps_vocabulary tdd \
     "TDD" "BDD" "add a spec" "TDD this" "go ahead"
+}
+
+@test "explain-diff: keeps the vocabulary an understand-this-change request routes on" {
+  assert_keeps_vocabulary explain-diff \
+    "explain this diff" "quiz" "before review" "Artifact" "PR"
 }

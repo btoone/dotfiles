@@ -52,6 +52,27 @@ else
   failed+=("tmux plugins")
 fi
 
+# Third-party Claude Code skills come from the skills CLI, which clones into
+# ~/.agents/skills and symlinks into $CLAUDE_CONFIG_DIR/skills — so this must
+# run in a shell where ~/.zshrc.local has set the profile. The runtime deps
+# are what annotated-demo-video's recorder and finisher import; zshrc exports
+# the NODE_PATH that lets a global Playwright be found from any project.
+skills=(
+  seattlecyclist/skills@annotated-demo-video
+)
+echo "==> Installing Claude Code skills..."
+if ! command -v npx &> /dev/null; then
+  echo "    npx not found. Run script/bootstrap first."
+  failed+=("claude skills")
+else
+  for skill in "${skills[@]}"; do
+    npx -y skills add "$skill" -g -y || failed+=("skill $skill")
+  done
+  echo "==> Installing skill runtime deps (Pillow, Playwright)..."
+  python3 -m pip install --quiet pillow || failed+=("pillow")
+  npm install -g playwright || failed+=("playwright")
+fi
+
 if [ ${#failed[@]} -gt 0 ]; then
   echo ""
   echo "--- FAILED: ${failed[*]} ---"

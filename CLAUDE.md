@@ -76,7 +76,7 @@ Installs the prerequisites that install everything else: checks for Homebrew, in
 Configures the local environment: symlinks dotfiles from MANIFEST, copies templates, symlinks tool scripts into `~/.local/bin`, arms the `plan-gate` pre-push hook, deploys Claude Code config, installs tpm. Fast, idempotent, no network needed.
 
 ### script/update
-Brings installed dependencies in line with the current checkout: `brew bundle --global`, vim plugins (`PlugInstall --sync` + `PlugClean!`), tmux plugins (tpm `install_plugins`). Needs network. Run after pulling changes — `just setup` runs it after `script/setup`, so a pull that adds a Brewfile entry or a `Plug` line lands without any manual follow-up. On macOS 13 and older, brew is report-only — the script's comments explain why.
+Brings installed dependencies in line with the current checkout: `brew bundle --global`, vim plugins (`PlugInstall --sync` + `PlugClean!`), tmux plugins (tpm `install_plugins`), third-party Claude Code skills (the `skills` array, installed by `npx skills add` into `~/.agents/skills` and symlinked into the active `CLAUDE_CONFIG_DIR`) plus their runtime deps (Pillow, a global Playwright). Needs network. Run after pulling changes — `just setup` runs it after `script/setup`, so a pull that adds a Brewfile entry or a `Plug` line lands without any manual follow-up. On macOS 13 and older, brew is report-only — the script's comments explain why.
 
 ### tools/tmux-help
 Keybinding help popup (`prefix + ?`), self-maintaining from `bind` lines — so every new binding in `tmux.conf` needs a comment line directly above it to show up properly.

@@ -84,6 +84,16 @@ PROMPT='%F{green}$(compact_path)%f %F{yellow}${vcs_info_msg_0_}%f❱ '
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
+# annotated-demo-video skill (installed by script/update into ~/.agents/skills):
+# its Playwright recorder looks for the library on NODE_PATH, and CHROMIUM_PATH
+# lets it drive the installed Chrome instead of downloading a Chromium build.
+# mise keeps a `latest` symlink beside the pinned Node, so a version bump in
+# mise.toml only needs `npm i -g playwright` again, not a path change here.
+export NODE_PATH="$HOME/.local/share/mise/installs/node/latest/lib/node_modules"
+_chrome="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+[[ -x "$_chrome" ]] && export CHROMIUM_PATH="$_chrome"
+unset _chrome
+
 # pnpm
 export PNPM_HOME="/Users/brandon/Library/pnpm"
 case ":$PATH:" in

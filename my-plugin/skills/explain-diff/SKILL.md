@@ -65,12 +65,13 @@ One long page with a table of contents and section headers — no tabs.
    all the way through. Pick one or two diagram families (a data-flow diagram,
    a simplified UI, a before/after state table) and reuse them rather than
    inventing a new picture each time. Add an interactive figure only where
-   fiddling with it teaches something a static one can't.
+   fiddling with it teaches something a static one can't. When the change
+   is one step of a plan, end with what it sets up for the work after it.
 3. **Literate diff.** The code in teaching order, not file order: start where
    the idea starts. Before each excerpt, a paragraph saying what this piece
    does and why it's needed. Quote real hunks; group mechanical changes
    (renames, wiring) into one short note instead of walking each.
-4. **Quiz.** Five multiple-choice questions, medium difficulty — answerable
+4. **Quiz.** Five multiple-choice questions, light to medium difficulty — answerable
    only by someone who understood the substance, never gotchas or trivia
    about file names. Clicking an answer reveals right/wrong and feedback.
 
@@ -86,6 +87,21 @@ mental model* would pick — the plausible misreading, the old behavior, the
 edge case handled the other way. Feedback on a wrong option names the
 misconception, not just "incorrect". Include at least one "what happens
 when…" question about an edge case or failure path.
+
+Balance the five. Write the change's thesis in one sentence first, then ask
+two or three questions on its intent and behavior (why the design moved,
+what it enables, where follow-up work plugs in) and two or three on the
+functional changes, including deeper details such as sign conventions or
+scoping rules. Keep difficulty light to medium.
+
+No question hinges on wording. The right option and the wrong ones are
+phrased equally plainly, so a reader who understands the change can't be
+tripped by a qualifier.
+
+Every answer is in the page. The right answer, and the reason each wrong
+option is wrong, must be findable in the explainer. When a question reaches
+past the diff (a plan's next PR, a decision record), the explainer states
+that material first, and says it comes from the plan, not the code.
 
 ### 4. Publish
 

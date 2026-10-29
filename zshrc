@@ -87,8 +87,8 @@ source <(fzf --zsh)
 # annotated-demo-video skill (installed by script/update into ~/.agents/skills):
 # its Playwright recorder looks for the library on NODE_PATH, and CHROMIUM_PATH
 # lets it drive the installed Chrome instead of downloading a Chromium build.
-# mise keeps a `latest` symlink beside the pinned Node, so a version bump in
-# mise.toml only needs `npm i -g playwright` again, not a path change here.
+# The folder is mise's `latest` Node, not the pinned one: script/update installs
+# Playwright there, so a project that pins its own Node can still load it.
 export NODE_PATH="$HOME/.local/share/mise/installs/node/latest/lib/node_modules"
 _chrome="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 [[ -x "$_chrome" ]] && export CHROMIUM_PATH="$_chrome"

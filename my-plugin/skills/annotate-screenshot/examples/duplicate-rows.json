@@ -1,0 +1,27 @@
+{
+  "source": "/Users/brandon/Documents/screenshots/Screenshot 2026-10-30 at 9.46.23 AM.png",
+  "output": "/Users/brandon/Documents/screenshots/settlement-transactions-annotated.png",
+  "tone": "problem",
+  "crop": [553, 401, 5232, 2498],
+  "spotlight": [[652, 703, 5125, 1197]],
+  "rings": {
+    "sale-1": [3201, 724, 3399, 799],
+    "credit-1": [3201, 850, 3399, 924],
+    "sale-2": [3201, 975, 3399, 1050],
+    "credit-2": [3201, 1101, 3399, 1176]
+  },
+  "links": [
+    {"tag": "B", "rings": ["credit-1", "credit-2"], "side": "left", "offset": 48, "label_at": 0.76},
+    {"tag": "A", "rings": ["sale-1", "sale-2"], "side": "left", "offset": 18, "label_at": 0.24}
+  ],
+  "card": {
+    "at": [652, 1918],
+    "width": 880,
+    "title": "Some transactions show twice",
+    "items": [
+      {"tag": "A", "text": "Sale $39,796.76 on Amex 1004, rows 1 and 3"},
+      {"tag": "B", "text": "Credit −$3,028.99 on Amex 3002, rows 2 and 4"}
+    ],
+    "note": "Each pair matches on date, card and amount, but every row carries its own ARN."
+  }
+}

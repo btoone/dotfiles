@@ -123,6 +123,7 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "autoCompactEnabled": true,
+  "cleanupPeriodDays": 365,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true

@@ -2,7 +2,7 @@
 
 # Claude Code statusline. Two rows: identity + context headroom, then budget.
 #
-#   personal · Opus 4.8 1M · dotfiles:master* · 106k/1M 11%
+#   personal · @pbx-a2 · Opus 4.8 1M · dotfiles:master* · 106k/1M 11%
 #   5h 13% · 7d 53% · $5.59
 
 input=$(cat)
@@ -57,9 +57,19 @@ join_parts() {
   printf '%s' "$out"
 }
 
-# Git is the only thing here that costs a subprocess, and the statusline
-# redraws far faster than a branch changes. Cache per session, 5s TTL.
+# Git and the session-name lookup cost subprocesses, and the statusline
+# redraws far faster than either changes. Cache each per session, 5s TTL.
 mtime() { stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || echo 0; }
+
+# The peer name other sessions use with SendMessage (e.g. pbx-a2) is not in
+# the statusline input; it lives in Claude Code's session registry, one
+# <pid>.json per live session. Undocumented, so an empty result just hides it.
+name_cache="${TMPDIR:-/tmp}/claude-statusline-name-$session_id"
+if [ $(( $(date +%s) - $(mtime "$name_cache") )) -ge 5 ]; then
+  jq -r --arg id "$session_id" 'select(.sessionId == $id) | .name // empty' \
+    "${CLAUDE_CONFIG_DIR:-$HOME/.claude}"/sessions/*.json 2>/dev/null | tail -1 > "$name_cache"
+fi
+[ -f "$name_cache" ] && read -r peer_name < "$name_cache"
 
 cache="${TMPDIR:-/tmp}/claude-statusline-git-$session_id"
 if [ $(( $(date +%s) - $(mtime "$cache") )) -ge 5 ]; then
@@ -74,6 +84,7 @@ fi
 
 identity=()
 [ -n "$profile" ] && identity+=("$(paint 34 "$profile")")
+[ -n "$peer_name" ] && identity+=("$(paint '1;37' "@$peer_name")")
 [ -n "$model" ] && identity+=("$(paint 35 "$model")")
 
 location="${repo:-${current_dir##*/}}"
